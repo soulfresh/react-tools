@@ -69,6 +69,7 @@
     "agadoo": "^2.0.0",
     "babel-loader": "8.1.0",
     "eslint": "^7.23.0",
+    "glob": "^7.1.6",
     "jsdoc-to-markdown": "^7.0.1",
     "postcss": "^8.2.9",
     "react": "^17.0.2",
