@@ -97,6 +97,7 @@ export const RoutedAction = React.forwardRef(({
         href={href}
         tabIndex={0}
         button={button}
+        blank={blank}
         {...rest}
         ref={ref}
       />

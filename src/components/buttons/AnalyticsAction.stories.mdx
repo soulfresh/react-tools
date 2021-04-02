@@ -9,7 +9,7 @@ import {
   Row,
 } from '@thesoulfresh/sass-theming';
 
-import { AnalyticsProvider, Analytics } from './analytics';
+import { AnalyticsProvider, Analytics } from '../../hooks/analytics';
 
 import { UnstyledAction } from './UnstyledAction';
 import { AnalyticsAction } from './AnalyticsAction.jsx';
@@ -82,7 +82,6 @@ export const Action = React.forwardRef(({
           // Render a button with a transparent background.
           transparent ? styles.transparent : null,
         )}
-        {...rest}
       />
     </AnalyticsAction>
   );

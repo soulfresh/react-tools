@@ -1,12 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { useAnalyticsClient } from './analytics';
+import { useAnalyticsClient } from '../../hooks/analytics';
 
-import { RoutedAction, makeLinkFromObject } from './RoutedAction.jsx';
-
-// Re-export the analytics package for easy consumption.
-export * from './analytics';
+import { makeLinkFromObject } from './RoutedAction.jsx';
 
 /**
  * @typedef {object} AnalyticsActionProps
@@ -17,7 +14,7 @@ export * from './analytics';
  * @property {string} [category]
  * @property {string} [action]
  * @property {string} [label]
- * @property {string} [value]
+ * @property {number} [value]
  * @property {*} children
  * @property {function} [onClick]
  * @property {*} [ref]
@@ -49,7 +46,6 @@ export const AnalyticsAction = React.forwardRef(({
   children,
   ...rest
 }, ref) => {
-
   const analytics = useAnalyticsClient();
 
   const link = (typeof(to) === 'object')
@@ -58,20 +54,21 @@ export const AnalyticsAction = React.forwardRef(({
 
   // Don't consider buttons, mailto, tel or sms links "external" links.
   const external = !button && link && link.indexOf('http') > -1;
+  const trackEvent = category && action && label;
 
-  const props = { button, href, to, blank, ...rest };
+  const props = { button, href, to, blank, onClick: undefined, ...rest };
 
   // If this is an external link or we want to do event tracking
   // and if the analytics service is available,
   // add a click handler to perform the analytics tracking.
   if (
     analytics &&
-    (external || (category && action && label))
+    (external || trackEvent)
   ) {
     props.onClick = e => {
       // Ensure that analytics is configured and available
       // in this app.
-      analytics.trackEvent(category, action, label, value);
+      if (trackEvent) analytics.trackEvent(category, action, label, value);
 
       // If this is an external link, do external link tracking.
       if (external) analytics.trackExternalLink(href);
@@ -79,10 +76,14 @@ export const AnalyticsAction = React.forwardRef(({
       // Ensure any outer onClick gets propegated.
       if (onClick) onClick(e);
     };
+  } else if (onClick) {
+    props.onClick = onClick;
   }
 
   return typeof(children) === 'string'
     ? <span {...props}>{ children }</span>
+    : typeof(children) === 'function'
+    ? children(props)
     : React.Children.map(children, c => React.cloneElement(c, props));
 });
 
@@ -148,7 +149,7 @@ AnalyticsAction.propTypes = {
    * or any link with an external href to track with
    * external link tracking.
    */
-  children: PropTypes.node,
+  children: PropTypes.any,
   /**
    * Any other props will be passed through to the underlying
    * `<RoutedAction>`, `<a>` or `<button>` elements.

@@ -1,0 +1,47 @@
+import { Meta, Story, Canvas, ArgsTable, Description } from '@storybook/addon-docs/blocks';
+
+<Meta title="Components/Actions/Intro" />
+
+# Actions
+
+In place of various `<Link>` and `<Button>` components, I prefer
+to use an `<Action>` component in my projects. An `<Action>` component will
+render either an `<a>` or a `<button>` based on its props and abstracts
+its styling such that links can look like buttons or vice versa.
+
+Use Actions if:
+
+- Your project has a Link component for routed links
+- and another component for unrouted links
+- plus one or more components for button elements
+- and your design includes links that look like button components
+- and your design includes buttons that look like your link components
+- and you need to share functionality like analytics between both button and link components
+- and you're tired of having to remember all of the components in your project.
+
+Actions:
+
+- Provide a single component API to render both `<a>` and `<button>` elements.
+- Abstract their styling from the underlying HTML element.
+- Give you full control over the styling of your components.
+- Provide a single place for reusable code between all of your links and buttons.
+- Simplify refactoring by making it simple to switch between links and buttons.
+- Reduce code and reduce the number of components you need to remember.
+- Allow you to use any routing or analytics tools you want.
+- Have zero dependencies on external libraries.
+
+## Components
+
+- UnstyledAction
+- RoutedAction
+- AnalyticsAction
+
+## Building an Action
+
+## Best Practices
+
+- Keep styles agnostic to the element being rendered
+- Provide a `display` prop
+- Provide "feel" variations
+- Provide an "unstyled" variation
+- Be selective how you apply your styles

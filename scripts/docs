@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+set -e
+
+echo 'Building Docs 🚀'
+
+npx jsdoc2md --files src/hooks/analytics/analytics.js > src/hooks/analytics/API.md
+
+echo '\nBravo 👏'

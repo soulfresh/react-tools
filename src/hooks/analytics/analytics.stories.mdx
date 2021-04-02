@@ -1,0 +1,87 @@
+import { Meta, Story, Canvas, ArgsTable, Description } from '@storybook/addon-docs/blocks';
+
+import API from './API.md';
+
+<Meta title="Hooks/Analytics" />
+
+# Analytics Service
+
+The `useAnalytics` hook provides access to Google Analytics tracking.
+Analytics is configured through the `Analytics` service (documented below)
+which is available to the [AnalyticsAction](?path=/docs/components-actions--unstyled-actions)
+component.
+
+It is possible to use `AnalyticsAction` with a different analytics
+service. See the [AnalyticsAction docs](?path=/docs/components-actions--unstyled-actions).
+
+## Usage
+
+To use this service, you will need to install `react-ga`.
+
+```bash
+$ yarn add react-ga
+```
+
+And then you will need to provide an instance of the service to
+your application.
+
+```jsx
+@import { AnalyticsProvider, Analytics } from '@thesoulfresh/react-tools';
+
+function App() {
+  // Create an analytics instance with your Google Tracking Id.
+  const service = new Analytics(process.env.REACT_APP_GOOGLE_TRACKING_ID);
+
+  // Provide the analytics instance to your app.
+  return (
+    <AnalyticsProvider value={service}>
+      <Home />
+    </AnalyticsProvider>
+  );
+}
+```
+
+Then take advantage of the `useAnalytics` hook to access the analytics
+service in your components. For more about this, see the
+[AnalyticsAction docs](?path=/docs/components-actions--unstyled-actions).
+
+```jsx
+import { useAnalytics } from '@thesoulfresh/react-tools';
+
+function MyComponent() {
+  const analytics = useAnalytics();
+
+  return (
+    <button
+      onClick={e => {
+        analytics.trackEvent('Media', 'Play Video', 'Start');
+
+        // other work...
+      }}
+    >
+      My Button
+    </button>
+  );
+}
+```
+
+Or you can use the `AnalyticsAction` to automatically provide event tracking
+in your own custom `Action` component.
+
+```jsx
+function MyComponent() {
+  return (
+    <Action
+      category="Media"
+      action="Play Video"
+      label="Start"
+      onClick={e => {
+        // Whatever work you need to play the video...
+      }}
+    />
+  );
+}
+```
+
+<Description>{ API }</Description>
+

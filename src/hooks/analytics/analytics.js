@@ -8,14 +8,24 @@ export const ANALYTICS_CATEGORIES = {
   MEDIA: 'Media',
 };
 
-/**
- * A service for tracking page and user events to our analytics backend.
- */
-export class Analytics {
-  constructor(options = {}) {
+// Work around for jsdoc not rendering output with classes
+// that have constructor functions.
+class Base {
+  constructor(trackerId, options = {trackerId}) {
     this.options = options;
   }
+}
 
+/**
+ * A service for tracking page and user events to Google Analytics.
+ *
+ * @param {string} [trackerId] - The id of the analytics account to track
+ *   events to. This can also be passed to the `initialize` method.
+ * @param {object} [trackingOptions] - Options to pass to the underlying
+ *   tracker object. This can also be passed to the `initialize` method.
+ *   See https://github.com/react-ga/react-ga#reactgainitializegatrackingid-options
+ */
+export class Analytics {
   /**
    * Initialize the underlying tracker, setting
    * the tracking id and session level analytics dimensions.
@@ -23,7 +33,8 @@ export class Analytics {
    *   to track events to. This gets pulled from the environment
    *   variables if not specified.
    * @param {object} [trackingOptions] - Options to pass to the underlying
-   *   tracker object. See https://github.com/react-ga/react-ga#reactgainitializegatrackingid-options
+   *   tracker object. This can also be passed in the constructor.
+   *   See https://github.com/react-ga/react-ga#reactgainitializegatrackingid-options
    */
   initialize(
     trackerId,
@@ -44,6 +55,7 @@ export class Analytics {
       // Initialize the tracking id.
       ReactGA.initialize(trackerId, this.options);
 
+      // TODO Allow passing through options
       // Set session variables.
       // ReactGA.set({
       //   dimension1: '???',
@@ -62,6 +74,7 @@ export class Analytics {
   getQuery(location = window.location) {
     const query = queryString.parse(location.search);
 
+    // TODO Allow passing a black list through options
     // Strip query parameters that aren't relavent to analytics.
     // ['from'].forEach(n => {
     //   delete query[n];
@@ -79,6 +92,7 @@ export class Analytics {
     const query = this.getQuery(location);
     const page = location.pathname;
 
+    // TODO Allow passing a black list through options
     // Do any filtering you need here.
 
     return '/' + page + query;
@@ -118,7 +132,7 @@ export class Analytics {
 
   /**
    * Track a link to an external site.
-   * https://github.com/react-ga/react-ga#reactgaoutboundlinkargs-hitcallback
+   * @see https://github.com/react-ga/react-ga#reactgaoutboundlinkargs-hitcallback
    * @param {string} url
    */
   trackExternalLink(url) {

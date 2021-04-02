@@ -17,6 +17,11 @@ import styles from './UnstyledAction.module.scss';
 export const ActionButton = React.forwardRef(({
   children,
   type = 'button',
+
+  // Trap these...
+  // @ts-ignore
+  blank,
+
   ...rest
 }, ref) => {
   return (
@@ -62,11 +67,10 @@ export const ActionLink = React.forwardRef(({
 
 
 /**
- * @typedef {ActionLinkProps & ActionButtonProps} UnstyledActionProps
+ * @typedef {object & ActionButtonProps & ActionLinkProps} UnstyledActionProps
  * @property {boolean}  [button]
  * @property {string}   [className]
  * @property {*}        [ref]
- * @property {*} [ref]
  */
 /**
  * The `<UnstyledAction>` component provides a basis for your
