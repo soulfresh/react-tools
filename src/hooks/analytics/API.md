@@ -88,7 +88,7 @@ is associated with the current page.
 | --- | --- | --- | --- |
 | [url] | <code>object</code> |  | The url to track as the current page.   If you don't pass this, then `getPage()` will be called   to generate it for you using `window.location`. |
 | [setPage] | <code>boolean</code> | <code>true</code> | Allows you to disable saving the   current page state to this location. Use this if you need to   track the page but maintain the previously set page as the source   of future event tracking. |
-| [trackPage] | <code>boolean</code> | <code>true</code> | Allow you to disable tracking a page view   and instead just sets the current page for future event tracking.   Use this if you want to set the page but you don't want to track   a pageview. |
+| [trackPage] | <code>boolean</code> | <code>true</code> | Allows you to disable tracking a page view   and instead just sets the current page for future event tracking.   Use this if you want to set the page but you don't want to track   a pageview. |
 
 <a name="Analytics+trackEvent"></a>
 

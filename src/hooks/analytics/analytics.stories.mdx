@@ -6,7 +6,7 @@ import API from './API.md';
 
 # Analytics Service
 
-The `useAnalytics` hook provides access to Google Analytics tracking.
+The `useAnalyticsClient` hook provides access to Google Analytics tracking.
 Analytics is configured through the `Analytics` service (documented below)
 which is available to the [AnalyticsAction](?path=/docs/components-actions--unstyled-actions)
 component.
@@ -45,15 +45,15 @@ function App() {
 }
 ```
 
-Then take advantage of the `useAnalytics` hook to access the analytics
+Then take advantage of the `useAnalyticsClient` hook to access the analytics
 service in your components. For more about this, see the
 [AnalyticsAction docs](?path=/docs/components-actions--unstyled-actions).
 
 ```jsx
-import { useAnalytics } from '@thesoulfresh/react-tools';
+import { useAnalyticsClient } from '@thesoulfresh/react-tools';
 
 function MyComponent() {
-  const analytics = useAnalytics();
+  const analytics = useAnalyticsClient();
 
   return (
     <button
