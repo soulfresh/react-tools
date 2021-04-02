@@ -33,6 +33,7 @@
     "build": "rollup -c rollup.config.js",
     "test": "react-scripts test",
     "test-debug": "react-scripts --inspect-brk test --runInBand --no-cache",
+    "test-ci": "react-scripts test --watchAll=false --runInBand",
     "clean": "rimraf lib out*",
     "lint": "yarn eslint && yarn stylelint",
     "stylelint": "stylelint 'src/**/*.scss'",

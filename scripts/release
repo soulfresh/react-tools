@@ -15,7 +15,7 @@ if output=$(git status --porcelain) && [ -z "$output" ]; then
   # Deployment steps go here...
   echo '\nRunning tests...'
   # yarn tree-shackable
-  yarn test
+  yarn test-ci
 
   echo '\nCleaning...'
   yarn clean
