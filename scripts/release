@@ -29,7 +29,7 @@ if output=$(git status --porcelain) && [ -z "$output" ]; then
   version=$(node -e "console.log(require('./package.json').version)")
 
   echo '\nPublishing...'
-  yarn publish
+  yarn publish --new-version $version
 
   echo '\nTagging release...'
   yarn config set version-tag-prefix "release/"
