@@ -1,0 +1,17 @@
+/* UnstyledAction */
+@import '../../_theme.scss';
+
+.UnstyledAction {
+  @include unstyled-button;
+  cursor: pointer;
+
+  margin: 0;
+  padding: 0;
+
+  // Use the same font and color settings as surrounding text.
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  text-decoration: none;
+}

@@ -1,0 +1,116 @@
+{
+  "name": "@thesoulfresh/react-tools",
+  "version": "0.0.1",
+  "description": "Components, hooks and other tools for React",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/soulfresh/react-tools.git"
+  },
+  "keywords": [
+    "React",
+    "Components",
+    "hooks"
+  ],
+  "bugs": {
+    "url": "https://github.com/soulfresh/react-tools/issues"
+  },
+  "homepage": "https://github.com/soulfresh/react-tools#readme",
+  "author": "Marc Wren",
+  "license": "MIT",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "source": "src/index.js",
+  "files": [
+    "src/*",
+    "lib/*"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "rollup -c rollup.config.js",
+    "test": "jest",
+    "test-debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
+    "clean": "rimraf lib out*",
+    "lint": "yarn eslint && yarn stylelint",
+    "stylelint": "stylelint 'src/**/*.scss'",
+    "eslint": "eslint --max-warnings 1 './src/**/*.{js,jsx}'",
+    "test-shacking": "agadoo lib/esm/index.js",
+    "tree-shackable": "yarn clean && yarn build && yarn test-shacking",
+    "release": "./scripts/release",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook",
+    "deploy-storybook": "storybook-to-ghpages"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-react": "^7.13.13",
+    "@rollup/plugin-babel": "^5.3.0",
+    "@rollup/plugin-node-resolve": "^11.2.0",
+    "@storybook/addon-actions": "^6.1.21",
+    "@storybook/addon-docs": "^6.1.21",
+    "@storybook/addon-essentials": "^6.1.21",
+    "@storybook/addon-links": "^6.1.21",
+    "@storybook/node-logger": "^6.1.21",
+    "@storybook/preset-create-react-app": "^3.1.7",
+    "@storybook/react": "^6.1.21",
+    "@storybook/storybook-deployer": "^2.8.7",
+    "@testing-library/dom": "^7.30.0",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.8.3",
+    "@thesoulfresh/sass-theming": "^1.2.2",
+    "@types/react": "^17.0.3",
+    "agadoo": "^2.0.0",
+    "babel-loader": "^8.2.2",
+    "eslint": "^7.23.0",
+    "jest": "^26.6.3",
+    "jsdoc-to-markdown": "^7.0.0",
+    "postcss": "^8.2.9",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "^4.0.3",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.41.1",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-postcss": "^4.0.0",
+    "sass": "^1.32.8",
+    "stylelint": "^13.12.0",
+    "stylelint-a11y": "^1.2.3",
+    "stylelint-config-css-modules": "^2.2.0",
+    "stylelint-config-standard": "^21.0.0",
+    "stylelint-scss": "^3.19.0"
+  },
+  "peerDependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "optionalDependencies": {
+    "react-ga": "^3.3.0",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0"
+  },
+  "dependencies": {
+    "@thesoulfresh/utils": "^0.2.2",
+    "prop-types": "^15.7.2",
+    "query-string": "^7.0.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "storybook-deployer": {
+    "commitMessage": "Deploy Storybook [skip ci]"
+  }
+}

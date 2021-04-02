@@ -1,0 +1,116 @@
+import { Meta, Story, Canvas, ArgsTable, Description } from '@storybook/addon-docs/blocks';
+import { action as act } from '@storybook/addon-actions';
+import { MemoryRouter } from 'react-router-dom';
+
+import {
+  ColumnOfItems,
+  RowOfItems,
+  Column,
+  Row,
+} from '@thesoulfresh/sass-theming';
+
+import { AnalyticsProvider, Analytics } from './analytics';
+
+import { UnstyledAction } from './UnstyledAction';
+import { AnalyticsAction } from './AnalyticsAction.jsx';
+
+export const analyticsService = new Analytics('', {testMode: true});
+
+export const Routed = c => <MemoryRouter>{ c() }</MemoryRouter>;
+export const AnalyticsContext = c => (
+  <AnalyticsProvider value={analyticsService}>
+    { c() }
+  </AnalyticsProvider>
+);
+
+export const moreSpace = {margin: '20px'};
+
+<Meta title="Components/Actions/Analytics Actions" />
+
+# Analytics Action
+
+<Description of={AnalyticsAction} />
+
+<Canvas>
+  <Story name="Analytics Actions" decorators={[AnalyticsContext, Routed, ColumnOfItems]}>
+    <AnalyticsAction style={moreSpace}>
+      I'm just regular text to track!
+    </AnalyticsAction>
+    <AnalyticsAction external href="/foo/bar" style={moreSpace}>
+      <a>I'm a external link element</a>
+    </AnalyticsAction>
+    <AnalyticsAction style={moreSpace}>
+      <button>I'm a standard button element</button>
+    </AnalyticsAction>
+    <AnalyticsAction style={moreSpace}>
+      <UnstyledAction button>I'm an UnstyledAction</UnstyledAction>
+    </AnalyticsAction>
+  </Story>
+</Canvas>
+
+<ArgsTable of={AnalyticsAction} />
+
+## Example Usage
+
+Here's an example of how you can use this to create your
+own `<Action>` component that provides analytics tracking.
+
+```jsx
+import { combineClasses } from '@thesoulfresh/utils';
+import { UnstyledAction, AnalyticsAction } from '@thesoulfresh/react-tools';
+
+export const Action = React.forwardRef(({
+  button = false,
+  transparent = false,
+  pill = false,
+  className,
+  ...rest
+}, ref) => {
+  return (
+    <AnalyticsAction {...rest}>
+      <UnstyledAction
+        className={combineClasses(
+          // Base styles for your buttons and links
+          styles.Action,
+          // Ensure outer styles are also applied
+          className,
+          // Apply your custom button or link styles
+          // depending on what is to be rendered.
+          button ? styles.button : styles.link,
+          // Render the pill version of your button.
+          pill ? styles.pill : null,
+          // Render a button with a transparent background.
+          transparent ? styles.transparent : null,
+        )}
+        {...rest}
+      />
+    </AnalyticsAction>
+  );
+});
+
+// Elsewhere you can use this to render links with external link tracking:
+<Action href="http://www.google.com" blank>
+  My Link
+</Action>
+
+// Or you can render buttons with click tracking:
+<Action
+  button
+  pill
+  onClick={() => alert('button clicked!')}
+  category="Media"
+  action="Play Video"
+  label="Start Playback"
+>
+  My Button
+</Action>
+```
+
+## Analytics Service
+
+TODO: How to provide the analytics service to your app.
+
+## Replacing the Analytics Service
+
+TODO: How to integrate with other services.
+

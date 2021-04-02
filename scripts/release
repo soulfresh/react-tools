@@ -1,0 +1,46 @@
+#!/usr/bin/env sh
+
+set -e
+
+if output=$(git status --porcelain) && [ -z "$output" ]; then
+  echo 'Releasing 🚀'
+
+  echo '\nChecking out the Master branch...'
+  git checkout master
+  git pull
+
+  echo '\nInstalling dependencies...'
+  yarn install
+
+  # Deployment steps go here...
+  echo '\nRunning tests...'
+  # yarn tree-shackable
+  yarn test
+
+  echo '\nCleaning...'
+  yarn clean
+
+  echo '\nBuilding docs...'
+  yarn deploy-storybook
+
+  echo '\nBuilding release...'
+  yarn build
+  yarn version
+  version=$(node -e "console.log(require('./package.json').version)")
+
+  echo '\nPublishing...'
+  yarn publish
+
+  echo '\nTagging release...'
+  yarn config set version-tag-prefix "release/"
+  yarn config set version-git-message "[release][ci skip] prepare release/%s"
+
+  echo '\nPushing the new tag...'
+  git push origin master
+  git push origin "release/$version"
+
+  echo '\nBravo 👏'
+else
+  echo '☠️  Uncommitted Files: Please commit all files first.'
+  exit 1
+fi

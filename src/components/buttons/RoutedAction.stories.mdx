@@ -1,0 +1,37 @@
+import { Meta, Story, Canvas, ArgsTable, Description } from '@storybook/addon-docs/blocks';
+import { action as act } from '@storybook/addon-actions';
+import { MemoryRouter } from 'react-router-dom';
+
+import {
+  ColumnOfItems,
+  RowOfItems,
+  Column,
+  Row,
+} from '@thesoulfresh/sass-theming';
+
+import { RoutedAction } from './RoutedAction.jsx';
+
+export const Routed = c => <MemoryRouter>{ c() }</MemoryRouter>;
+export const Analytics = c => wrapWithAnalytics(c());
+
+export const moreSpace = {margin: '20px'};
+
+<Meta title="Components/Actions/Routed Actions" />
+
+# Routed Action
+
+<Description of={RoutedAction} />
+
+See the `UnstyledAction` component documentation
+for an [example usage](/docs/components-actions--unstyled-actions#example-usage).
+
+<Canvas>
+  <Story name="Routed Actions" decorators={[Routed]}>
+    <RoutedAction href="/foo/bar">
+      I'm a routed link element!
+    </RoutedAction>
+  </Story>
+</Canvas>
+
+<ArgsTable of={RoutedAction} />
+
