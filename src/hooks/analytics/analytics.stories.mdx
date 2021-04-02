@@ -32,6 +32,10 @@ function App() {
   // Create an analytics instance with your Google Tracking Id.
   const service = new Analytics(process.env.REACT_APP_GOOGLE_TRACKING_ID);
 
+  // The service must be initialized which you can do here or
+  // later in the application.
+  service.initialize();
+
   // Provide the analytics instance to your app.
   return (
     <AnalyticsProvider value={service}>

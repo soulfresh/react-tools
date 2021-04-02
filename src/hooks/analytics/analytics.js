@@ -11,41 +11,57 @@ export const ANALYTICS_CATEGORIES = {
 // Work around for jsdoc not rendering output with classes
 // that have constructor functions.
 class Base {
-  constructor(trackerId, options = {trackerId}) {
+  constructor(trackingId, options = {}) {
     this.options = options;
+    this.trackingId = trackingId;
   }
 }
 
 /**
+ * @typedef {object} AnalyticsOptions
+ * @property {string[]} [queryBlacklist] - An array of query parameter
+ *   names to filter from urls sent to tracking events. FYI, it's also possible
+ *   to blacklist query parameters through the Google Analytics UI.
+ * @property {boolean} [debug] - Output debug logging around ReactGA events.
+ * @property {boolean} [titleCase] - Set this to false in order to disable
+ *   converting strings to title case before they're sent to GA.
+ * @property {object} [gaOptions] - Options for configuring the Google
+ *   Analytics API.
+ *   See https://github.com/react-ga/react-ga#reactgainitializegatrackingid-options
+ */
+
+/**
  * A service for tracking page and user events to Google Analytics.
  *
- * @param {string} [trackerId] - The id of the analytics account to track
+ * @param {string} [trackingId] - The id of the analytics account to track
  *   events to. This can also be passed to the `initialize` method.
- * @param {object} [trackingOptions] - Options to pass to the underlying
+ * @param {AnalyticsOptions} [trackingOptions] - Options to pass to the underlying
  *   tracker object. This can also be passed to the `initialize` method.
  *   See https://github.com/react-ga/react-ga#reactgainitializegatrackingid-options
  */
-export class Analytics {
+export class Analytics extends Base {
   /**
    * Initialize the underlying tracker, setting
    * the tracking id and session level analytics dimensions.
-   * @param {string} [trackerId] - The id of the analytics account
+   * This must be called before you can do any event tracking.
+   *
+   * @param {string} [trackingId] - The id of the analytics account
    *   to track events to. This gets pulled from the environment
    *   variables if not specified.
-   * @param {object} [trackingOptions] - Options to pass to the underlying
+   * @param {AnalyticsOptions} [trackingOptions] - Options to pass to the underlying
    *   tracker object. This can also be passed in the constructor.
    *   See https://github.com/react-ga/react-ga#reactgainitializegatrackingid-options
    */
   initialize(
-    trackerId,
-    trackingOptions,
+    trackingId = this.trackingId,
+    trackingOptions = this.options,
   ) {
-    if (!trackerId) {
+    if (!trackingId) {
       console.warn('[Analytics] ANALYTICS DISABLED: Tracking ID not specified.');
     }
     else if (!this.initialized) {
-      this.trackingId = trackerId;
-      if (trackingOptions) this.options = {...this.options, trackingOptions};
+      this.trackingId = trackingId;
+      if (trackingOptions) this.options = {...this.options, ...trackingOptions};
 
       // Ensure we never send analtyics events during tests.
       if (process?.env?.test === 'true') this.options.testMode = true;
@@ -53,7 +69,7 @@ export class Analytics {
       if (this.options.verbose == null) this.options.debug = true;
 
       // Initialize the tracking id.
-      ReactGA.initialize(trackerId, this.options);
+      ReactGA.initialize(trackingId, this.options);
 
       // TODO Allow passing through options
       // Set session variables.
@@ -74,11 +90,12 @@ export class Analytics {
   getQuery(location = window.location) {
     const query = queryString.parse(location.search);
 
-    // TODO Allow passing a black list through options
-    // Strip query parameters that aren't relavent to analytics.
-    // ['from'].forEach(n => {
-    //   delete query[n];
-    // });
+    if (this.options?.queryBlacklist) {
+      // Strip query parameters that aren't relavent to analytics.
+      this.options.queryBlacklist.forEach(n => {
+        if (typeof(n) === 'string') delete query[n];
+      });
+    }
 
     const out = queryString.stringify(query);
     return out ? `?${out}` : '';
@@ -91,26 +108,35 @@ export class Analytics {
   getPage(location = window.location) {
     const query = this.getQuery(location);
     const page = location.pathname;
+    let path = '/' + page + query;
 
-    // TODO Allow passing a black list through options
-    // Do any filtering you need here.
-
-    return '/' + page + query;
+    return path;
   }
 
   /**
-   * Track the current page.
-   * @param {object} [location] - The location object from React Router or Window.
+   * Track the current page. This will both track a page view
+   * and set the current page so that any other event tracking
+   * is associated with the current page.
+   *
+   * @param {object} [url] - The url to track as the current page.
+   *   If you don't pass this, then `getPage()` will be called
+   *   to generate it for you using `window.location`.
+   * @param {boolean} [setPage] - Allows you to disable saving the
+   *   current page state to this location. Use this if you need to
+   *   track the page but maintain the previously set page as the source
+   *   of future event tracking.
+   * @param {boolean} [trackPage] - Allows you to disable tracking a page view
+   *   and instead just sets the current page for future event tracking.
+   *   Use this if you want to set the page but you don't want to track
+   *   a pageview.
    */
-  trackPage(location) {
+  trackPage(url = this.getPage(), setPage = true, trackPage = true) {
     if (this.initialized) {
-      const url = this.getPage(location);
-
       // Indicate what page subsequent events are associated with.
       // https://developers.google.com/analytics/devguides/collection/analyticsjs/single-page-applications?hl=en
-      ReactGA.set({page: url});
+      if (setPage) ReactGA.set({page: url});
       // Track the current page load (required in addition to the previous line).
-      ReactGA.pageview(url);
+      if (trackPage) ReactGA.pageview(url);
     }
   }
 

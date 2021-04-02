@@ -2,7 +2,8 @@ import React from 'react';
 import { render as testRender, screen } from '@testing-library/react';
 import fireEvent from '@testing-library/user-event';
 
-import { AnalyticsAction, AnalyticsProvider } from './AnalyticsAction.jsx';
+import { AnalyticsProvider } from '../../hooks';
+import { AnalyticsAction } from './AnalyticsAction.jsx';
 
 function render(component, service = {}) {
   return testRender(
