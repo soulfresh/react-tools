@@ -7,7 +7,7 @@ import {
   addCurrencyPrefixOrSuffix,
 } from './number-util';
 
-import { NumberInput } from './NumberInput.jsx';
+import { NumberDisplay } from './NumberDisplay.jsx';
 
 // TODO Handle negative number formatting.
 // The negative sign can be either prefixed
@@ -15,15 +15,15 @@ import { NumberInput } from './NumberInput.jsx';
 // sign can appear before or after the currency
 // symbol.
 /**
- * The `<CurrencyInput>` displays a currency value with
+ * The `<Currency>` displays a currency value with
  * its currency symbol and formatted in the browser locale
  * as the user types. If no currency is specified it
  * assumes you intend to use 'USD'.
  *
- * See the `NumberInput` component (which this component
+ * See the `NumberDisplay` component (which this component
  * uses under the hood) for more details.
  */
-export function CurrencyInput({
+export function Currency({
   currency,
   currencyDisplay,
   locale,
@@ -54,14 +54,14 @@ export function CurrencyInput({
   });
 
   return (
-    <NumberInput data-test="currencyNameInput"
+    <NumberDisplay data-test="currencyNameInput"
       {...localeProps}
       {...rest}
     />
   );
 }
 
-CurrencyInput.propTypes = {
+Currency.propTypes = {
   /**
    * The currency code for the currency being displayed.
    * Defaults to 'USD'. See https://www.currency-iso.org/en/home/tables/table-a1.html
@@ -104,20 +104,20 @@ CurrencyInput.propTypes = {
    */
   onValueChange: PropTypes.func,
   /**
-   * Render the number in a `<span>` instead of as
-   * an `<input>`.
+   * Render an `<input>` instead of a span. This formats
+   * the input value as the user types.
    */
-  text: PropTypes.bool,
+  input: PropTypes.bool,
   /**
    * Any other props will be passed along to the underlying
-   * `NumberInput` or
+   * `NumberDisplay` or
    * `react-number-format` or `input` element.
    * See https://www.npmjs.com/package/react-number-format
    */
   'other props...': PropTypes.any,
 };
 
-CurrencyInput.defaultProps = {
+Currency.defaultProps = {
   currency: 'USD',
   currencyDisplay: 'symbol',
 }

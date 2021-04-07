@@ -6,18 +6,17 @@ import {
   addCurrencyPrefixOrSuffix,
 } from './number-util';
 
-import { CurrencyInput } from './CurrencyInput.jsx';
-
+import { Currency } from './Currency.jsx';
 
 /**
- * The `<CurrencyNameInput>` displays a currency value
+ * The `<CurrencyName>` displays a currency value
  * using the currency code instead of the currency symbol.
  * For example, "5,000 USD" rather than "$5,000".
  *
- * This component builds off of `<CurrencyInput>` but specifically
+ * This component builds off of `<Currency>` but specifically
  * sets the `currencyDisplay` prop to "name".
  */
-export function CurrencyNameInput(props) {
+export function CurrencyName(props) {
   const { currency, locale, onValueChange } = props;
   const currencyDisplay = 'name';
   const [symbol, setSymbol] = React.useState(() => localeCurrencyName(1, currency, locale));
@@ -38,10 +37,10 @@ export function CurrencyNameInput(props) {
 
   addCurrencyPrefixOrSuffix(localeProps, symbol, locale, currencyDisplay);
 
-  return <CurrencyInput {...localeProps} />
+  return <Currency {...localeProps} />
 }
 
-CurrencyNameInput.propTypes = {
+CurrencyName.propTypes = {
   /**
    * The currency code for the currency being displayed.
    * Defaults to 'USD'. See https://www.currency-iso.org/en/home/tables/table-a1.html
@@ -78,20 +77,20 @@ CurrencyNameInput.propTypes = {
    */
   onValueChange: PropTypes.func,
   /**
-   * Render the number in a `<span>` instead of as
-   * an `<input>`.
+   * Render an `<input>` instead of a span. This formats
+   * the input value as the user types.
    */
-  text: PropTypes.bool,
+  input: PropTypes.bool,
   /**
    * Any other props will be passed along to the underlying
-   * `NumberInput` or
+   * `NumberDisplay` or
    * `react-number-format` or `input` element.
    * See https://www.npmjs.com/package/react-number-format
    */
   'other props...': PropTypes.any,
 };
 
-CurrencyNameInput.defaultProps = {
+CurrencyName.defaultProps = {
   currency: 'USD',
 };
 

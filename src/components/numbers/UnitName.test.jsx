@@ -1,14 +1,14 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 
-import { UnitNameInput } from './UnitNameInput.jsx';
+import { UnitName } from './UnitName.jsx';
 import {
   supportsLocaleUnits,
 } from './number-util';
 
 const supported = supportsLocaleUnits();
 
-describe('UnitNameInput', function() {
+describe('UnitName', function() {
   let onValueChange;
 
   beforeEach(function() {
@@ -19,11 +19,11 @@ describe('UnitNameInput', function() {
     beforeEach(function() {
       render(
         <>
-          <UnitNameInput locale="en-US" data-testid="thousands" unit="inch"          value={50000} />
-          <UnitNameInput locale="en-US" data-testid="decimal"   unit="liter"         value={50000.6666} onValueChange={onValueChange} />
-          <UnitNameInput locale="en-US" data-testid="truncated" unit="liter"         value={50000.4444} decimalScale={2} />
-          <UnitNameInput locale="en-US" data-testid="rounded"   unit="mile-per-hour" value={50000.7777} decimalScale={2} />
-          <UnitNameInput locale="en-US" data-testid="single"    unit="foot"          value={1}          decimalScale={2} />
+          <UnitName input locale="en-US" data-testid="thousands" unit="inch"          value={50000} />
+          <UnitName input locale="en-US" data-testid="decimal"   unit="liter"         value={50000.6666} onValueChange={onValueChange} />
+          <UnitName input locale="en-US" data-testid="truncated" unit="liter"         value={50000.4444} decimalScale={2} />
+          <UnitName input locale="en-US" data-testid="rounded"   unit="mile-per-hour" value={50000.7777} decimalScale={2} />
+          <UnitName input locale="en-US" data-testid="single"    unit="foot"          value={1}          decimalScale={2} />
         </>
       );
     });
@@ -49,11 +49,11 @@ describe('UnitNameInput', function() {
     beforeEach(function() {
       render(
         <>
-          <UnitNameInput locale="de-DE" data-testid="thousands" unit="inch"          value={50000} />
-          <UnitNameInput locale="de-DE" data-testid="decimal"   unit="liter"         value={50000.6666} onValueChange={onValueChange} />
-          <UnitNameInput locale="de-DE" data-testid="truncated" unit="liter"         value={50000.4444} decimalScale={2} />
-          <UnitNameInput locale="de-DE" data-testid="rounded"   unit="mile-per-hour" value={50000.7777} decimalScale={2} />
-          <UnitNameInput locale="de-DE" data-testid="single"    unit="foot"          value={1}          decimalScale={2} />
+          <UnitName input locale="de-DE" data-testid="thousands" unit="inch"          value={50000} />
+          <UnitName input locale="de-DE" data-testid="decimal"   unit="liter"         value={50000.6666} onValueChange={onValueChange} />
+          <UnitName input locale="de-DE" data-testid="truncated" unit="liter"         value={50000.4444} decimalScale={2} />
+          <UnitName input locale="de-DE" data-testid="rounded"   unit="mile-per-hour" value={50000.7777} decimalScale={2} />
+          <UnitName input locale="de-DE" data-testid="single"    unit="foot"          value={1}          decimalScale={2} />
         </>
       );
     });
@@ -79,11 +79,11 @@ describe('UnitNameInput', function() {
     beforeEach(function() {
       render(
         <>
-          <UnitNameInput locale="hi-IN" data-testid="thousands" unit="inch"          value={5000000} />
-          <UnitNameInput locale="hi-IN" data-testid="decimal"   unit="liter"         value={5000000.6666} onValueChange={onValueChange} />
-          <UnitNameInput locale="hi-IN" data-testid="truncated" unit="liter"         value={5000000.4444} decimalScale={2} />
-          <UnitNameInput locale="hi-IN" data-testid="rounded"   unit="mile-per-hour" value={5000000.7777} decimalScale={2} />
-          <UnitNameInput locale="hi-IN" data-testid="single"    unit="foot"          value={1}          decimalScale={2} />
+          <UnitName input locale="hi-IN" data-testid="thousands" unit="inch"          value={5000000} />
+          <UnitName input locale="hi-IN" data-testid="decimal"   unit="liter"         value={5000000.6666} onValueChange={onValueChange} />
+          <UnitName input locale="hi-IN" data-testid="truncated" unit="liter"         value={5000000.4444} decimalScale={2} />
+          <UnitName input locale="hi-IN" data-testid="rounded"   unit="mile-per-hour" value={5000000.7777} decimalScale={2} />
+          <UnitName input locale="hi-IN" data-testid="single"    unit="foot"          value={1}          decimalScale={2} />
         </>
       );
     });
@@ -105,3 +105,4 @@ describe('UnitNameInput', function() {
     });
   });
 });
+

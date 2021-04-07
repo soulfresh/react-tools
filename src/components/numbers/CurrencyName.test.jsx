@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 
-import { CurrencyNameInput } from './CurrencyNameInput.jsx';
+import { CurrencyName } from './CurrencyName.jsx';
 
-describe('CurrencyNameInput', function() {
+describe('CurrencyName', function() {
   let onValueChange;
 
   beforeEach(function() {
@@ -14,10 +14,10 @@ describe('CurrencyNameInput', function() {
     beforeEach(function() {
       render(
         <>
-          <CurrencyNameInput locale="en-US" data-testid="thousands" currency="USD" value={50000} />
-          <CurrencyNameInput locale="en-US" data-testid="decimal"   currency="USD" value={50000.6666} onValueChange={onValueChange} />
-          <CurrencyNameInput locale="en-US" data-testid="truncated" currency="USD" value={50000.4444} decimalScale={2} currencyDisplay="code" />
-          <CurrencyNameInput locale="en-US" data-testid="rounded"   currency="EUR" value={50000.7777} decimalScale={2} />
+          <CurrencyName input locale="en-US" data-testid="thousands" currency="USD" value={50000} />
+          <CurrencyName input locale="en-US" data-testid="decimal"   currency="USD" value={50000.6666} onValueChange={onValueChange} />
+          <CurrencyName input locale="en-US" data-testid="truncated" currency="USD" value={50000.4444} decimalScale={2} currencyDisplay="code" />
+          <CurrencyName input locale="en-US" data-testid="rounded"   currency="EUR" value={50000.7777} decimalScale={2} />
         </>
       );
     });
@@ -34,10 +34,10 @@ describe('CurrencyNameInput', function() {
     beforeEach(function() {
       render(
         <>
-          <CurrencyNameInput locale="de-DE" data-testid="thousands" currency="USD" value={50000} />
-          <CurrencyNameInput locale="de-DE" data-testid="decimal"   currency="USD" value={50000.6666} onValueChange={onValueChange} />
-          <CurrencyNameInput locale="de-DE" data-testid="truncated" currency="USD" value={50000.4444} decimalScale={2} currencyDisplay="code" />
-          <CurrencyNameInput locale="de-DE" data-testid="rounded"   currency="EUR" value={50000.7777} decimalScale={2} />
+          <CurrencyName input locale="de-DE" data-testid="thousands" currency="USD" value={50000} />
+          <CurrencyName input locale="de-DE" data-testid="decimal"   currency="USD" value={50000.6666} onValueChange={onValueChange} />
+          <CurrencyName input locale="de-DE" data-testid="truncated" currency="USD" value={50000.4444} decimalScale={2} currencyDisplay="code" />
+          <CurrencyName input locale="de-DE" data-testid="rounded"   currency="EUR" value={50000.7777} decimalScale={2} />
         </>
       );
     });
@@ -54,10 +54,10 @@ describe('CurrencyNameInput', function() {
     beforeEach(function() {
       render(
         <>
-          <CurrencyNameInput locale="hi-IN" data-testid="thousands" currency="USD" value={5000000} />
-          <CurrencyNameInput locale="hi-IN" data-testid="decimal"   currency="USD" value={5000000.6666} onValueChange={onValueChange} />
-          <CurrencyNameInput locale="hi-IN" data-testid="truncated" currency="USD" value={5000000.4444} decimalScale={2} currencyDisplay="code" />
-          <CurrencyNameInput locale="hi-IN" data-testid="rounded"   currency="EUR" value={5000000.7777} decimalScale={2} />
+          <CurrencyName input locale="hi-IN" data-testid="thousands" currency="USD" value={5000000} />
+          <CurrencyName input locale="hi-IN" data-testid="decimal"   currency="USD" value={5000000.6666} onValueChange={onValueChange} />
+          <CurrencyName input locale="hi-IN" data-testid="truncated" currency="USD" value={5000000.4444} decimalScale={2} currencyDisplay="code" />
+          <CurrencyName input locale="hi-IN" data-testid="rounded"   currency="EUR" value={5000000.7777} decimalScale={2} />
         </>
       );
     });

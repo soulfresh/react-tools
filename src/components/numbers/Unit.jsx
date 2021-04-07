@@ -4,16 +4,15 @@ import PropTypes from 'prop-types';
 import {
   localeUnitSymbol,
   localeUnitName,
-  supportsLocaleUnits,
   addUnitPrefixOrSuffix,
 } from './number-util';
 
-import { NumberInput } from './NumberInput.jsx';
+import { NumberDisplay } from './NumberDisplay.jsx';
 
 /**
- * The `<UnitInput>` renders number values with a unit
+ * The `<Unit>` renders number values with a unit
  * such as "inches", "miles-per-hour", etc. It builds
- * off of the `NumberInput` component so accepts all
+ * off of the `NumberDisplay` component so accepts all
  * of the same props and can render either an input
  * element or a span.
  *
@@ -25,7 +24,7 @@ import { NumberInput } from './NumberInput.jsx';
  * @param {string} [props.locale] - The locale to display
  *   the number in. Defaults to the browser locale.
  */
-export function UnitInput({
+export function Unit({
   unit,
   unitDisplay,
   locale,
@@ -57,14 +56,14 @@ export function UnitInput({
   });
 
   return (
-    <NumberInput data-test="currencyNameInput"
+    <NumberDisplay data-test="currencyNameInput"
       {...localeProps}
       {...rest}
     />
   );
 }
 
-UnitInput.propTypes = {
+Unit.propTypes = {
   /**
    * The name of the unit this number represents. See the `unit`
    * property from `Intl.NumberFormat`
@@ -108,79 +107,16 @@ UnitInput.propTypes = {
    */
   onValueChange: PropTypes.func,
   /**
-   * Render the number in a `<span>` instead of as
-   * an `<input>`.
+   * Render an `<input>` instead of a span. This formats
+   * the input value as the user types.
    */
-  text: PropTypes.bool,
+  input: PropTypes.bool,
   /**
    * Any other props will be passed along to the underlying
    * `react-number-format` or `input` element.
    * See https://www.npmjs.com/package/react-number-format
    */
   'other props...': PropTypes.any,
-};
-
-
-export function UnitNameInput(props) {
-  const { unit, locale, value, onValueChange } = props;
-  const unitDisplay = 'long';
-  const [supported] = React.useState(() => supportsLocaleUnits());
-  const [symbol, setSymbol] = React.useState(() =>
-    supported
-      ? localeUnitName(value || 1, unit, locale)
-      : null
-  );
-
-  const handleValueChange = (values) => {
-    if (supported) {
-      setSymbol(
-        localeUnitName(values.floatValue, unit, locale)
-      );
-    }
-    if (onValueChange) onValueChange(values);
-  };
-
-  const localeProps = {
-    ...props,
-    unitDisplay,
-  };
-
-  if (supported) {
-    localeProps.onValueChange = handleValueChange;
-
-    // TODO Find a way to reduce how often locale props are determined.
-    addUnitPrefixOrSuffix(localeProps, unit, symbol, locale, unitDisplay);
-  }
-
-  return (
-    <UnitInput {...localeProps} />
-  )
-}
-
-UnitNameInput.propTypes = {
-  /**
-   * The initial value of the input.
-   */
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  /**
-   * The name of the unit this number represents. See the `unit`
-   * property from `Intl.NumberFormat`
-   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
-   */
-  unit: PropTypes.string.isRequired,
-  /**
-   * The locale to use when formatting the currency.
-   * See the `locale` property of `Intl.NumberFormat`
-   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
-   */
-  locale: PropTypes.string,
-  // Form an Name are required but that is not enforced
-  // here because they receive those from `FormikLabeledInput`
-  // or Formik `Field`.
-  // name: PropTypes.string,
-  // form: PropTypes.shape({
-  //   setFieldValue: PropTypes.func.isRequired
-  // }),
 };
 
 

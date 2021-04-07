@@ -1,0 +1,39 @@
+import { Meta, Story, Canvas, ArgsTable, Description } from '@storybook/addon-docs/blocks';
+import { action as act } from '@storybook/addon-actions';
+
+import {
+  ColumnOfItems,
+  RowOfItems,
+  Column,
+  Row,
+} from '@thesoulfresh/sass-theming';
+
+import { NumberDisplay } from './NumberDisplay.jsx';
+
+<Meta title="Components/Numbers/Number Display" />
+
+# Number Display
+
+<Description of={NumberDisplay} />
+
+This component depends on `react-number-format`. See https://www.npmjs.com/package/react-number-format
+for a full list of ways you can configure the formatting.
+
+<Canvas>
+  <Story name="Number Display" decorators={[ColumnOfItems]}>
+    <label>Default NumberDisplay:</label>
+    <NumberDisplay value="500000.89"/>
+    <p>Try typing into the following inputs to see how numbers
+    get formatted as you type.</p>
+    <label>Input with a "defaultValue":</label>
+    <NumberDisplay input onValueChange={act('onValueChange')} defaultValue="2" />
+    <label>en-US input with "value":</label>
+    <NumberDisplay input value={30000} locale="en-US" onValueChange={act('onValueChange')} />
+    <label>de-DE:</label>
+    <NumberDisplay input locale="de-DE" onValueChange={act('onValueChange')} />
+    <label>hi-IN:</label>
+    <NumberDisplay input locale="hi-IN" onValueChange={act('onValueChange')} />
+  </Story>
+</Canvas>
+
+<ArgsTable of={NumberDisplay} />

@@ -5,8 +5,8 @@ module.exports = {
     '../src/components/buttons/UnstyledAction.stories.mdx',
     '../src/components/buttons/RoutedAction.stories.mdx',
     // Inputs
-    '../src/components/inputs/NumberInput.stories.mdx',
-    '../src/components/inputs/*.stories.mdx',
+    '../src/components/numbers/NumberDisplay.stories.mdx',
+    '../src/components/numbers/*.stories.mdx',
     // All others
     '../src/**/*.stories.mdx',
   ],

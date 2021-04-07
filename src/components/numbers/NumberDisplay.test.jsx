@@ -2,9 +2,9 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { NumberInput } from './NumberInput.jsx';
+import { NumberDisplay } from './NumberDisplay.jsx';
 
-describe('NumberInput', function() {
+describe('NumberDisplay', function() {
   let onValueChange;
 
   beforeEach(function() {
@@ -15,10 +15,10 @@ describe('NumberInput', function() {
     beforeEach(function() {
       render(
         <>
-          <NumberInput locale="en-US" data-testid="thousands" value={50000} />
-          <NumberInput locale="en-US" data-testid="decimal"   value={50000.6666} onValueChange={onValueChange} />
-          <NumberInput locale="en-US" data-testid="truncated" value={50000.4444} decimalScale={2} />
-          <NumberInput locale="en-US" data-testid="rounded"   value={50000.7777} decimalScale={2} />
+          <NumberDisplay input locale="en-US" data-testid="thousands" value={50000} />
+          <NumberDisplay input locale="en-US" data-testid="decimal"   value={50000.6666} onValueChange={onValueChange} />
+          <NumberDisplay input locale="en-US" data-testid="truncated" value={50000.4444} decimalScale={2} />
+          <NumberDisplay input locale="en-US" data-testid="rounded"   value={50000.7777} decimalScale={2} />
         </>
       );
     });
@@ -55,10 +55,10 @@ describe('NumberInput', function() {
     beforeEach(function() {
       render(
         <>
-          <NumberInput locale="de-DE" data-testid="thousands" value={50000} />
-          <NumberInput locale="de-DE" data-testid="decimal"   value={50000.6666} onValueChange={onValueChange} />
-          <NumberInput locale="de-DE" data-testid="truncated" value={50000.4444} decimalScale={2} />
-          <NumberInput locale="de-DE" data-testid="rounded"   value={50000.7777} decimalScale={2} />
+          <NumberDisplay input locale="de-DE" data-testid="thousands" value={50000} />
+          <NumberDisplay input locale="de-DE" data-testid="decimal"   value={50000.6666} onValueChange={onValueChange} />
+          <NumberDisplay input locale="de-DE" data-testid="truncated" value={50000.4444} decimalScale={2} />
+          <NumberDisplay input locale="de-DE" data-testid="rounded"   value={50000.7777} decimalScale={2} />
         </>
       );
     });
@@ -95,10 +95,10 @@ describe('NumberInput', function() {
     beforeEach(function() {
       render(
         <>
-          <NumberInput locale="hi-IN" data-testid="thousands" value={5000000} />
-          <NumberInput locale="hi-IN" data-testid="decimal"   value={5000000.6666} onValueChange={onValueChange} />
-          <NumberInput locale="hi-IN" data-testid="truncated" value={5000000.4444} decimalScale={2} />
-          <NumberInput locale="hi-IN" data-testid="rounded"   value={5000000.7777} decimalScale={2} />
+          <NumberDisplay input locale="hi-IN" data-testid="thousands" value={5000000} />
+          <NumberDisplay input locale="hi-IN" data-testid="decimal"   value={5000000.6666} onValueChange={onValueChange} />
+          <NumberDisplay input locale="hi-IN" data-testid="truncated" value={5000000.4444} decimalScale={2} />
+          <NumberDisplay input locale="hi-IN" data-testid="rounded"   value={5000000.7777} decimalScale={2} />
         </>
       );
     });

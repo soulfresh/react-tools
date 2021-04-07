@@ -7,12 +7,12 @@ import {
   addUnitPrefixOrSuffix,
 } from './number-util';
 
-import { UnitInput } from './UnitInput.jsx';
+import { Unit } from './Unit.jsx';
 
 /**
- * The `<UnitNameInput>` renders number values with a unit
- * using the long name of the unit. This component
- * off of the `UnitNameInput` component so accepts all
+ * The `<UnitName>` renders number values with a unit
+ * using the long name of the unit. This component builds
+ * off of the `Unit` component so accepts all
  * of the same props and can render either an input
  * element or a span.
  *
@@ -22,7 +22,7 @@ import { UnitInput } from './UnitInput.jsx';
  * @param {string} [props.locale] - The locale to display
  *   the number in. Defaults to the browser locale.
  */
-export function UnitNameInput(props) {
+export function UnitName(props) {
   const { unit, locale, value, onValueChange } = props;
   const unitDisplay = 'long';
   const [supported] = React.useState(() => supportsLocaleUnits());
@@ -54,11 +54,11 @@ export function UnitNameInput(props) {
   }
 
   return (
-    <UnitInput {...localeProps} />
+    <Unit {...localeProps} />
   )
 }
 
-UnitNameInput.propTypes = {
+UnitName.propTypes = {
   /**
    * The name of the unit this number represents. See the `unit`
    * property from `Intl.NumberFormat`
@@ -96,10 +96,10 @@ UnitNameInput.propTypes = {
    */
   onValueChange: PropTypes.func,
   /**
-   * Render the number in a `<span>` instead of as
-   * an `<input>`.
+   * Render an `<input>` instead of a span. This formats
+   * the input value as the user types.
    */
-  text: PropTypes.bool,
+  input: PropTypes.bool,
   /**
    * Any other props will be passed along to the underlying
    * `react-number-format` or `input` element.
