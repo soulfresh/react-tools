@@ -8,15 +8,6 @@ export const ANALYTICS_CATEGORIES = {
   MEDIA: 'Media',
 };
 
-// Work around for jsdoc not rendering output with classes
-// that have constructor functions.
-class Base {
-  constructor(trackingId, options = {}) {
-    this.options = options;
-    this.trackingId = trackingId;
-  }
-}
-
 /**
  * @typedef {object} AnalyticsOptions
  * @property {string[]} [queryBlacklist] - An array of query parameter
@@ -30,16 +21,21 @@ class Base {
  *   See https://github.com/react-ga/react-ga#reactgainitializegatrackingid-options
  */
 
-/**
- * A service for tracking page and user events to Google Analytics.
- *
- * @param {string} [trackingId] - The id of the analytics account to track
- *   events to. This can also be passed to the `initialize` method.
- * @param {AnalyticsOptions} [trackingOptions] - Options to pass to the underlying
- *   tracker object. This can also be passed to the `initialize` method.
- *   See https://github.com/react-ga/react-ga#reactgainitializegatrackingid-options
- */
-export class Analytics extends Base {
+class Analytics {
+  /**
+   * A service for tracking page and user events to Google Analytics.
+   *
+   * @param {string} [trackingId] - The id of the analytics account to track
+   *   events to. This can also be passed to the `initialize` method.
+   * @param {AnalyticsOptions} [trackingOptions] - Options to pass to the underlying
+   *   tracker object. This can also be passed to the `initialize` method.
+   *   See https://github.com/react-ga/react-ga#reactgainitializegatrackingid-options
+   */
+  constructor(trackingId, options = {}) {
+    this.options = options;
+    this.trackingId = trackingId;
+  }
+
   /**
    * Initialize the underlying tracker, setting
    * the tracking id and session level analytics dimensions.
@@ -168,7 +164,7 @@ export class Analytics extends Base {
   }
 }
 
-
+export { Analytics };
 export const AnalyticsContext = React.createContext(undefined);
 export const AnalyticsProvider = AnalyticsContext.Provider;
 

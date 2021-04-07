@@ -2,8 +2,7 @@
 
 <dl>
 <dt><a href="#Analytics">Analytics</a></dt>
-<dd><p>A service for tracking page and user events to Google Analytics.</p>
-</dd>
+<dd></dd>
 </dl>
 
 ## Typedefs
@@ -16,12 +15,10 @@
 <a name="Analytics"></a>
 
 ## Analytics
-A service for tracking page and user events to Google Analytics.
-
 **Kind**: global class  
 
 * [Analytics](#Analytics)
-    * [new exports.Analytics([trackingId], [trackingOptions])](#new_Analytics_new)
+    * [new Analytics([trackingId], [trackingOptions])](#new_Analytics_new)
     * [.initialize([trackingId], [trackingOptions])](#Analytics+initialize)
     * [.getQuery([location])](#Analytics+getQuery)
     * [.getPage([location])](#Analytics+getPage)
@@ -31,7 +28,9 @@ A service for tracking page and user events to Google Analytics.
 
 <a name="new_Analytics_new"></a>
 
-### new exports.Analytics([trackingId], [trackingOptions])
+### new Analytics([trackingId], [trackingOptions])
+A service for tracking page and user events to Google Analytics.
+
 
 | Param | Type | Description |
 | --- | --- | --- |

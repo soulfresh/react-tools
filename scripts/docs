@@ -5,5 +5,6 @@ set -e
 echo 'Building Docs 🚀'
 
 npx jsdoc2md --files src/hooks/analytics/analytics.js > src/hooks/analytics/API.md
+npx jsdoc2md --files src/components/inputs/number-util.js > src/components/inputs/number-util.md
 
 echo 'Donzo 💪'

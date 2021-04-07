@@ -1,0 +1,41 @@
+import { Meta, Story, Canvas, ArgsTable, Description } from '@storybook/addon-docs/blocks';
+import { action as act } from '@storybook/addon-actions';
+
+import {
+  ColumnOfItems,
+  RowOfItems,
+  Column,
+  Row,
+} from '@thesoulfresh/sass-theming';
+
+import { NumberInput } from './NumberInput.jsx';
+
+<Meta title="Components/Inputs/Number Input" />
+
+# Number Input
+
+<Description of={NumberInput} />
+
+This component depends on `react-number-format`. See https://www.npmjs.com/package/react-number-format
+for a full list of ways you can configure the formatting.
+
+<Canvas>
+  <Story name="Number Input" decorators={[ColumnOfItems]}>
+    <p>Try typing into the following inputs to see how numbers
+    get formatted as you type.</p>
+    <label>Default NumberInput:</label>
+    <NumberInput required onValueChange={act('onValueChange')} placeholder="Enter long numbers" />
+    <label>With a "defaultValue":</label>
+    <NumberInput required onValueChange={act('onValueChange')} defaultValue="2" />
+    <label>en-US with "value":</label>
+    <NumberInput value={30000} locale="en-US" onValueChange={act('onValueChange')} />
+    <label>de-DE:</label>
+    <NumberInput locale="de-DE" onValueChange={act('onValueChange')} />
+    <label>hi-IN:</label>
+    <NumberInput locale="hi-IN" onValueChange={act('onValueChange')} />
+    <label>As a span instead of an input:</label>
+    <NumberInput text locale="hi-IN" value="500000.89"/>
+  </Story>
+</Canvas>
+
+<ArgsTable of={NumberInput} />
