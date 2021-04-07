@@ -6,58 +6,12 @@ import {
   localeThousandsSeparator,
   localeThousandsGroupStyle,
   localeDecimalSeparator,
-  localeCurrencySymbol,
-  localeCurrencyName,
-  localeCurrencyIsPrefixed,
   localeUnitSymbol,
   localeUnitName,
-  localeUnitIsPrefixed,
   supportsLocaleUnits,
+  addUnitPrefixOrSuffix,
 } from './number-util';
 
-function formatSymbol(symbol, prefixed, locale, display) {
-  if (prefixed) {
-    if (display === 'code') {
-      return `${symbol} `;
-    } else {
-      return symbol;
-    }
-  } else {
-    if (display === 'narrow') {
-      return symbol;
-    } else {
-      return ` ${symbol}`;
-    }
-  }
-}
-
-function addCurrencyPrefixOrSuffix(target, symbol, locale, currencyDisplay) {
-  if (localeCurrencyIsPrefixed(locale, currencyDisplay)){
-    target.prefix = formatSymbol(symbol, true, locale, currencyDisplay);
-    // Ensure only one or the other is set.
-    delete target.suffix;
-  } else {
-    target.suffix = formatSymbol(symbol, false, locale, currencyDisplay);
-    // Ensure only one or the other is set.
-    delete target.prefix;
-  }
-
-  return target;
-}
-
-function addUnitPrefixOrSuffix(target, unit, symbol, locale, unitDisplay) {
-  if (localeUnitIsPrefixed(unit, locale, unitDisplay)){
-    target.prefix = formatSymbol(symbol, true, locale, unitDisplay);
-    // Ensure only one or the other is set.
-    delete target.suffix;
-  } else {
-    target.suffix = formatSymbol(symbol, false, locale, unitDisplay);
-    // Ensure only one or the other is set.
-    delete target.prefix;
-  }
-
-  return target;
-}
 
 /**
  * The `<NumberInput>` component renders an input element with
@@ -170,6 +124,8 @@ export function NumberInput({
 NumberInput.propTypes = {
   /**
    * The locale to use when formatting the currency.
+   * This defaults to the user's locale or "en-US" if
+   * that can't be determined.
    * See the `locale` property of `Intl.NumberFormat`
    * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
    */
@@ -203,7 +159,7 @@ NumberInput.propTypes = {
   text: PropTypes.bool,
   /**
    * Any other props will be passed along to the underlying
-   * `NumberFormat` component or `input` element.
+   * `react-number-format` or `input` element.
    * See https://www.npmjs.com/package/react-number-format
    */
   'other props...': PropTypes.any,
@@ -344,127 +300,4 @@ UnitNameInput.propTypes = {
   // }),
 };
 
-// TODO Handle negative number formatting.
-// The negative sign can be either prefixed
-// or suffixed. With some currencies, the negative
-// sign can appear before or after the currency
-// symbol.
-export function CurrencyInput({
-  currency,
-  currencyDisplay,
-  locale,
-  ...rest
-}) {
-  const [localeProps] = React.useState(() => {
-    const p = {
-      locale,
-      decimalScale: 2,
-    };
-
-    let symbol;
-    switch (currencyDisplay) {
-      case 'code':
-        symbol = currency;
-        break;
-      case 'name':
-        // Just use the plural version here since there is a specialized
-        // input that handles pluralization.
-        symbol = localeCurrencyName(11, currency, locale);
-        break;
-      default:
-        symbol = localeCurrencySymbol(currency, locale);
-        break;
-    }
-
-    return addCurrencyPrefixOrSuffix(p, symbol, locale, currencyDisplay);
-  });
-
-  return (
-    <NumberInput data-test="currencyNameInput"
-      {...localeProps}
-      {...rest}
-    />
-  );
-}
-
-CurrencyInput.propTypes = {
-  /**
-   * The currency code for the currency being displayed.
-   * Defaults to 'USD'. See https://www.currency-iso.org/en/home/tables/table-a1.html
-   */
-  currency: PropTypes.string,
-  /**
-   * The currency display format to use.
-   * See `currencyDisplay` property of `Intl.NumberFormat`
-   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
-   */
-  currencyDisplay: PropTypes.string,
-  /**
-   * The locale to use when formatting the currency.
-   * See https://tools.ietf.org/html/rfc5646
-   */
-  locale: PropTypes.string,
-};
-
-CurrencyInput.defaultProps = {
-  currency: 'USD',
-  currencyDisplay: 'symbol',
-}
-
-export function CurrencyNameInput(props) {
-  const { currency, locale, onValueChange } = props;
-  const currencyDisplay = 'name';
-  const [symbol, setSymbol] = React.useState(() => localeCurrencyName(1, currency, locale));
-
-  const handleValueChange = (values) => {
-    setSymbol(
-      localeCurrencyName(values.floatValue, currency, locale)
-    );
-
-    if (onValueChange) onValueChange(values);
-  };
-
-  const localeProps = {
-    ...props,
-    currencyDisplay,
-    onValueChange: handleValueChange,
-  };
-
-  // TODO Find a way to reduce how often locale props are determined.
-  addCurrencyPrefixOrSuffix(localeProps, symbol, locale, currencyDisplay);
-
-  return <CurrencyInput {...localeProps} />
-}
-
-CurrencyNameInput.propTypes = {
-  /**
-   * The currency code for the currency being displayed.
-   * Defaults to 'USD'. See https://www.currency-iso.org/en/home/tables/table-a1.html
-   */
-  currency: PropTypes.string,
-  /**
-   * The locale to use when formatting the currency.
-   * See https://tools.ietf.org/html/rfc5646
-   */
-  locale: PropTypes.string,
-};
-
-CurrencyNameInput.defaultProps = {
-  currency: 'USD',
-};
-
-// TODO This needs to handle international phone number formatting.
-// Maybe use a phone specific input library.
-export function PhoneNumberInput({
-  ...rest
-}) {
-  return (
-    <NumberInput data-test="PhoneNumberInput"
-      format="(###) ###-####"
-      mask="_"
-      allowEmptyFormatting={false}
-      {...rest}
-    />
-  );
-}
 

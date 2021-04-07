@@ -276,3 +276,83 @@ export function localeUnitIsPrefixed(unit, locale = userLocale(), unitDisplay = 
   return f.format(1).indexOf(num) > 0;
 }
 
+/**
+ * @private
+ * Format the given currency symbol with padding based on
+ * whether it is prefixed or suffixed.
+ * @param {string} symbol
+ * @param {boolean} [prefixed] - Whether the symbol will be
+ *   prefixed or suffixed to the number.
+ * @param {string} [locale]
+ * @param {string} [display] - A display value as accepted by
+ *   `Intl.NumberFormat`
+ * @return {string}
+ */
+export function formatSymbol(symbol, prefixed, locale, display) {
+  if (prefixed) {
+    if (display === 'code') {
+      return `${symbol} `;
+    } else {
+      return symbol;
+    }
+  } else {
+    if (display === 'narrow') {
+      return symbol;
+    } else {
+      return ` ${symbol}`;
+    }
+  }
+}
+
+/**
+ * @private
+ * Add a currency symbol to the given number either
+ * prefixed or suffixed based on the browser locale.
+ * @param {string|number} target - The number/string to prefix/suffix
+ *   with the symbol.
+ * @param {string} symbol - The symbol to add to the number.
+ * @param {string} [locale]
+ * @param {string} [currencyDisplay] - One of the `currencyDisplay`
+ *   formats that can be accepted by `Intl.NumberFormat`.
+ * @return {string}
+ */
+export function addCurrencyPrefixOrSuffix(target, symbol, locale, currencyDisplay) {
+  if (localeCurrencyIsPrefixed(locale, currencyDisplay)){
+    target.prefix = formatSymbol(symbol, true, locale, currencyDisplay);
+    // Ensure only one or the other is set.
+    delete target.suffix;
+  } else {
+    target.suffix = formatSymbol(symbol, false, locale, currencyDisplay);
+    // Ensure only one or the other is set.
+    delete target.prefix;
+  }
+
+  return target;
+}
+
+/**
+ * @private
+ * Prefix or suffix a number with the given unit symbol.
+ * @param {string|number} target - The number/string to prefix/suffix
+ *   with the symbol.
+ * @param {string} unit - The unit name to add to the number.
+ * @param {string} symbol - The symbol for the unit to add to the number.
+ * @param {string} [locale]
+ * @param {string} [currencyDisplay] - One of the `currencyDisplay`
+ *   formats that can be accepted by `Intl.NumberFormat`.
+ * @return {string}
+ */
+export function addUnitPrefixOrSuffix(target, unit, symbol, locale, unitDisplay) {
+  if (localeUnitIsPrefixed(unit, locale, unitDisplay)){
+    target.prefix = formatSymbol(symbol, true, locale, unitDisplay);
+    // Ensure only one or the other is set.
+    delete target.suffix;
+  } else {
+    target.suffix = formatSymbol(symbol, false, locale, unitDisplay);
+    // Ensure only one or the other is set.
+    delete target.prefix;
+  }
+
+  return target;
+}
+

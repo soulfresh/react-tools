@@ -4,6 +4,9 @@ module.exports = {
     '../src/components/buttons/Action.stories.mdx',
     '../src/components/buttons/UnstyledAction.stories.mdx',
     '../src/components/buttons/RoutedAction.stories.mdx',
+    // Inputs
+    '../src/components/inputs/NumberInput.stories.mdx',
+    '../src/components/inputs/*.stories.mdx',
     // All others
     '../src/**/*.stories.mdx',
   ],

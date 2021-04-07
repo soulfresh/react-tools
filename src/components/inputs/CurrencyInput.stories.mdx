@@ -1,0 +1,49 @@
+import { Meta, Story, Canvas, ArgsTable, Description } from '@storybook/addon-docs/blocks';
+import { action as act } from '@storybook/addon-actions';
+
+import {
+  ColumnOfItems,
+  RowOfItems,
+  Column,
+  Row,
+} from '@thesoulfresh/sass-theming';
+
+import { CurrencyInput } from './CurrencyInput.jsx';
+
+<Meta title="Components/Inputs/Currency Input" />
+
+# Currency Input
+
+<Description of={CurrencyInput} />
+
+This component depends on `react-number-format`. See https://www.npmjs.com/package/react-number-format
+for a full list of ways you can configure the formatting.
+
+<Canvas>
+  <Story name="Currency Input" decorators={[ColumnOfItems]}>
+    <p>Try typing into the following inputs to see how numbers
+    get formatted as you type.</p>
+    <label>With the current user locale and default currency</label>
+    <CurrencyInput required />
+    <label>USD de-DE</label>
+    <CurrencyInput locale='de-DE' />
+    <label>EUR en-US</label>
+    <CurrencyInput locale='en-US' currency="EUR" />
+    <label>EUR en-US with currency code</label>
+    <CurrencyInput locale='en-US' currency="EUR" currencyDisplay="code" />
+    <label>EUR de-DE</label>
+    <CurrencyInput locale='de-DE' currency="EUR" />
+    <label>EUR de-DE with currency code</label>
+    <CurrencyInput locale='de-DE' currency="EUR" currencyDisplay="code" />
+    <label>INR hi-IN</label>
+    <CurrencyInput locale='hi-IN' currency="INR" />
+    <label>THB Thailand</label>
+    <CurrencyInput locale='th' currency="THB" />
+    <label>Yaun China</label>
+    <CurrencyInput locale="zh-Hans-CN-u-nu-hanidec" currency='CNY' />
+    <label>Yaun China as a span</label>
+    <CurrencyInput text value={2234222} locale="zh-Hans-CN-u-nu-hanidec" currency='CNY' />
+  </Story>
+</Canvas>
+
+<ArgsTable of={CurrencyInput} />

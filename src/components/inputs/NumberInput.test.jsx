@@ -4,10 +4,8 @@ import userEvent from '@testing-library/user-event';
 
 import { NumberInput } from './NumberInput.jsx';
 
-// import NumberInputPageObject from './NumberInput.page-object';
-
 describe('NumberInput', function() {
-  let onValueChange, selectors;
+  let onValueChange;
 
   beforeEach(function() {
     onValueChange = jest.fn();

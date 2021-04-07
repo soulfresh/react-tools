@@ -1,0 +1,39 @@
+import { Meta, Story, Canvas, ArgsTable, Description } from '@storybook/addon-docs/blocks';
+import { action as act } from '@storybook/addon-actions';
+
+import {
+  ColumnOfItems,
+  RowOfItems,
+  Column,
+  Row,
+} from '@thesoulfresh/sass-theming';
+
+import { UnitInput } from './UnitInput.jsx';
+
+<Meta title="Components/Inputs/Unit Input" />
+
+# Unit Input
+
+<Description of={UnitInput} />
+
+This component depends on `react-number-format`. See https://www.npmjs.com/package/react-number-format
+for a full list of ways you can configure the formatting.
+
+<Canvas>
+  <Story name="Unit Input" decorators={[ColumnOfItems]}>
+    <p>Try typing into the following inputs to see how numbers
+    get formatted as you type.</p>
+    <label>Inches in the current user locale</label>
+    <UnitInput unit="inch" required />
+    <label>Inches en-US</label>
+    <UnitInput unit="inch" locale="en-US" />
+    <label>Liters en-US</label>
+    <UnitInput unit="liter" locale="en-US" />
+    <label>Miles per hour hi-IN</label>
+    <UnitInput unit="mile-per-hour" locale="hi-IN" />
+    <label>Miles per hour hi-IN as a span</label>
+    <UnitInput text value={232352} unit="mile-per-hour" locale="hi-IN" />
+  </Story>
+</Canvas>
+
+<ArgsTable of={UnitInput} />
