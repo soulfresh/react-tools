@@ -57,16 +57,17 @@ export function makeLinkFromObject(to) {
  *
  * In the following cases, a React Router Link will NOT be rendered:
  *
- *   - `button` is true
  *   - `blank` is true
  *   - `unrouted` is true
+ *   - `href` and `to` are not passed
  *
  * You can pass either the `to` property or the `href` property.
  * `href` must be a string but `to` allows you to pass an object
- * as expected by React Router. If you pass a `to` property and
+ * or string as expected by React Router. If you pass a `to` property and
  * the `blank` or `unrouted` properties, the `to` prop will be
  * transformed into an `href` string to be used by the unrouted
- * `<a>` element.
+ * `<a>` element. If you don't pass an `href` or `to` prop or the
+ * `link` prop, then a button will be rendered
  *
  * Similar to the `UnstyledAction` component, the rendered
  * button and link elements will be completely unstyled. You
@@ -76,7 +77,7 @@ export function makeLinkFromObject(to) {
  * @type React.FC<RoutedActionProps & UnstyledActionProps>
  */
 export const RoutedAction = React.forwardRef(({
-  button,
+  link,
   blank = false,
   unrouted = false,
   href,
@@ -84,6 +85,8 @@ export const RoutedAction = React.forwardRef(({
   className,
   ...rest
 }, ref) => {
+  const button = !to && !href && !link;
+
   // Hash links should be unrouted because react router
   // does not handle them well.
   if (button || blank || unrouted || hasHash(to)) {
@@ -96,7 +99,7 @@ export const RoutedAction = React.forwardRef(({
         className={className}
         href={href}
         tabIndex={0}
-        button={button}
+        link={link}
         blank={blank}
         {...rest}
         ref={ref}
@@ -123,10 +126,10 @@ export const RoutedAction = React.forwardRef(({
 
 RoutedAction.propTypes = {
   /**
-   * If true, render a `<button>` element. Otherwise,
-   * render an `<a>` element.
+   * This can be used to force rendering an `<a>` element
+   * even if you don't pass an `href` or `to` prop.
    */
-  button: PropTypes.bool,
+  link: PropTypes.bool,
   /**
    * Either an object as accepted by React Router or a string to
    * use as an href. Only useful if you are rendering a link.

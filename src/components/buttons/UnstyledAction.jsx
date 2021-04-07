@@ -75,12 +75,16 @@ export const ActionLink = React.forwardRef(({
 /**
  * The `<UnstyledAction>` component provides a basis for your
  * project specific button and link components. It will render
- * either an `<a>` or `<button>` element depending on the
- * `button` prop. This makes it easy to implement buttons and
+ * either an `<a>` or `<button>` element depending on its
+ * props. This makes it easy to implement buttons and
  * links throughout your application without having multiple
  * different components for all of your various link and button
  * needs. It also makes refactoring between button and link elements
  * a breaze because all you need to do is change a single prop.
+ *
+ * By default a `<button>` element will be rendered unless you
+ * pass an `href` prop or the `link` prop which will result in
+ * an `<a>` element.
  *
  * The `<UnstyledAction>` component renders buttons and links
  * without any styling (ie. it removes the default browser
@@ -97,16 +101,22 @@ export const ActionLink = React.forwardRef(({
  * @type React.FC<UnstyledActionProps>
  */
 export const UnstyledAction = React.forwardRef(({
-  button,
+  link = false,
+  href,
   className,
   children,
   ...rest
 }, ref) => {
+  // Default to being a button unless we received the link
+  // prop or href info.
+  const button = !href && !link;
+
   const props = {
     className: combineClasses(
       styles.UnstyledAction,
       className,
     ),
+    href,
     children,
     ...rest
   };
@@ -118,10 +128,10 @@ export const UnstyledAction = React.forwardRef(({
 // TODO Rename UnstyledAction
 UnstyledAction.propTypes = {
   /**
-   * If true, render a `<button>` element. Otherwise,
-   * render an `<a>` element.
+   * Force an `<a>` element to be rendered even
+   * if no href was passed.
    */
-  button: PropTypes.bool,
+  link: PropTypes.bool,
   /**
    * You can use `href` in place of the `to` prop but it must be a string.
    * This is only used when rendering a link and `to` takes precedence.

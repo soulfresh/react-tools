@@ -28,13 +28,18 @@ Actions:
 - Simplify refactoring by making it simple to switch between links and buttons.
 - Reduce code and reduce the number of components you need to remember.
 - Allow you to use any routing or analytics tools you want.
-- Have zero dependencies on external libraries.
+- Have zero dependencies on external libraries or styling tools.
 
 ## Components
 
-- UnstyledAction
-- RoutedAction
-- AnalyticsAction
+- [UnstyledAction](/docs/components-actions-unstyled-actions--unstyled-actions)
+  The base for all Actions, `UnstyledAction` will render either a link or a button
+  based on the props you pass it.
+- [RoutedAction](/docs/components-actions-routed-actions--routed-actions)
+  Provides integration with React Router if you use it.
+- [AnalyticsAction](/docs/components-actions-analytics-actions--analytics-actions)
+  Provides integration with Google Analytics if you use it. It can also be used
+  with other analytics tools by providing your own analytics service.
 
 ## Building an Action
 

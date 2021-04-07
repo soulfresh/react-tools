@@ -5,7 +5,7 @@ import { UnstyledAction } from './UnstyledAction.jsx';
 
 describe('UnstyledAction', () => {
   it('should be able to render a button.', () => {
-    render(<UnstyledAction button data-foo>My Button</UnstyledAction>);
+    render(<UnstyledAction data-foo>My Button</UnstyledAction>);
 
     const button = screen.getByText('My Button');
     expect(button).toBeInTheDocument();

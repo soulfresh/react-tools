@@ -13,6 +13,7 @@ function render(component, service = {}) {
   );
 }
 
+/* eslint-disable jsx-a11y/anchor-is-valid */
 describe('AnalyticsAction', () => {
   let service;
 

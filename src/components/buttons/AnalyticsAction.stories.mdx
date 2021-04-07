@@ -43,7 +43,7 @@ export const moreSpace = {margin: '20px'};
       <button>I'm a standard button element</button>
     </AnalyticsAction>
     <AnalyticsAction style={moreSpace}>
-      <UnstyledAction button>I'm an UnstyledAction</UnstyledAction>
+      <UnstyledAction>I'm an UnstyledAction</UnstyledAction>
     </AnalyticsAction>
   </Story>
 </Canvas>
@@ -66,6 +66,7 @@ export const Action = React.forwardRef(({
   className,
   ...rest
 }, ref) => {
+  const button = !link && !href;
   return (
     <AnalyticsAction {...rest}>
       <UnstyledAction
@@ -94,7 +95,6 @@ export const Action = React.forwardRef(({
 
 // Or you can render buttons with click tracking:
 <Action
-  button
   pill
   onClick={() => alert('button clicked!')}
   category="Media"

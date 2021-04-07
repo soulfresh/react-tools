@@ -6,10 +6,6 @@ describe('Analytics', () => {
   let analytics;
   const trackingId = 'asabo028302';
 
-  const page = 'foo/bar';
-  const search = '?a=1&b=2';
-  const pathname = `${page}`;
-
   const category = 'Map';
   const action = 'Zoom';
   const label = 'Zoom In';

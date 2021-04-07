@@ -28,12 +28,14 @@ import { combineClasses } from '@thesoulfresh/utils';
 import { UnstyledAction } from '@thesoulfresh/react-tools';
 
 export const Action = React.forwardRef(({
-  button = false,
+  link = false,
   transparent = false,
   pill = false,
   className,
   ...rest
 }, ref) => {
+  // Render a button if no href or link prop is passed.
+  const button = !href && !link;
   return (
     <UnstyledAction
       className={combineClasses(
@@ -77,7 +79,6 @@ when used directly.
       I'm an unstyled link element!
     </UnstyledAction>
     <UnstyledAction
-      button
       style={moreSpace}
     >
       And I'm an unstyled BUTTON element!

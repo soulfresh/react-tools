@@ -1,5 +1,5 @@
 import React from 'react';
-import { render as testRender, screen, prettyDOM } from '@testing-library/react';
+import { render as testRender, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { RoutedAction } from './RoutedAction.jsx';
@@ -56,7 +56,7 @@ describe('RoutedAction', () => {
   });
 
   it('should be able to render a button.', () => {
-    render(<RoutedAction button data-foo>My Button</RoutedAction>);
+    render(<RoutedAction data-foo>My Button</RoutedAction>);
 
     const action = screen.getByText('My Button');
     expect(action).toBeInTheDocument();
