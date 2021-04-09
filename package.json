@@ -93,6 +93,7 @@
   },
   "optionalDependencies": {
     "react-ga": "^3.3.0",
+    "react-laag": "^2.0.2",
     "react-number-format": "^4.5.3",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0"

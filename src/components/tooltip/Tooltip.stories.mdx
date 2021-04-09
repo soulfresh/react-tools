@@ -1,0 +1,30 @@
+import { Meta, Story, Canvas, ArgsTable, Description } from '@storybook/addon-docs/blocks';
+import { action as act } from '@storybook/addon-actions';
+
+import {
+  ColumnOfItems,
+  RowOfItems,
+  Column,
+  Row,
+} from '@thesoulfresh/sass-theming';
+
+import { Tooltip } from './Tooltip.jsx';
+import { Tooltip as ExampleTooltip } from './examples/Tooltip.jsx';
+
+<Meta title="Components/Tooltip" />
+
+# Tooltip
+
+<Description of={Tooltip} />
+
+The following example shows the Tooltip implementation found
+in the `components/tooltip/examples` folder. Feel free to copy
+the example into your own project and tweak it to your needs.
+
+<Canvas>
+  <Story name="Toottip">
+    <p>This is a paragraph containing a <ExampleTooltip content="Cool 😎"><b>Tooltip Example</b></ExampleTooltip>.</p>
+  </Story>
+</Canvas>
+
+<ArgsTable of={Tooltip} />

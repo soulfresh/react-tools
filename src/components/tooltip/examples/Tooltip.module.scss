@@ -1,0 +1,60 @@
+/* Tooltip */
+@import 'theme';
+
+@function transition($ease) {
+  @return opacity speed(m) linear, transform speed(m) ease($ease);
+}
+
+.Tooltip {
+  transition: transition(out-hard);
+  opacity: 0;
+
+  &:global(.exiting) {
+    transition: transition(in-hard);
+  }
+
+  $move-amount: 50%;
+  $scale: 0.5;
+
+  &:global(.top) {
+    transform: translateY($move-amount) scale($scale);
+  }
+
+  &:global(.bottom) {
+    transform: translateY($move-amount * -1) scale($scale);
+  }
+
+  &:global(.right) {
+    transform: translateX($move-amount * -1) scale($scale);
+  }
+
+  &:global(.left) {
+    transform: translateX($move-amount) scale($scale);
+  }
+
+  &:global(.entered) {
+    opacity: 1;
+
+    &:global(.top),
+    &:global(.bottom),
+    &:global(.right),
+    &:global(.left) {
+      transform: scale(1);
+    }
+  }
+
+  :global(.arrow) {
+    background-color: foreground();
+    width: 8px;
+    height: 8px;
+  }
+
+  :global(.content) {
+    background-color: background-dark();
+    color: foreground-dark();
+    padding: size(xxxs);
+    border-radius: radius(s);
+    min-width: size(m);
+    text-align: center;
+  }
+}

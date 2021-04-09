@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactGA from 'react-ga';
+
+// TODO Remove this or make it an optional dependency.
 import queryString from 'query-string';
 
 // Top level event catagories.

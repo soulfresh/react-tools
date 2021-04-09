@@ -12356,6 +12356,13 @@ react-is@^17.0.1, react-is@^17.0.2:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
+react-laag@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/react-laag/-/react-laag-2.0.2.tgz#b4c92f08d6942309542d61b2f7264e0616c2ca9e"
+  integrity sha512-ie6SJy+FgEvurksoEaUK9yZk42+1QxsrX2+rJQByFRyfWjYl1Q9EtAV0L7fAfIt5HfV2Bk6n+GmJ/C3Zx4P38g==
+  dependencies:
+    tiny-warning "^1.0.3"
+
 react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
