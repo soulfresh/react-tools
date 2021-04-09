@@ -4,7 +4,11 @@ set -e
 
 echo 'Building Docs 🚀'
 
+npx jsdoc2md --files src/hooks/useId.js > src/hooks/useId.md
+npx jsdoc2md --files src/hooks/useTimeout.js > src/hooks/useTimeout.md
+npx jsdoc2md --files src/hooks/useEnterExit.js > src/hooks/useEnterExit.md
 npx jsdoc2md --files src/hooks/analytics/analytics.js > src/hooks/analytics/API.md
 npx jsdoc2md --files src/components/numbers/number-util.js > src/components/numbers/number-util.md
+npx jsdoc2md --files src/utils/*.js > src/utils/UTILS.md
 
 echo 'Donzo 💪'

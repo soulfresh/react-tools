@@ -6,7 +6,8 @@ import glob from 'glob';
 
 import pkg from './package.json';
 
-const inputs = glob.sync('src/**/!(*.test|setupTests|index).?(js|jsx)');
+const inputs = glob.sync('src/**/!(*.test|setupTests|index).?(js|jsx)')
+  .filter(f => f.indexOf('example') === -1);
 
 console.log('---- MATCHES ----');
 console.log(inputs);
