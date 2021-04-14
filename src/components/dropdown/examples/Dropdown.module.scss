@@ -1,0 +1,20 @@
+/* Dropdown */
+@import 'theme';
+
+// TODO Update sass-theming to easily get unitless values
+$arrowSize: size(xs)/1px;
+@value arrowSize: #{$arrowSize};
+
+.Dropdown {
+  background-color: background-dark();
+  color: foreground-dark();
+  border-radius: radius(s);
+  padding: size(s);
+  transition: opacity speed(s) linear;
+
+  :global(.arrow) {
+    background-color: background-dark();
+    width:  $arrowSize * 1px;
+    height: $arrowSize * 1px;
+  }
+}

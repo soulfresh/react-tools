@@ -22,13 +22,17 @@ export function useFocusTrap(active = true) {
   useKeyWhenActive(
     'Tab',
     (e) => {
-      if (document.activeElement === last.current && !e.shiftKey) {
-        e.preventDefault();
-        first.current.focus();
-      }
-      else if (document.activeElement === first.current && e.shiftKey) {
-        e.preventDefault();
-        last.current.focus();
+      if (first.current && last.current) {
+        if (document.activeElement === last.current && !e.shiftKey) {
+          e.preventDefault();
+          // @ts-ignore
+          first.current.focus();
+        }
+        else if (document.activeElement === first.current && e.shiftKey) {
+          e.preventDefault();
+          // @ts-ignore
+          last.current.focus();
+        }
       }
     },
     active

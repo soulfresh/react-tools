@@ -24,7 +24,7 @@ folder.
 <Canvas>
   <Story name="Popover">
     <ExamplePopover
-      content={<div className="foo-bar">Popover Content! 🤘</div>}
+      content={<div>Popover Content! 🤘</div>}
     >
       <button>Menu</button>
     </ExamplePopover>
@@ -32,4 +32,21 @@ folder.
 </Canvas>
 
 <ArgsTable of={Popover} />
+
+## Text Trigger
+
+You can also use raw text as the trigger for your Popover. However, be
+aware of the accessibility concerns with doing this. It would make sense
+for a tooltip component but would be less than ideal for a dropdown or
+context menu.
+
+<Canvas>
+  <Story name="TextTrigger">
+    <ExamplePopover
+      content={<div>Popover Content! 🤘</div>}
+    >
+      Just Text
+    </ExamplePopover>
+  </Story>
+</Canvas>
 

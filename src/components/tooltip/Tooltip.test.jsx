@@ -14,6 +14,22 @@ describe('Tooltip', () => {
     });
   });
 
+  describe('after focus', () => {
+    xit('should show the tooltip.', () => {});
+
+    describe('and then blur', () => {
+      xit('should hide the tooltip.', () => {});
+    });
+
+    describe('and then typing "Escape"', () => {
+      xit('should hide the tooltip.', () => {});
+
+      describe('and then typing "Enter"', () => {
+        xit('should show the tooltip again.', () => {});
+      });
+    });
+  });
+
   xit('should have the correct ARIA properties.', () => {});
   xit('should set the arrow class.', () => {});
   xit('should set the content class.', () => {});

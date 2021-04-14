@@ -1,0 +1,34 @@
+import { Meta, Story, Canvas, ArgsTable, Description } from '@storybook/addon-docs/blocks';
+
+import { Dropdown } from './Dropdown.jsx';
+import { Dropdown as ExampleDropdown } from './examples/Dropdown.jsx';
+
+<Meta title="Components/Dropdown" />
+
+# Dropdown
+
+<Description of={ Dropdown } />
+
+#### Example
+
+Since this component does not provide any styling out of the box,
+the follow implementation can be found in the `src/components/dropdown/examples`
+folder.
+
+<Canvas>
+  <Story name="Dropdown">
+    <ExampleDropdown
+      content={(first, last) =>
+        <div>
+          <div>👋 🌎</div>
+          <div><button ref={first}>First Button</button></div>
+          <div><button ref={last}>Last Button</button></div>
+        </div>
+      }
+    >
+      <button>Menu</button>
+    </ExampleDropdown>
+  </Story>
+</Canvas>
+
+<ArgsTable of={ Dropdown } />

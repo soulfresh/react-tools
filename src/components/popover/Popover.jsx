@@ -152,10 +152,10 @@ function roundStyles(s) {
  * `<Popover>` is a base component you can use to create
  * more specific Popover type components like tooltips,
  * dropdowns, menus, etc. This component uses `react-laag`
- * under the hood but adds CSS based enter/leave animations and
+ * for positioning but adds CSS based enter/leave animations and
  * listens to the `Escape` key to close the Popover.
- * If you don't need Escape handling and enter/leave animations,
- * you may be better off using `react-laag` directly.
+ *
+ * #### Usage
  *
  * To use `Popover`, wrap the content that you want to trigger
  * the popover (ex. a button or link element) with the `<Popover>`
@@ -169,6 +169,8 @@ function roundStyles(s) {
  * provide it's open state and a method for setting the
  * open state to false.
  *
+ * #### Styling
+ *
  * The `Popover` elements are completely stylable through
  * CSS. Your content will receive the class `content` and
  * there is an arrow element that can be targeted via the
@@ -176,11 +178,13 @@ function roundStyles(s) {
  * which you should set the `width`, `height` and `background-color`
  * at minimum.
  *
+ * #### Transitions
+ *
  * This component uses the `useEnterExit()`
  * hook from this library so you can control the enter/leave transitions through
  * CSS. By default, the opacity property will be used to
  * transition your content but you can change which property
- * it listents to through the `transitionProperty` prop. Or you can turn off
+ * it listens to through the `transitionProperty` prop. Or you can turn off
  * transitions by passing the `disableTransitions` prop.
  *
  * In order to customize the transitions, the following
@@ -195,6 +199,12 @@ function roundStyles(s) {
  * - bottom
  * - left
  * - right
+ *
+ * #### `react-laag`
+ *
+ * This component builds off of `react-laag` to provide the popover
+ * layer positioning. If you don't need Escape handling and enter/leave animations
+ * provided by this component, you may be better off using `react-laag` directly.
  *
  * @type React.FC<PopoverProps>
  */
@@ -235,12 +245,15 @@ export const Popover = React.forwardRef(({
   const showLayer = (!disableTransitions && visible) ||
     (disableTransitions && isOpen);
 
-  // TODO What happens if the user attaches a ref to the trigger
-  // outside of this component?
-  // TODO What happens if the user attaches a ref to the content element.
   return (
     <>
-      {<Trigger {...triggerProps} children={children} ref={triggerRef} />}
+      {
+        <Trigger
+          {...triggerProps}
+          children={children}
+          ref={mergeRefs(triggerRef, children?.ref)}
+        />
+      }
       {showLayer && renderLayer(
         <PopoverContent
           visibleState={visibleState}
@@ -271,7 +284,7 @@ Popover.propTypes = {
   /**
    * A callback that should set the `isOpen` state to false.
    */
-  onClose: PropTypes.func,
+  onClose: PropTypes.func.isRequired,
   /**
    * The content that will trigger the tooltip.
    * This can be any renderable JSX content.
@@ -320,68 +333,4 @@ Popover.propTypes = {
    */
   'other props...': PropTypes.any,
 };
-
-/**
- * @param {object} props
- */
-export function ExamplePopover({
-  ...rest
-}) {
-  const [isOpen, setIsOpen] = React.useState(false);
-
-  const handleClose = e => {
-    setIsOpen(false);
-    // if (onClose) onClose(e);
-  }
-
-  return (
-    <div
-      style={{
-        height: '50px',
-      }}
-    >
-      <div
-        style={{
-          height: '200px',
-        }}
-      >
-        <Popover
-          isOpen={isOpen}
-          layerOptions={{
-            onOutsideClick: handleClose,
-            onDisappear: handleClose,
-          }}
-          content={<div>Hello World</div>}
-        >
-          <button onClick={() => setIsOpen(!isOpen)}>
-            Menu
-          </button>
-        </Popover>
-      </div>
-    </div>
-  );
-}
-
-/**
- * @typedef {object} DropdownProps
- * @property {*} [ref]
- */
-/**
- * @type React.FC<DropdownProps>
- */
-export const Dropdown = React.forwardRef(({
-  className,
-  ...rest
-}, ref) => {
-  // TODO Focus trap
-  // TODO aria
-  return (
-    <div className={combineClasses(styles.Dropdown, className)} {...rest}>
-    </div>
-  );
-});
-
-Dropdown.propTypes = {
-};
-
 
