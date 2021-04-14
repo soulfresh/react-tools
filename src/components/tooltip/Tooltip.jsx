@@ -1,14 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useLayer, useHover, mergeRefs } from "react-laag";
+// import { useLayer, useHover, mergeRefs } from "react-laag";
+import { useHover } from "react-laag";
 
-import { combineClasses } from '@thesoulfresh/utils';
+// import { combineClasses } from '@thesoulfresh/utils';
 
-import { isReactText } from '../../utils/react';
-import { useEnterExit } from '../../hooks/useEnterExit';
-import { useId } from '../../hooks/useId';
+// import { isReactText } from '../../utils/react';
+// import { useEnterExit } from '../../hooks/useEnterExit';
+import { useTooltipAria } from '../../hooks/aria/useTooltipAria';
+import { Popover, Trigger } from '../popover/Popover.jsx';
 
-import styles from './Tooltip.module.scss';
+// import styles from './Tooltip.module.scss';
 
 /**
  * `<Tooltip>` is a standard tooltip component that
@@ -33,7 +35,7 @@ import styles from './Tooltip.module.scss';
  * properties in order
  * to configure the timing and positioning of the tooltip.
  *
- * Additionally, this component uses the `useEnterExit()`
+ * This component uses the `useEnterExit()`
  * hook from this library so you can control the enter/leave transitions through
  * CSS.
  *
@@ -62,106 +64,42 @@ import styles from './Tooltip.module.scss';
  * @param {object} [props.layerOptions]
  * @param {string} [props.className]
  */
+
 export function Tooltip({
   id,
   content,
   children,
-  hoverOptions = {delayLeave: 0},
+  hoverOptions = {},
   layerOptions = {},
   className,
   ...rest
 }) {
-  const ariaId = useId('soulfresh-tooltip-');
-  // If an id was passed, use that. Otherwise generate one.
-  id = id || ariaId;
-
-  // Tooltip aria properties.
-  // TODO Is it ok for a tooltip to be removed from the DOM?
-  const aria = {
-    role: 'tooltip',
-    tabIndex: 0,
-    'aria-describedby': id,
-  };
+  const {triggerProps: triggerAria, tooltipProps: tooltipAria} = useTooltipAria({id});
 
   // We use `useHover()` to determine whether we should show the tooltip.
   // Notice how we're configuring a small delay on enter / leave.
   const [isOver, hoverProps] = useHover(hoverOptions);
 
-  // Tell `useLayer()` how we would like to position our tooltip
-  const {
-    triggerProps,
-    layerProps: {ref: layerRef, ...layerProps},
-    // Trap the 'layerSide' prop so it doesn't get
-    // attached to the DOM.
-    arrowProps: {layerSide, ...arrowProps},
-    renderLayer,
-  } = useLayer({
-    isOpen: isOver,
-    placement: "top-center",
-    triggerOffset: 8,
-    ...layerOptions,
-  });
-
-  const {ref: animRef, state: animState, visible} = useEnterExit(isOver, 'opacity');
-
-  // when children equals text (string | number), we need to wrap it in an
-  // extra span-element in order to attach props
-  let trigger;
-  if (isReactText(children)) {
-    trigger = (
-      <span
-        {...triggerProps}
-        {...hoverProps}
-        {...aria}
-      >
-        {children}
-      </span>
-    );
-  } else {
-    // In case of an react-element, we need to clone it in order to attach our own props
-    trigger = React.cloneElement(children, {
-      ...triggerProps,
-      ...hoverProps,
-      ...aria,
-    });
-  }
+  // TODO focus and blur events
+  // const {ref: focusRef, focused} = useFocus();
 
   return (
-    <>
-      {trigger}
-      {visible && renderLayer(
-        <div
-          ref={mergeRefs(animRef, layerRef)}
-          data-testid="Tooltip"
-          className={combineClasses(
-            styles.Tooltip,
-            className,
-            animState,
-            layerSide,
-          )}
-          {...layerProps}
-          id={id}
-        >
-          <div
-            {...arrowProps}
-            className={combineClasses(
-              styles.arrow,
-              'arrow',
-              styles[layerSide],
-            )}
-          />
-          <div
-            className={combineClasses(
-              styles.content,
-              'content',
-            )}
-            {...rest}
-          >
-            {content}
-          </div>
-        </div>
-      )}
-    </>
+    <Popover
+      isOpen={isOver}
+      layerOptions={{
+        placement: "top-center",
+        possiblePlacements: ['top-center', 'bottom-center', 'left-center', 'right-center'],
+        snap: true,
+        triggerOffset: 8,
+        ...layerOptions,
+      }}
+      content={content}
+      {...tooltipAria}
+      className={className}
+      {...rest}
+    >
+      <Trigger {...hoverProps} {...triggerAria}>{ children }</Trigger>
+    </Popover>
   );
 }
 
@@ -206,3 +144,99 @@ Tooltip.propTypes = {
   'other props...': PropTypes.any,
 };
 
+// Keep this temporarily
+// function TooltipOld({
+//   id,
+//   content,
+//   children,
+//   hoverOptions = {},
+//   layerOptions = {},
+//   className,
+//   ...rest
+// }) {
+//   const {triggerProps: triggerAria, tooltipProps: tooltipAria} = useTooltipAria({id});
+//
+//   // We use `useHover()` to determine whether we should show the tooltip.
+//   // Notice how we're configuring a small delay on enter / leave.
+//   const [isOver, hoverProps] = useHover(hoverOptions);
+//
+//   // TODO esc, focus and blur events
+//   // const {ref: focusRef, focused} = useFocus();
+//
+//   // useKeyWhenActive(
+//   //   'Escape',
+//   //   e => {},
+//   //   isOver,
+//   // );
+//
+//   // Tell `useLayer()` how we would like to position our tooltip
+//   const {
+//     triggerProps,
+//     layerProps: {ref: layerRef, ...layerProps},
+//     // Trap the 'layerSide' prop so it doesn't get
+//     // attached to the DOM.
+//     arrowProps: {layerSide, ...arrowProps},
+//     renderLayer,
+//   } = useLayer({
+//     isOpen: isOver,
+//     placement: "top-center",
+//     // TODO Remove this
+//     triggerOffset: 8,
+//     ...layerOptions,
+//   });
+//
+//   const {ref: animRef, state: animState, visible} = useEnterExit(isOver, 'opacity');
+//
+//   // when children equals text (string | number), we need to wrap it in an
+//   // extra span-element in order to attach props
+//   const propsForTrigger = {
+//     ...triggerProps,
+//     ...hoverProps,
+//     ...triggerAria,
+//   };
+//   let trigger;
+//   if (isReactText(children)) {
+//     trigger = <span {...propsForTrigger}>{children}</span>;
+//   } else {
+//     // In case of an react-element, we need to clone it in order to attach our own props
+//     trigger = React.cloneElement(children, propsForTrigger);
+//   }
+//
+//   return (
+//     <>
+//       {trigger}
+//       {visible && renderLayer(
+//         <div
+//           ref={mergeRefs(animRef, layerRef)}
+//           data-testid="Tooltip"
+//           className={combineClasses(
+//             styles.Tooltip,
+//             className,
+//             animState,
+//             layerSide,
+//           )}
+//           {...layerProps}
+//           {...tooltipAria}
+//         >
+//           <div
+//             {...arrowProps}
+//             className={combineClasses(
+//               styles.arrow,
+//               'arrow',
+//               styles[layerSide],
+//             )}
+//           />
+//           <div
+//             className={combineClasses(
+//               styles.content,
+//               'content',
+//             )}
+//             {...rest}
+//           >
+//             {content}
+//           </div>
+//         </div>
+//       )}
+//     </>
+//   );
+// }

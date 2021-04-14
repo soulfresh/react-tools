@@ -1,0 +1,46 @@
+/* Popover */
+
+.PopoverContent {
+  position: relative;
+  opacity: 0;
+
+  &:global(.entered) {
+    opacity: 1;
+  }
+}
+
+// .content { }
+
+.arrow {
+  position: absolute;
+  transform-origin: center;
+  box-sizing: border-box;
+
+  &.top,
+  &.bottom,
+  &.left,
+  &.right {
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  &.top {
+    bottom: 0;
+    left: 50%;
+  }
+
+  &.bottom {
+    top: 0;
+    left: 50%;
+  }
+
+  &.left {
+    top: 50%;
+    right: 0;
+  }
+
+  &.right {
+    top: 50%;
+    left: 0;
+  }
+}
+
