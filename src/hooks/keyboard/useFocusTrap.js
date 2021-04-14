@@ -36,3 +36,4 @@ export function useFocusTrap(active = true) {
 
   return [first, last];
 }
+
