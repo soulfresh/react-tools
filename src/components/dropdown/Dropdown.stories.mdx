@@ -1,5 +1,7 @@
 import { Meta, Story, Canvas, ArgsTable, Description } from '@storybook/addon-docs/blocks';
 
+import { Column } from '@thesoulfresh/sass-theming';
+
 import { Dropdown } from './Dropdown.jsx';
 import { Dropdown as ExampleDropdown } from './examples/Dropdown.jsx';
 
@@ -32,3 +34,33 @@ folder.
 </Canvas>
 
 <ArgsTable of={ Dropdown } />
+
+#### Controlled
+
+You can control the open/closed state yourself by passing the `isOpen` prop.
+
+<Canvas>
+  <Story name="Controlled">
+    <Column>
+    {() => {
+      const [isOpen, setIsOpen] = React.useState(false);
+      return (
+        <ExampleDropdown
+          isOpen={isOpen}
+          onOpen={() => setIsOpen(true)}
+          onClose={() => setIsOpen(false)}
+          content={(first, last) =>
+            <div>
+              <div>👋 🌎</div>
+              <div><button ref={first}>First Button</button></div>
+              <div><button ref={last}>Last Button</button></div>
+            </div>
+          }
+        >
+          <button>Menu</button>
+        </ExampleDropdown>
+      );
+    }}
+    </Column>
+  </Story>
+</Canvas>

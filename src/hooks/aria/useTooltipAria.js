@@ -1,29 +1,60 @@
 import { useId } from '../useId';
 
+import { useKeyWhenActive } from '../keyboard/useKeyWhenActive';
+
 /**
- * Generate the ARIA attributes required for a tooltip.
- * This will return two objects, one with the properties to
- * attach to the tooltip trigger and one to attach to the
- * tooltip content.
- *
- * This hook only provides ARIA related attributes like
- * `arai-describedby`. It does not handle keyboard or
- * other concerns.
+ * A hook that generates the aria properties necessary to meet the
+ * ARIA tooltip pattern. In this pattern, a popover is opened/closed
+ * by a trigger element when it is focused. The popover element cannot
+ * receive focus itself but provides additional information about the
+ * trigger element.
  *
  * See https://www.accede-web.com/en/guidelines/rich-interface-components/customized-tooltips/
  *
+ * This hook generates all of the necessary keyboard listeners
+ * for the pattern as well as aria attributes. It does NOT handle
+ * visibility/positioning of the menu or
+ * mouse events for opening/closing the menu. It also follows the
+ * controlled component pattern which means that you are responsible
+ * for maintaining the open state of the menu.
+ *
+ * #### Usage
+ *
+ * This hook returns an object with properties that must be
+ * attached to the trigger and menu elements.
+ *
  * ```js
- * // "id" is an id prop received by your component in the case
- * // you need to use a specific id value.
- * const {triggerProps, tooltipProps} = useTooltipAria({id});
+ * const [isOpen, setIsOpen] = React.useState(false);
+ * const onOpen = () => setIsOpen(true);
+ * const onClose = () => setIsOpen(false);
+ * const {triggerProps, tooltipProps} = useTooltipAria(isOpen, onOpen, onClose);
  * return (
- *    <div>
- *      <Tooltip {...triggerProps}></Tooltip>
- *      <span {...tooltipProps}>Tooltip content here!</span>
- *    </div>
+ *   <Tooltip isOpen={isOpen} {...triggerProps} content={<p>My Content</p>}>focus me</Tooltip>
  * );
  * ```
  *
+ * #### Return Value
+ *
+ * Here is the structure of the object returned from this hook:
+ *
+ * | Property | Type | Description |
+ * | -------- | ---- | ----------- |
+ * | **triggerProps** | `object` | An object of properties to spread on your trigger element. |
+ * | **triggerProps.aria-describedby** | `string` | The id attribute of the tooltip element. |
+ * | **triggerProps.tabIndex** | `number` | The tab index of the trigger element. |
+ * | **triggerProps.onFocus** | `number` | A focus handler that must be attached to the trigger element in order to open the menu. |
+ * | **triggerProps.onBlur** | `number` | A blur handler that must be attached to the trigger element in order to close the menu. |
+ * | **tooltipProps** | `object` | An object of properties for the root of your menu element. |
+ * | **tooltipProps.id** | `string` | A unique id attribute for the menu element. |
+ * | **tooltipProps.role** | `string` | The element's role attribute. |
+ *
+ * #### API
+ *
+ * @param {boolean} isOpen - Whether the tooltip is currently open.
+ * @param {function} onOpen - A callback that will be called when
+ *   the users tries to open the tooltip through keyboard events.
+ * @param {function} onClose - A callback that will be called when
+ *   the user tries to close the tooltip through keyboard events.
  * @param {object} [options]
  * @param {string} [options.id] - The id value to use in order to
  *   connect the tooltip element to its trigger. If you do
@@ -36,19 +67,40 @@ import { useId } from '../useId';
  *   `tooltipProps` which should be applied to their associated
  *   elements.
  */
-export function useTooltipAria({
-  id,
-  prefix = 'sf-tooltip',
-}) {
+export function useTooltipAria(
+  isOpen,
+  onOpen,
+  onClose,
+  {
+    id,
+    prefix = 'sf-tooltip',
+  } = {},
+) {
   const ariaId = useId(prefix);
 
   // If an id was passed, use that. Otherwise generate one.
   id = id || ariaId;
 
+  const handleOpen = e => {
+    if (onOpen) onOpen(e);
+  };
+
+  const handleClose = e => {
+    if (onClose) onClose(e);
+  };
+
+  const onFocus = e => handleOpen(e);
+  const onBlur = e => handleClose(e);
+
+  useKeyWhenActive('Enter', handleOpen, !isOpen);
+  useKeyWhenActive('Escape', handleClose, isOpen);
+
   return {
     triggerProps: {
       tabIndex: 0,
       'aria-describedby': id,
+      onFocus,
+      onBlur,
     },
     tooltipProps: {
       id,
@@ -56,3 +108,4 @@ export function useTooltipAria({
     }
   };
 }
+

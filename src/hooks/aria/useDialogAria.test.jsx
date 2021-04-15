@@ -1,18 +1,35 @@
 
-describe('useDropdownAria', () => {
+describe('useDialogAria', () => {
   describe('by default', () => {
     xit('should generate an id for the menu element.', () => {});
     xit('should generate an id for the trigger element.', () => {});
     xit('should specify the aria-controls on the trigger.', () => {});
     xit('should specify the aria-labelledby on the menu.', () => {});
     xit('should set the tab order of the trigger.', () => {});
+    xit('should return the triggerRef.', () => {});
+    xit('should return the firstFocusRef.', () => {});
+    xit('should return the lastFocusRef.', () => {});
 
     describe('when open', () => {
       xit('should set the aria-expanded state to true.', () => {});
+      xit('should move focus to the firstFocusRef element', () => {});
+
+      describe('after pressing "Escape"', () => {
+        xit('should call the onClose callback.', () => {});
+        xit('should move focus back to the trigger element.', () => {});
+      });
+
+      describe('after tabbing through the menu contents', () => {
+        xit('should maintain tab focus within the menu.', () => {});
+      });
     });
 
     describe('when closed', () => {
       xit('should set the aria-expanded state to false.', () => {});
+
+      describe('after pressing "Escape"', () => {
+        xit('should not call the onClose callback.', () => {});
+      });
     });
   });
 

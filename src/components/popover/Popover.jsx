@@ -152,8 +152,11 @@ function roundStyles(s) {
  * `<Popover>` is a base component you can use to create
  * more specific Popover type components like tooltips,
  * dropdowns, menus, etc. This component uses `react-laag`
- * for positioning but adds CSS based enter/leave animations and
- * listens to the `Escape` key to close the Popover.
+ * for positioning but adds CSS based enter/leave animations.
+ *
+ * Be aware that there are more specific `Tooltip` and `Dropdown`
+ * components in this library that provide more concret implementations
+ * of `Popover`.
  *
  * #### Usage
  *
@@ -166,17 +169,17 @@ function roundStyles(s) {
  * need in your project.
  *
  * Popover is a controlled component so you will need to
- * provide it's open state and a method for setting the
- * open state to false.
+ * provide it's open state.
  *
  * #### Styling
  *
  * The `Popover` elements are completely stylable through
  * CSS. Your content will receive the class `content` and
  * there is an arrow element that can be targeted via the
- * `arrow` class. The arrow is just a square `<div>` on
- * which you should set the `width`, `height` and `background-color`
- * at minimum.
+ * `arrow` class. The arrow is just a square `<div>` that
+ * is positioned for you but is unstyled otherwise. Since
+ * it is unstyled, it will not have dimensions so you will
+ * need to give it a `width` and `height` through CSS.
  *
  * #### Transitions
  *
@@ -200,17 +203,16 @@ function roundStyles(s) {
  * - left
  * - right
  *
- * #### `react-laag`
+ * #### Positioning
  *
  * This component builds off of `react-laag` to provide the popover
- * layer positioning. If you don't need Escape handling and enter/leave animations
+ * layer positioning. If you don't need CSS enter/leave animations
  * provided by this component, you may be better off using `react-laag` directly.
  *
  * @type React.FC<PopoverProps>
  */
 export const Popover = React.forwardRef(({
   isOpen = false,
-  onClose,
   children,
   content,
   layerOptions = {},
@@ -219,9 +221,6 @@ export const Popover = React.forwardRef(({
   disableArrow = false,
   ...rest
 }, ref) => {
-
-  useKeyWhenActive('Escape', onClose, isOpen);
-
   const {
     triggerProps: {ref: triggerRef, ...triggerProps},
     layerProps: {ref: layerRef, style: layerStyle, ...layerProps},
@@ -281,10 +280,6 @@ Popover.propTypes = {
    * Whether or not the popover is currently open.
    */
   isOpen: PropTypes.bool,
-  /**
-   * A callback that should set the `isOpen` state to false.
-   */
-  onClose: PropTypes.func.isRequired,
   /**
    * The content that will trigger the tooltip.
    * This can be any renderable JSX content.

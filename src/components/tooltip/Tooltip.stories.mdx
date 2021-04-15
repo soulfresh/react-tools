@@ -23,10 +23,44 @@ the example into your own project and tweak it to your needs.
 
 <Canvas>
   <Story name="Tooltip">
-    <p>This is a
-    a <ExampleTooltip content="Cool 😎"><b>Tooltip Example</b></ExampleTooltip> inside
+    <p>This is a <ExampleTooltip content="Cool 😎"><b>Tooltip Example</b></ExampleTooltip> within
     a paragraph of text.</p>
   </Story>
 </Canvas>
 
 <ArgsTable of={Tooltip} />
+
+## Controlled Tooltip
+
+You can use the `Tooltip` as a controlled component by passing the
+`isOpen` prop as anything other than `undefined`. In this situation
+you can use the `onOpen` and `onClose` callbacks to know when
+the normal open/close events would occur due to hover and keyboard
+events.
+
+In the following example, the tooltip is toggled programatically every few seconds.
+
+<Canvas>
+  <Story name="Controlled">
+    <Column>
+      {() => {
+        const [isOpen, setIsOpen] = React.useState(false);
+        const doOpen = () => {
+          setIsOpen(o => !o);
+          setTimeout(doOpen, 5000);
+        };
+        React.useEffect(doOpen, []);
+        return (
+          <ExampleTooltip
+            isOpen={isOpen}
+            onOpen={act('onOpen')}
+            onClose={act('onClose')}
+            content="Cool 😎"
+          >
+            Tooltip Example
+          </ExampleTooltip>
+        );
+      }}
+    </Column>
+  </Story>
+</Canvas>

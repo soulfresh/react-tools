@@ -4,9 +4,10 @@ import { mergeRefs } from "react-laag";
 
 import { combineClasses } from '@thesoulfresh/utils';
 
-import { useDropdownAria } from '../../hooks/aria/useDropdownAria';
-import { useFocusTrap } from '../../hooks/keyboard/useFocusTrap';
+import { useDialogAria } from '../../hooks/aria/useDialogAria';
+import { useMaybeControlled } from '../../hooks/useMaybeControlled';
 import { Popover, Trigger } from '../popover/Popover.jsx';
+import { mergeCallbacks } from '../../utils/react';
 
 /**
  * @typedef {object|HTMLElement} DropdownProps
@@ -15,6 +16,7 @@ import { Popover, Trigger } from '../popover/Popover.jsx';
  * @property {*} children
  * @property {function} [onClose]
  * @property {function} [onOpen]
+ * @property {boolean} [isOpen]
  * @property {object} [layerOptions]
  * @property {string} [transitionProperty]
  * @property {boolean} [disableTransitions]
@@ -32,17 +34,36 @@ import { Popover, Trigger } from '../popover/Popover.jsx';
  * be placed inside the overlay element and that
  * content should manage it's own keyboard events.
  * It is similar to a modal but it does not
- * cover the full window. This component is NOT
- * intended for use as a select, autocomplete or navigation
- * menu.
+ * cover the full window.
  *
- * Unlike `<Popover>`, the `content` prop of this component
- * must be a function. The function will receive `firstTarget`
- * and `lastTarget` parameters which you should attach to
- * the first and last elements in the dropdown content that
- * can receive focus. This is essential for the focus trap
+ * This component is NOT
+ * intended for use as a select, autocomplete or navigation
+ * menu. I suggest `Downshift` with `react-laag` for that
+ * https://storybook.react-laag.com/?path=/docs/autocomplete--page
+ *
+ * This component gives you a completely unstyled dropdown
+ * that you can put arbitrary content in. It handles the ARIA
+ * pattern for you and provides enter/leave transitions through
+ * CSS. If you don't need CSS enter/leave transitions or need
+ * more customization, consider using the `useDialogAria` hook
+ * from this package directly.
+ *
+ * #### Usage
+ *
+ * This component takes a trigger element as it's `children`
+ * (this should be a `<button>` or `<a>` for accessibility)
+ * and a `content` function that returns the menu contents.
+ * The function receives two ref elements that should be
+ * attached to the first and last elements in the menu that
+ * receive keyboard focus. This is essential for the focus trap
  * to work and for accessibility to meet the ARIA dialog
  * requirements.
+ *
+ * Additionally, this component can function as either a controlled
+ * or uncontrolled component. It becomes controlled if `isOpen`
+ * is anything other than undefined. When this is the case, you should
+ * provide the `onOpen` and `onClose` callbacks in order to show/hide
+ * the component.
  *
  * #### Popover
  *
@@ -59,52 +80,49 @@ import { Popover, Trigger } from '../popover/Popover.jsx';
  *
  * @type React.FC<DropdownProps>
  */
+
 export const Dropdown = React.forwardRef(({
   content,
   children,
   onOpen,
   onClose,
+  isOpen,
+  layerOptions,
   ...rest
 }, ref) => {
-  // TODO Allow programatic control of the menu state.
-  const [isOpen, setIsOpen] = React.useState(false);
-  const triggerRef = React.useRef();
-
-  const [first, last] = useFocusTrap(isOpen);
-
-  const handleClose = e => {
-    setIsOpen(false);
-    if (triggerRef.current) {
-      // @ts-ignore
-      triggerRef.current.focus({preventScroll: true});
-    }
-    if (onClose) onClose(e);
-  }
+  const [isOpenLocal, setIsOpenLocal, isControlled] = useMaybeControlled(isOpen);
 
   const handleOpen = e => {
-    setIsOpen(true);
+    // In a controlled situation, the external state should
+    // react to the `onOpen` callback.
+    if (!isControlled) setIsOpenLocal(true);
     if (onOpen) onOpen(e);
   }
 
-  // Focus the first element in the details when it opens.
-  React.useEffect(() => {
-    const el = first.current;
-    if (isOpen && el) {
-      el.focus({preventScroll: true});
-    }
-  }, [isOpen]); // eslint-disable-line react-hooks/exhaustive-deps
+  const handleClose = e => {
+    // In a controlled situation, the external state should
+    // react to the `onClose` callback.
+    if (!isControlled) setIsOpenLocal(false);
+    if (onClose) onClose(e);
+  };
 
-  const {triggerProps: triggerAria, menuProps: contentAria} = useDropdownAria(isOpen);
+  const toggleOpen = e => {
+    if (isOpenLocal) handleClose(e);
+    else handleOpen(e);
+  }
+
+  const {
+    triggerRef,
+    firstFocusRef,
+    lastFocusRef,
+    triggerProps: triggerAria,
+    menuProps: contentAria,
+  } = useDialogAria(isOpenLocal, handleClose);
 
   const onTriggerClick = children.props.onClick;
   const triggerProps = {
     ...triggerAria,
-    onClick: e => {
-      if (isOpen) handleClose(e);
-      else handleOpen(e);
-
-      if (onTriggerClick) onTriggerClick(e);
-    },
+    onClick: mergeCallbacks(toggleOpen, onTriggerClick),
   };
 
   let contentFunc;
@@ -122,13 +140,14 @@ export const Dropdown = React.forwardRef(({
   return (
     <Popover
       ref={ref}
-      isOpen={isOpen}
+      isOpen={isOpenLocal}
       onClose={handleClose}
       layerOptions={{
         onOutsideClick: handleClose,
         onDisappear: handleClose,
+        ...layerOptions,
       }}
-      content={contentFunc(first, last)}
+      content={contentFunc(firstFocusRef, lastFocusRef)}
       {...contentAria}
       {...rest}
       children={
@@ -169,6 +188,12 @@ Dropdown.propTypes = {
    * menu is opened.
    */
   onOpen: PropTypes.func,
+  /**
+   * If you want to controll the open/closed state yourself,
+   * use this to pass the current open state. You'll also
+   * need to provide the `onOpen` and `onClose` callbacks.
+   */
+  isOpen: PropTypes.bool,
   /**
    * Configure options for the tooltip layer.
    * Since this component uses `react-laag` under the

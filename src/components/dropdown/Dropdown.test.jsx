@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import ResizeObserver from "resize-observer-polyfill";
 
 import { Dropdown } from './Dropdown.jsx';
 
@@ -7,12 +8,22 @@ describe('Dropdown', function() {
   beforeEach(() => {
     render(
       <Dropdown
-      />
+        content={(first, last) =>
+          <div>
+            <div>👋 🌎</div>
+            <div><button ref={first}>First Button</button></div>
+            <div><button ref={last}>Last Button</button></div>
+          </div>
+        }
+        layerOptions={{ResizeObserver}}
+      >
+        <button>Menu</button>
+      </Dropdown>
     );
   });
 
-  it('should render', () => {
-    expect(screen.getByTestId('Dropdown')).toBeInTheDocument();
+  it('should render the trigger.', () => {
+    expect(screen.getByText('Menu')).toBeInTheDocument();
   });
 
   xit('should set the expected aria attributes.', () => {});

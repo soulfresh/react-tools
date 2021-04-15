@@ -1,79 +1,18 @@
 ## Functions
 
-<dl>
-<dt><a href="#userLocale">userLocale()</a> ⇒ <code>string</code></dt>
-<dd><p>Determine the user locale or fallback to &quot;en-US&quot;
-if the browser locale cannot be determined.</p>
-</dd>
-<dt><a href="#fromHundredths">fromHundredths(pennies)</a> ⇒ <code>number</code></dt>
-<dd><p>Convert an integer representing 100ths of a unit
-into that unit.
-For example:
-  11122 -&gt; 111.22
-  null -&gt; 0</p>
-</dd>
-<dt><a href="#toHundredths">toHundredths(dollars)</a> ⇒ <code>number</code></dt>
-<dd><p>Convert a fractional unit into an integer representing
-100ths of that unit.
-For example:
-  111.22 -&gt; 11122
-  null -&gt; 0</p>
-</dd>
-<dt><a href="#localeThousandsSeparator">localeThousandsSeparator([locale])</a> ⇒ <code>string</code></dt>
-<dd><p>Determine the character used to group large numbers
-in the locale specified (or the browser locale
-if none is passed).</p>
-</dd>
-<dt><a href="#localeThousandsGroupStyle">localeThousandsGroupStyle([locale])</a> ⇒ <code>string</code></dt>
-<dd><p>Determine the style of grouping used for large numbers
-in the locale specified (or the browser locale
-if none is passed).</p>
-</dd>
-<dt><a href="#localeDecimalSeparator">localeDecimalSeparator([locale])</a> ⇒ <code>string</code></dt>
-<dd><p>Determine the character used to signify fractions
-in the locale specified (or the browser locale
-if none is passed).</p>
-</dd>
-<dt><a href="#localeCurrencySymbol">localeCurrencySymbol([currency], [locale])</a> ⇒ <code>string</code></dt>
-<dd><p>Determine the symbol used for a currency code
-in the locale specified (or the browser locale
-if none is passed). For example, what character is
-used for &quot;USD&quot; in Chinese.</p>
-</dd>
-<dt><a href="#localeCurrencyName">localeCurrencyName(value, currency, [locale])</a> ⇒ <code>string</code></dt>
-<dd><p>Determine the full name used for a currency code and value,
-in the locale specified (or the browser locale
-if none is passed). For example, how do you translate
-&quot;USD&quot; into Chinese?</p>
-</dd>
-<dt><a href="#localeCurrencyIsPrefixed">localeCurrencyIsPrefixed([local], [currencyDisplay])</a> ⇒ <code>boolean</code></dt>
-<dd><p>Determine if a currency symbol/name should be prefixed
-in the locale specified (or the browser locale
-if none is passed). For example, in the Germany the
-currency symbol is suffixed so this function would return
-false.</p>
-</dd>
-<dt><a href="#supportsLocaleUnits">supportsLocaleUnits()</a> ⇒ <code>boolean</code></dt>
-<dd><p>Determine if the browser supports translating units
-like feet, inches, etc.</p>
-</dd>
-<dt><a href="#localeUnitSymbol">localeUnitSymbol(unit, [locale], [unitDisplay])</a> ⇒ <code>string</code></dt>
-<dd><p>Determine the symbol for the given unit
-in the locale specified (or the browser locale
-if none is passed). For example, for the unit &quot;inch&quot; and
-locale <code>en-US</code>, the result is &quot;in&quot; but in <code>de-DE</code> it is &quot;Zoll&quot;.</p>
-</dd>
-<dt><a href="#localeUnitName">localeUnitName(value, unit, [locale])</a> ⇒ <code>string</code></dt>
-<dd><p>Determine the full name for the given unit
-in the locale specified (or the browser locale
-if none is passed).</p>
-</dd>
-<dt><a href="#localeUnitIsPrefixed">localeUnitIsPrefixed(unit, [locale], [unitDisplay])</a> ⇒ <code>boolean</code></dt>
-<dd><p>Determine the unit symbol/name should be prefixed
-in the locale specified (or the browser locale
-if none is passed).</p>
-</dd>
-</dl>
+* [userLocale()](#userLocale) ⇒ <code>string</code>
+* [fromHundredths(pennies)](#fromHundredths) ⇒ <code>number</code>
+* [toHundredths(dollars)](#toHundredths) ⇒ <code>number</code>
+* [localeThousandsSeparator([locale])](#localeThousandsSeparator) ⇒ <code>string</code>
+* [localeThousandsGroupStyle([locale])](#localeThousandsGroupStyle) ⇒ <code>string</code>
+* [localeDecimalSeparator([locale])](#localeDecimalSeparator) ⇒ <code>string</code>
+* [localeCurrencySymbol([currency], [locale])](#localeCurrencySymbol) ⇒ <code>string</code>
+* [localeCurrencyName(value, currency, [locale])](#localeCurrencyName) ⇒ <code>string</code>
+* [localeCurrencyIsPrefixed([local], [currencyDisplay])](#localeCurrencyIsPrefixed) ⇒ <code>boolean</code>
+* [supportsLocaleUnits()](#supportsLocaleUnits) ⇒ <code>boolean</code>
+* [localeUnitSymbol(unit, [locale], [unitDisplay])](#localeUnitSymbol) ⇒ <code>string</code>
+* [localeUnitName(value, unit, [locale])](#localeUnitName) ⇒ <code>string</code>
+* [localeUnitIsPrefixed(unit, [locale], [unitDisplay])](#localeUnitIsPrefixed) ⇒ <code>boolean</code>
 
 <a name="userLocale"></a>
 

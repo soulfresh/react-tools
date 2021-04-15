@@ -1,16 +1,17 @@
 ## Classes
 
-<dl>
-<dt><a href="#Analytics">Analytics</a></dt>
-<dd></dd>
-</dl>
+* [Analytics](#Analytics)
+    * [new Analytics([trackingId], [trackingOptions])](#new_Analytics_new)
+    * [.initialize([trackingId], [trackingOptions])](#Analytics+initialize)
+    * [.getQuery([location])](#Analytics+getQuery)
+    * [.getPage([location])](#Analytics+getPage)
+    * [.trackPage([url], [setPage], [trackPage])](#Analytics+trackPage)
+    * [.trackEvent(category, action, [label], [value], [userInteraction])](#Analytics+trackEvent)
+    * [.trackExternalLink(url)](#Analytics+trackExternalLink)
 
 ## Typedefs
 
-<dl>
-<dt><a href="#AnalyticsOptions">AnalyticsOptions</a> : <code>object</code></dt>
-<dd></dd>
-</dl>
+* [AnalyticsOptions](#AnalyticsOptions) : <code>object</code>
 
 <a name="Analytics"></a>
 

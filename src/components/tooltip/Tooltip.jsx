@@ -2,9 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useHover } from "react-laag";
 
-import { useKeyWhenActive } from '../../hooks/keyboard/useKeyWhenActive';
 import { useTooltipAria } from '../../hooks/aria/useTooltipAria';
+import { useMaybeControlled } from '../../hooks/useMaybeControlled';
 import { Popover, Trigger } from '../popover/Popover.jsx';
+import { mergeCallbacks } from '../../utils/react';
+
 
 /**
  * `<Tooltip>` is a standard tooltip component that provides
@@ -13,6 +15,11 @@ import { Popover, Trigger } from '../popover/Popover.jsx';
  * tooltip content through the `content` prop. Both the `children`
  * and `content` can be any renderable JSX. If `children` is plain
  * text, it will be wrapped in a span to enable mouse events.
+ *
+ * This component can be either controlled or uncontrolled. It becomes
+ * controlled if `isOpen` is anything other than undefined. When this is
+ * the case, you should provide the on `onOpen` and `onClose` callbacks
+ * in order to show/hide the component.
  *
  * #### Styling
  *
@@ -70,6 +77,7 @@ import { Popover, Trigger } from '../popover/Popover.jsx';
  * @param {string} [props.id]
  * @param {*} [props.content]
  * @param {*} [props.children]
+ * @param {boolean} [props.isOpen]
  * @param {function} [props.onOpen]
  * @param {function} [props.onClose]
  * @param {object} [props.hoverOptions]
@@ -84,44 +92,58 @@ export function Tooltip({
   layerOptions = {},
   onClose,
   onOpen,
+  isOpen,
   className,
   ...rest
 }) {
-  const {triggerProps: triggerAria, tooltipProps: tooltipAria} = useTooltipAria({id});
 
   // We use `useHover()` to determine whether we should show the tooltip.
   // Notice how we're configuring a small delay on enter / leave.
   const [isOver, hoverProps] = useHover(hoverOptions);
 
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpenLocal, setIsOpenLocal, isControlled] = useMaybeControlled(isOpen);
+
+  // Whether to show the tooltip.
+  const show = isControlled ? isOpen : (isOver || isOpenLocal);
 
   const handleOpen = e => {
-    setIsOpen(true);
+    // In a controlled situation, the external state should
+    // react to the `onOpen` callback.
+    if (!isControlled) setIsOpenLocal(true);
     if (onOpen) onOpen(e);
   };
 
   const handleClose = e => {
-    setIsOpen(false);
+    // In a controlled situation, the external state should
+    // react to the `onClose` callback.
+    if (!isControlled) setIsOpenLocal(false);
     if (onClose) onClose(e);
   };
 
+  const {
+    triggerProps: {
+      onFocus: onFocusAria,
+      onBlur: onBlurAria,
+      ...triggerAria
+    },
+    // triggerProps: triggerAria,
+    tooltipProps: tooltipAria
+  } = useTooltipAria(
+    isOpenLocal,
+    handleOpen,
+    handleClose,
+    {id}
+  );
+
   const onTriggerFocus = children?.props?.onFocus;
-  const onFocus = e => {
-    handleOpen(e);
-    if (onTriggerFocus) onTriggerFocus(e);
-  };
+  const onFocus = mergeCallbacks(onFocusAria, onTriggerFocus);
 
   const onTriggerBlur = children?.props?.onBlur;
-  const onBlur = e => {
-    handleClose(e);
-    if (onTriggerBlur) onTriggerBlur(e);
-  };
-
-  useKeyWhenActive('Enter', handleOpen, !isOpen && !isOver);
+  const onBlur = mergeCallbacks(onBlurAria, onTriggerBlur);
 
   return (
     <Popover
-      isOpen={isOver || isOpen}
+      isOpen={show}
       onClose={handleClose}
       layerOptions={{
         placement: "top-center",
@@ -168,6 +190,12 @@ Tooltip.propTypes = {
    * content is hidden.
    */
   onClose: PropTypes.func,
+  /**
+   * If you want to controll the open/closed state yourself,
+   * use this to pass the current open state. You'll also
+   * need to provide the `onOpen` and `onClose` callbacks.
+   */
+  isOpen: PropTypes.bool,
   /**
    * Configure the delay when showing/hiding
    * the tooltip on hover. These options are
