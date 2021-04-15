@@ -65,7 +65,7 @@ describe('Dropdown', function() {
     });
 
     describe('when closed', () => {
-      xit('should hide the menu.')
+      xit('should hide the menu.', () => {});
     });
   });
 });
