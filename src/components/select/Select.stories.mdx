@@ -18,16 +18,10 @@ import { Select as ExampleSelect } from './examples/Select.jsx';
 <Canvas>
   <Story name="Select">
     <ExampleSelect
-      items={['Apple', 'Orange', 'Dog']}
+      items={['Apple', 'Orange', 'Grape', 'Dog']}
+      itemToString={i => i}
       onChange={act('onChange')}
-      content={(props, item, selected) =>
-        <div
-          className={combineClasses('item', selected ? 'selected' : null)}
-          {...props}
-        >
-          {item}
-        </div>
-      }
+      content={item => <div className="item">{item}</div>}
     >{(props, item) =>
       <button {...props}>{ item ? item : 'Select a Fruit' }</button>
     }</ExampleSelect>
@@ -56,19 +50,12 @@ pass the `onOpen` and `onClose` props in order to handle events from
           onOpen={() => setIsOpen(true)}
           onClose={() => setIsOpen(false)}
           onChange={act('onChange')}
-          content={(props, item, selected) =>
-            <div
-              className={combineClasses('item', selected ? 'selected' : null)}
-              {...props}
-            >
-              {item}
-            </div>
-          }
+          content={(item, selected) => <div className="item">{item}</div>}
         >{(props, item) =>
           <button {...props} type="button">{ item ? item : 'Select a Fruit' }</button>
         }</ExampleSelect>
       );
-    }}
+      }}
     </Column>
   </Story>
 </Canvas>

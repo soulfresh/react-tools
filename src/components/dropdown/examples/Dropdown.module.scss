@@ -10,7 +10,7 @@ $arrowSize: size(xs)/1px;
   color: foreground-dark();
   border-radius: radius(s);
   padding: size(s);
-  transition: opacity speed(s) linear;
+  transition: opacity 250ms linear;
 
   :global(.arrow) {
     background-color: background-dark();

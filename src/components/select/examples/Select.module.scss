@@ -30,10 +30,14 @@ $arrowSize: 8;
     &:active {
       background-color: grey;
     }
+  }
 
-    &:global(.selected) {
-      background-color: cornflowerblue;
-    }
+  :global(.selected .item) {
+    background-color: cornflowerblue;
+  }
+
+  :global(.highlighted .item) {
+    background-color: purple;
   }
 }
 

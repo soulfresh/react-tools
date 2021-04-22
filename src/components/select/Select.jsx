@@ -10,7 +10,12 @@ import styles from './Select.module.scss';
 
 /**
  * @typedef {object} SelectMenuProps
- * @property {*} [ref]
+ * @property {*[]} items
+ * @property {*} [selectedItem]
+ * @property {number} [highlightedIndex]
+ * @property {function} getItemProps
+ * @property {string} [className]
+ * @property {*} children
  */
 /**
  * @type React.FC<SelectMenuProps>
@@ -18,6 +23,7 @@ import styles from './Select.module.scss';
 export const SelectMenu = React.forwardRef(({
   items,
   selectedItem,
+  highlightedIndex,
   getItemProps,
   className,
   children,
@@ -35,11 +41,13 @@ export const SelectMenu = React.forwardRef(({
           className={combineClasses(
             'menu-item',
             item === selectedItem ? 'selected' : null,
+            i === highlightedIndex ? 'highlighted' : null,
           )}
+          {...getItemProps({item, index: i})}
           children={children(
-            getItemProps({item, index: i}),
             item,
             item === selectedItem,
+            i === highlightedIndex,
             i
           )}
         />
@@ -75,7 +83,7 @@ export const SelectMenu = React.forwardRef(({
  * #### Usage
  *
  * This component takes a trigger element or function as it's `children`
- * (this should be a `<button>` or `<a>` for accessiblity)
+ * (this should be a `<button>` for accessiblity)
  * and a `content` function for rendering each of the select
  * options. If you pass a function as the `children` prop, it
  * will receive both the props to apply to your returned trigger
@@ -116,11 +124,16 @@ export const SelectMenu = React.forwardRef(({
  * - `menu`: This class is applied to the `<ol>` element that wraps your menu items.
  * - `menu-item`: This class is applied to the `<li>` elements that wrapy your individual items.
  * - `selected`: This class is applied to the `menu-item` that is currently selected.
+ * - `highlighted`: This class is applied to the `menu-item` that is currently highlighted
+ *     by the user, either through the mouse or keyboard events.
  * - `content`: This class is applied to the wrapper around the `<ol>` element which is positioned
  *     above the arrow.
  * - `arrow`: This class is applied to the arrow rectangle.
  * - className: The className prop will be pass to the outer most element around the
  *     arrow and content.
+ *
+ * For a good example of how to style this component,
+ * see the `examples` folder in this package.
  *
  * @type React.FC<SelectProps>
  */
@@ -150,6 +163,7 @@ export const Select = React.forwardRef(({
   const {
     isOpen: isOpenLocal,
     selectedItem,
+    highlightedIndex,
     getToggleButtonProps,
     getMenuProps,
     getItemProps,
@@ -159,16 +173,14 @@ export const Select = React.forwardRef(({
     itemToString,
     onIsOpenChange: handleOpenStateChange,
     onSelectedItemChange: handleChange,
-    scrollIntoView: () => {},
     ...selectOptions
-  })
+  });
 
   const {ref: triggerRef, ...triggerProps} = getToggleButtonProps(children?.props);
 
   const {ref: contentRef, ...contentProps} = getMenuProps(rest);
 
   // TODO This doesn't seem to work with non-button elements.
-  // TODO Clicking on the button is causing the page to scroll to the top.
   let childrenFunc = children;
   if (typeof(children) !== 'function') {
     childrenFunc = props => React.cloneElement(content, props);
@@ -177,7 +189,6 @@ export const Select = React.forwardRef(({
   return (
     <Popover
       data-testid="Select"
-      ref={contentRef}
       isOpen={isOpenLocal}
       layerOptions={layerOptions}
       className={combineClasses(styles.Select, className)}
@@ -186,8 +197,11 @@ export const Select = React.forwardRef(({
         <SelectMenu
           items={items}
           selectedItem={selectedItem}
+          highlightedIndex={highlightedIndex}
           getItemProps={getItemProps}
           children={content}
+          ref={contentRef}
+          {...contentProps}
         />
       }
       children={
@@ -196,7 +210,6 @@ export const Select = React.forwardRef(({
           ref={mergeRefs(triggerRef, children?.ref)}
         />
       }
-      {...contentProps}
     />
   );
 });
@@ -235,12 +248,12 @@ Select.propTypes = {
    *
    * The callback recieves the following parameters:
    *
-   * @param {object} props - The props that you must apply to
-   *   your returned element.
    * @param {*} item - An item from the `items` prop which is the
    *   item being rendered.
    * @param {boolean} selected - Whether the current item is the
    *   selected item.
+   * @param {boolean} highlighted - Whether the current item is
+   *   currently highlighted by the user.
    * @param {number} index - The index of this item in the `items`
    *   prop array.
    */
@@ -250,8 +263,7 @@ Select.propTypes = {
    * either a JSX node or a function. The function variant is useful
    * because it will receive the currently selected item which you
    * can use to set the text of your trigger element.
-   * Your trigger can be any valid JSX but it is recommended that you return a button
-   * or link for accessiblility purposes.
+   * Your trigger element should be a button for accessiblility purposes.
    *
    * The function variant will be called with the following parameters:
    *
