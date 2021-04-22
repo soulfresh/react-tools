@@ -1,0 +1,39 @@
+/* Example Select */
+
+$arrowSize: 8;
+@value arrowSize: #{$arrowSize};
+
+.Select {
+  color: white;
+  transition: opacity 250ms linear;
+  min-width: 100px;
+
+  :global(.arrow) {
+    background-color: black;
+    width:  $arrowSize * 1px;
+    height: $arrowSize * 1px;
+  }
+
+  :global(.content) {
+    background-color: black;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  :global(.item) {
+    cursor: pointer;
+    padding: 5px 10px;
+    transition: background-color 250ms linear;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: grey;
+    }
+
+    &:global(.selected) {
+      background-color: cornflowerblue;
+    }
+  }
+}
+

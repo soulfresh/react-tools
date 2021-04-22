@@ -5926,7 +5926,7 @@ dotenv@^6.2.0:
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-6.2.0.tgz#941c0410535d942c8becf28d3f357dbd9d476064"
   integrity sha512-HygQCKUBSFl8wKQZBSemMywRWcEDNidvNbjGVyZu3nbZ8qq9ubiPoGLMdRDpfSrpkkm9BXYFkpKxxFX38o/76w==
 
-downshift@^6.0.15:
+downshift@^6.0.15, downshift@^6.1.2:
   version "6.1.2"
   resolved "https://registry.yarnpkg.com/downshift/-/downshift-6.1.2.tgz#99d9a03d4da4bf369df766effc3b70f7e789950e"
   integrity sha512-WnPoQ6miic4+uEzPEfqgeen0t5YREOUabMopU/Juo/UYDMZl0ZACkO6ykWCRg48dlEUmEt6zfaJlj1x7kEy78g==

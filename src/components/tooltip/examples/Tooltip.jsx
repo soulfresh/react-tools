@@ -14,6 +14,9 @@ export function Tooltip({
   return (
     <TooltipBase
       className={combineClasses(styles.Tooltip, className)}
+      layerOptions={{
+        triggerOffset: 8,
+      }}
       {...rest}
     />
   );

@@ -11,9 +11,12 @@ import styles from './Popover.module.scss';
 
 /**
  * @typedef {object} TriggerProps
- * @property {*} [ref]
  */
 /**
+ * Render a popover's trigger content. This handles the case
+ * where the trigger is just text content in which case it
+ * should be wrapped in a span element.
+ *
  * @type React.FC<TriggerProps>
  */
 export const Trigger = React.forwardRef(({
@@ -46,6 +49,10 @@ Trigger.propTypes = {
  * @property {boolean} [disableArrow]
  */
 /**
+ * Render the content for a popover. This takes care of
+ * rendering a wrapping element around the content, rendering
+ * the arrow and then rendering the children over the arrow.
+ *
  * @type React.FC<PopoverContentProps>
  */
 export const PopoverContent = React.forwardRef(({
@@ -219,6 +226,7 @@ export const Popover = React.forwardRef(({
   transitionProperty = 'opacity',
   disableTransitions = false,
   disableArrow = false,
+  contentWrapperProps,
   ...rest
 }, ref) => {
   const {
@@ -253,23 +261,27 @@ export const Popover = React.forwardRef(({
           ref={mergeRefs(triggerRef, children?.ref)}
         />
       }
-      {showLayer && renderLayer(
-        <PopoverContent
-          visibleState={visibleState}
-          layerSide={layerSide}
-          layerProps={{
-            ...layerProps,
-            style: roundStyles(layerStyle),
-          }}
-          arrowProps={{
-            ...arrowProps,
-            style: roundStyles(arrowStyle),
-          }}
-          disableArrow={disableArrow}
-          ref={mergeRefs(layerRef, animRef, ref)}
-          children={content}
-          {...rest}
-        />
+      {renderLayer(
+        <div {...contentWrapperProps} ref={ref}>
+          {showLayer &&
+            <PopoverContent
+              visibleState={visibleState}
+              layerSide={layerSide}
+              layerProps={{
+                ...layerProps,
+                style: roundStyles(layerStyle),
+              }}
+              arrowProps={{
+                ...arrowProps,
+                style: roundStyles(arrowStyle),
+              }}
+              disableArrow={disableArrow}
+              ref={mergeRefs(layerRef, animRef)}
+              children={content}
+              {...rest}
+            />
+          }
+        </div>
       )}
     </>
   );
@@ -307,6 +319,13 @@ Popover.propTypes = {
    */
   transitionProperty: PropTypes.string,
   /**
+   * Any props that should be appended to the wrapper around
+   * your dynamic content. This would usually include ARIA
+   * properties that make the connection between your trigger
+   * element and the dynamic contents.
+   */
+  contentWrapperProps: PropTypes.object,
+  /**
    * Disable the `useEnterExit()` hook from listening
    * to `transitionend` events before removing the popover content.
    */
@@ -315,13 +334,6 @@ Popover.propTypes = {
    * Allows you to remove the arrow element from the popover content.
    */
   disableArrow: PropTypes.bool,
-  /**
-   * If you pass a `ref`, it will be attached to the
-   * popover wrapping element. However, you shouldn't
-   * need this as you can pass a ref to your `content`
-   * or `children` outside of this component.
-   */
-  ref: PropTypes.node,
   /**
    * Any other props you pass will be applied to the
    * popover `content` div.

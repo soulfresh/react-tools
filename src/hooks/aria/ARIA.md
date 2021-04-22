@@ -12,6 +12,8 @@ by a trigger element and focus gets trapped within the popover
 until it is closed. Keyboard events within the menu are dependent
 on the contents of the menu.
 
+See: https://www.w3.org/TR/wai-aria-practices/examples/dialog-modal/datepicker-dialog.html
+
 This hook generates all of the necessary keyboard listeners
 for the pattern as well as aria attributes. It does NOT handle
 visibility/positioning of the menu or
@@ -98,7 +100,7 @@ const onOpen = () => setIsOpen(true);
 const onClose = () => setIsOpen(false);
 const {triggerProps, tooltipProps} = useTooltipAria(isOpen, onOpen, onClose);
 return (
-  <Tooltip {...triggerProps} content={<p>My Content</p>}>focus me</Tooltip>
+  <Tooltip isOpen={isOpen} {...triggerProps} content={<p>My Content</p>}>focus me</Tooltip>
 );
 ```
 
@@ -126,9 +128,9 @@ Here is the structure of the object returned from this hook:
 
 | Param | Type | Description |
 | --- | --- | --- |
-| isOpen | <code>boolean</code> |  |
-| onOpen | <code>function</code> |  |
-| onClose | <code>function</code> |  |
+| isOpen | <code>boolean</code> | Whether the tooltip is currently open. |
+| onOpen | <code>function</code> | A callback that will be called when   the users tries to open the tooltip through keyboard events. |
+| onClose | <code>function</code> | A callback that will be called when   the user tries to close the tooltip through keyboard events. |
 | [options] | <code>object</code> |  |
 | [options.id] | <code>string</code> | The id value to use in order to   connect the tooltip element to its trigger. If you do   not pass this, then an id will be automatically generated   for you. |
 | [options.prefix] | <code>string</code> | If you want to customize the   name of the auto-generated id, you can pass a prefix   which will then have a unique number suffixed to it. |

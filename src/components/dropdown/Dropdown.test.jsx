@@ -29,7 +29,6 @@ describe('Dropdown', function() {
 
     xit('should set the expected aria attributes.', () => {});
     xit('should be closed by default.', () => {});
-    xit('should be able to programatically open the menu.', () => {});
 
     describe('after clicking the trigger', () => {
       xit('should open the menu.', () => {});
@@ -37,7 +36,6 @@ describe('Dropdown', function() {
       xit('should not call the onClose callback.', () => {});
       xit('should call the trigger onClick handler.', () => {});
       xit('should focus the first element in the content.', () => {});
-      xit('should be possible to programatically close the menu.', () => {});
 
       describe('twice', () => {
         xit('should close the menu.', () => {});
@@ -60,8 +58,11 @@ describe('Dropdown', function() {
   });
 
   describe('controlled', () => {
+    xit('should be able to programatically open the menu.', () => {});
+
     describe('when open', () => {
       xit('should show the menu.', () => {});
+      xit('should be able to programatically close the menu.', () => {});
     });
 
     describe('when closed', () => {

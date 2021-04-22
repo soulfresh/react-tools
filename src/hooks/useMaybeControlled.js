@@ -28,16 +28,7 @@ import React from 'react';
  */
 export function useMaybeControlled(value, setValue) {
   const [localValue, setLocalValue] = React.useState(value);
-  // const isControlled = !!setValue;
   const isControlled = value !== undefined;
-
-  // Keep the local value in sync with the
-  // external value. This allows the consumer to
-  // use the local value without worrying about
-  // who's controlling it.
-  React.useEffect(() => {
-    setLocalValue(value);
-  }, [value]);
 
   const handleValueChange = value => {
     // If this is not a controlled component, then
@@ -49,5 +40,9 @@ export function useMaybeControlled(value, setValue) {
     else if (setValue) setValue(value);
   }
 
-  return [localValue, handleValueChange, isControlled];
+  return [
+    isControlled ? value : localValue,
+    handleValueChange,
+    isControlled
+  ];
 }

@@ -149,7 +149,6 @@ export function Tooltip({
         placement: "top-center",
         possiblePlacements: ['top-center', 'bottom-center', 'left-center', 'right-center'],
         snap: true,
-        triggerOffset: 8,
         ...layerOptions,
       }}
       content={content}

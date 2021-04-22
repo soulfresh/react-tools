@@ -14,6 +14,7 @@ import { mergeCallbacks } from '../../utils/react';
  * @property {*} [ref]
  * @property {*} content
  * @property {*} children
+ * @property {string} [className]
  * @property {function} [onClose]
  * @property {function} [onOpen]
  * @property {boolean} [isOpen]
@@ -88,6 +89,7 @@ export const Dropdown = React.forwardRef(({
   onClose,
   isOpen,
   layerOptions,
+  className,
   ...rest
 }, ref) => {
   const [isOpenLocal, setIsOpenLocal, isControlled] = useMaybeControlled(isOpen);
@@ -125,7 +127,7 @@ export const Dropdown = React.forwardRef(({
     onClick: mergeCallbacks(toggleOpen, onTriggerClick),
   };
 
-  let contentFunc;
+  let contentFunc = content;
   if (typeof(content) !== 'function') {
     console.warn(
       '[Dropdown] The "content" prop provided was not of type "function". ' +
@@ -133,8 +135,6 @@ export const Dropdown = React.forwardRef(({
       'that will receive tab focus. This is required by the ARIA dialog role.'
     );
     contentFunc = () => content;
-  } else {
-    contentFunc = content;
   }
 
   return (
@@ -148,6 +148,7 @@ export const Dropdown = React.forwardRef(({
         ...layerOptions,
       }}
       content={contentFunc(firstFocusRef, lastFocusRef)}
+      className={className}
       {...contentAria}
       {...rest}
       children={
@@ -220,12 +221,12 @@ Dropdown.propTypes = {
    */
   disableArrow: PropTypes.bool,
   /**
-   * If you pass a `ref`, it will be attached to the
-   * popover wrapping element. However, you shouldn't
-   * need this as you can pass a ref to your `content`
-   * or `children` outside of this component.
+   * The className will be applied to the outer div
+   * that wraps both the `content` and `arrow` divs.
+   * This allows you to scope the `content` and `arrow`
+   * selectors to your specific tooltip component.
    */
-  ref: PropTypes.node,
+  className: PropTypes.string,
   /**
    * Any other props you pass will be applied to the
    * popover `content` div.

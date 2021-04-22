@@ -1,0 +1,74 @@
+import { Meta, Story, Canvas, ArgsTable, Description } from '@storybook/addon-docs/blocks';
+import { action as act } from '@storybook/addon-actions';
+
+import { Column } from '@thesoulfresh/sass-theming';
+import { combineClasses } from '@thesoulfresh/utils';
+
+import { Select } from './Select.jsx';
+import { Select as ExampleSelect } from './examples/Select.jsx';
+
+<Meta title="Components/Select" />
+
+# Select
+
+<Description of={ Select } />
+
+#### Example
+
+<Canvas>
+  <Story name="Select">
+    <ExampleSelect
+      items={['Apple', 'Orange', 'Dog']}
+      onChange={act('onChange')}
+      content={(props, item, selected) =>
+        <div
+          className={combineClasses('item', selected ? 'selected' : null)}
+          {...props}
+        >
+          {item}
+        </div>
+      }
+    >{(props, item) =>
+      <button {...props}>{ item ? item : 'Select a Fruit' }</button>
+    }</ExampleSelect>
+  </Story>
+</Canvas>
+
+<ArgsTable of={Select} />
+
+#### Controlled Version
+
+If you need to control the open state of this component, you can do
+so by passing the `isOpen` prop. This converts the component into a
+controlled component. In this case, you will probably also want to
+pass the `onOpen` and `onClose` props in order to handle events from
+`Downshift` that expect to open and close the menu.
+
+<Canvas>
+  <Story name="Controlled">
+    <Column>
+    {() => {
+      const [isOpen, setIsOpen] = React.useState(false);
+      return (
+        <ExampleSelect
+          items={['Apple', 'Orange', 'Dog']}
+          isOpen={isOpen}
+          onOpen={() => setIsOpen(true)}
+          onClose={() => setIsOpen(false)}
+          onChange={act('onChange')}
+          content={(props, item, selected) =>
+            <div
+              className={combineClasses('item', selected ? 'selected' : null)}
+              {...props}
+            >
+              {item}
+            </div>
+          }
+        >{(props, item) =>
+          <button {...props} type="button">{ item ? item : 'Select a Fruit' }</button>
+        }</ExampleSelect>
+      );
+    }}
+    </Column>
+  </Story>
+</Canvas>
