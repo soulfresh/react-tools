@@ -154,6 +154,7 @@ function roundStyles(s) {
  * @property {string} [transitionProperty]
  * @property {boolean} [disableTransitions]
  * @property {boolean} [disableArrow]
+ * @property {boolean} [persistent]
  */
 /**
  * `<Popover>` is a base component you can use to create
@@ -226,7 +227,7 @@ export const Popover = React.forwardRef(({
   transitionProperty = 'opacity',
   disableTransitions = false,
   disableArrow = false,
-  contentWrapperProps,
+  persistent,
   ...rest
 }, ref) => {
   const {
@@ -249,7 +250,8 @@ export const Popover = React.forwardRef(({
   // the tip is breaking the animation sometimes.
   const {ref: animRef, state: visibleState, visible} = useEnterExit(isOpen, transitionProperty);
 
-  const showLayer = (!disableTransitions && visible) ||
+  const showLayer = persistent ||
+    (!disableTransitions && visible) ||
     (disableTransitions && isOpen);
 
   return (
@@ -261,27 +263,23 @@ export const Popover = React.forwardRef(({
           ref={mergeRefs(triggerRef, children?.ref)}
         />
       }
-      {renderLayer(
-        <div {...contentWrapperProps} ref={ref}>
-          {showLayer &&
-            <PopoverContent
-              visibleState={visibleState}
-              layerSide={layerSide}
-              layerProps={{
-                ...layerProps,
-                style: roundStyles(layerStyle),
-              }}
-              arrowProps={{
-                ...arrowProps,
-                style: roundStyles(arrowStyle),
-              }}
-              disableArrow={disableArrow}
-              ref={mergeRefs(layerRef, animRef)}
-              children={content}
-              {...rest}
-            />
-          }
-        </div>
+      { showLayer && renderLayer(
+        <PopoverContent
+          visibleState={visibleState}
+          layerSide={layerSide}
+          layerProps={{
+            ...layerProps,
+            style: roundStyles(layerStyle),
+          }}
+          arrowProps={{
+            ...arrowProps,
+            style: roundStyles(arrowStyle),
+          }}
+          disableArrow={disableArrow}
+          ref={mergeRefs(ref, layerRef, animRef)}
+          children={content}
+          {...rest}
+        />
       )}
     </>
   );
@@ -319,12 +317,13 @@ Popover.propTypes = {
    */
   transitionProperty: PropTypes.string,
   /**
-   * Any props that should be appended to the wrapper around
-   * your dynamic content. This would usually include ARIA
-   * properties that make the connection between your trigger
-   * element and the dynamic contents.
+   * By default, your menu content will be removed from the
+   * DOM for efficiency purposes. However, you can pass this
+   * prop to keep the content in the DOM and hide it with CSS.
+   * This is useful for content like tooltips and select boxes
+   * where the browser should always have access to the data.
    */
-  contentWrapperProps: PropTypes.object,
+  persistent: PropTypes.bool,
   /**
    * Disable the `useEnterExit()` hook from listening
    * to `transitionend` events before removing the popover content.

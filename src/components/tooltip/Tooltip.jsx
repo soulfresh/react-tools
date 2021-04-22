@@ -152,6 +152,7 @@ export function Tooltip({
         snap: true,
         ...layerOptions,
       }}
+      persistent
       content={content}
       {...tooltipAria}
       className={className}

@@ -159,12 +159,13 @@ export const Select = React.forwardRef(({
     itemToString,
     onIsOpenChange: handleOpenStateChange,
     onSelectedItemChange: handleChange,
+    scrollIntoView: () => {},
     ...selectOptions
   })
 
   const {ref: triggerRef, ...triggerProps} = getToggleButtonProps(children?.props);
 
-  const {ref: contentRef, ...contentProps} = getMenuProps();
+  const {ref: contentRef, ...contentProps} = getMenuProps(rest);
 
   // TODO This doesn't seem to work with non-button elements.
   // TODO Clicking on the button is causing the page to scroll to the top.
@@ -178,9 +179,9 @@ export const Select = React.forwardRef(({
       data-testid="Select"
       ref={contentRef}
       isOpen={isOpenLocal}
-      contentWrapperProps={contentProps}
       layerOptions={layerOptions}
       className={combineClasses(styles.Select, className)}
+      persistent
       content={
         <SelectMenu
           items={items}
@@ -195,7 +196,7 @@ export const Select = React.forwardRef(({
           ref={mergeRefs(triggerRef, children?.ref)}
         />
       }
-      {...rest}
+      {...contentProps}
     />
   );
 });
