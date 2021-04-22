@@ -25,13 +25,14 @@ export const SelectMenu = React.forwardRef(({
 }, ref) => {
   return (
     <ol
-      className={combineClasses(styles.SelectMenu, className)}
+      className={combineClasses(styles.SelectMenu, className, 'menu')}
       {...rest}
       ref={ref}
     >
       {items && items.map((item, i) =>
         <li
           key={i}
+          className="menu-item"
           children={children(
             getItemProps({item, index: i}),
             item,
@@ -103,6 +104,19 @@ export const SelectMenu = React.forwardRef(({
  * This includes all of the CSS styling options and
  * the `layerOptions` prop for customizing
  * the `useLayer()` hook from `react-laag`.
+ *
+ * #### Styling
+ *
+ * The following classes can be used to help you style
+ * your menu:
+ *
+ * - `menu`: This class is applied to the `<ol>` element that wraps your menu items.
+ * - `menu-item`: This class is applied to the `<li>` elements that wrapy your individual items.
+ * - `content`: This class is applied to the wrapper around the `<ol>` element which is positioned
+ *     above the arrow.
+ * - `arrow`: This class is applied to the arrow rectangle.
+ * - className: The className prop will be pass to the outer most element around the
+ *     arrow and content.
  *
  * @type React.FC<SelectProps>
  */
