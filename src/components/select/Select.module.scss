@@ -1,7 +1,9 @@
 /* Select */
-@import 'theme';
 
 .SelectMenu {
-  @include unbulleted-list;
+  // unbulleted list
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
 }
 
