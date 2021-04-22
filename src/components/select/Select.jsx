@@ -32,6 +32,10 @@ export const SelectMenu = React.forwardRef(({
       {items && items.map((item, i) =>
         <li
           key={i}
+          className={combineClasses(
+            'menu-item',
+            item === selectedItem ? 'selected' : null,
+          )}
           className="menu-item"
           children={children(
             getItemProps({item, index: i}),
@@ -112,6 +116,7 @@ export const SelectMenu = React.forwardRef(({
  *
  * - `menu`: This class is applied to the `<ol>` element that wraps your menu items.
  * - `menu-item`: This class is applied to the `<li>` elements that wrapy your individual items.
+ * - `selected`: This class is applied to the `menu-item` that is currently selected.
  * - `content`: This class is applied to the wrapper around the `<ol>` element which is positioned
  *     above the arrow.
  * - `arrow`: This class is applied to the arrow rectangle.
