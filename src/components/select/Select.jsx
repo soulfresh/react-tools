@@ -36,7 +36,6 @@ export const SelectMenu = React.forwardRef(({
             'menu-item',
             item === selectedItem ? 'selected' : null,
           )}
-          className="menu-item"
           children={children(
             getItemProps({item, index: i}),
             item,
