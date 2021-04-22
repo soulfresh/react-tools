@@ -156,11 +156,12 @@ export const Select = React.forwardRef(({
 
   return (
     <Popover
+      data-testid="Select"
       ref={contentRef}
       isOpen={isOpen}
       contentWrapperProps={contentProps}
       layerOptions={layerOptions}
-      // className={combineClasses(styles.Select, className)}
+      className={combineClasses(styles.Select, className)}
       content={
         <SelectMenu
           items={items}

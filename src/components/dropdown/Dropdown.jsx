@@ -139,6 +139,7 @@ export const Dropdown = React.forwardRef(({
 
   return (
     <Popover
+      data-testid="Dropdown"
       ref={ref}
       isOpen={isOpenLocal}
       onClose={handleClose}

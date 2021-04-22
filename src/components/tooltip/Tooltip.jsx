@@ -143,6 +143,7 @@ export function Tooltip({
 
   return (
     <Popover
+      data-testid="Tooltip"
       isOpen={show}
       onClose={handleClose}
       layerOptions={{

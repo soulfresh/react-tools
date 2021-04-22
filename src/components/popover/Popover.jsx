@@ -76,7 +76,7 @@ export const PopoverContent = React.forwardRef(({
   return (
     <div
       ref={ref}
-      data-testid="Tooltip"
+      data-testid="Popover"
       className={combineClasses(
         styles.PopoverContent,
         className,
