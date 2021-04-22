@@ -18,7 +18,7 @@
     "rule-empty-line-before": null,
     "max-empty-lines": 2,
     "at-rule-no-unknown": null,
-    "scss/at-rule-no-unknown": true,
+    "scss/at-rule-no-unknown": [true, {ignoreAtRules: ['value']}],
     "declaration-empty-line-before": null,
     "color-hex-case": null,
     "color-hex-length": null,

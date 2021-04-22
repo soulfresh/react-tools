@@ -5,7 +5,6 @@ import { combineClasses } from '@thesoulfresh/utils';
 
 import { isReactText } from '../../utils/react';
 import { useEnterExit } from '../../hooks/useEnterExit';
-import { useKeyWhenActive } from '../../hooks/keyboard/useKeyWhenActive';
 
 import styles from './Popover.module.scss';
 

@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { mergeRefs } from "react-laag";
 
-import { combineClasses } from '@thesoulfresh/utils';
-
 import { useDialogAria } from '../../hooks/aria/useDialogAria';
 import { useMaybeControlled } from '../../hooks/useMaybeControlled';
 import { Popover, Trigger } from '../popover/Popover.jsx';

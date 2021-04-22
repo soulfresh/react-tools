@@ -14,6 +14,7 @@ if output=$(git status --porcelain) && [ -z "$output" ]; then
 
   # Deployment steps go here...
   echo '\nRunning tests...'
+  yarn lint
   # yarn tree-shackable
   yarn test-ci
 
