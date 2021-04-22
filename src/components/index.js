@@ -3,3 +3,4 @@ export * from './numbers';
 export * from './popover';
 export * from './tooltip';
 export * from './dropdown';
+export * from './select';
