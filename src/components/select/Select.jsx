@@ -133,7 +133,7 @@ export const Select = React.forwardRef(({
   children,
   onOpen,
   onClose,
-  // isOpen,
+  isOpen,
   layerOptions,
   selectOptions,
   className,
@@ -149,12 +149,13 @@ export const Select = React.forwardRef(({
   };
 
   const {
-    isOpen,
+    isOpen: isOpenLocal,
     selectedItem,
     getToggleButtonProps,
     getMenuProps,
     getItemProps,
   } = useSelect({
+    isOpen,
     items,
     itemToString,
     onIsOpenChange: handleOpenStateChange,
@@ -177,7 +178,7 @@ export const Select = React.forwardRef(({
     <Popover
       data-testid="Select"
       ref={contentRef}
-      isOpen={isOpen}
+      isOpen={isOpenLocal}
       contentWrapperProps={contentProps}
       layerOptions={layerOptions}
       className={combineClasses(styles.Select, className)}
