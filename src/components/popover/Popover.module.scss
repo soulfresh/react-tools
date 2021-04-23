@@ -7,6 +7,10 @@
   &:global(.entered) {
     opacity: 1;
   }
+
+  &:global(.closed) {
+    pointer-events: none;
+  }
 }
 
 .content {

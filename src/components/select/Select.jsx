@@ -126,6 +126,8 @@ export const SelectMenu = React.forwardRef(({
  * - `selected`: This class is applied to the `menu-item` that is currently selected.
  * - `highlighted`: This class is applied to the `menu-item` that is currently highlighted
  *     by the user, either through the mouse or keyboard events.
+ * - `open`: When the menu is visible (including when it is transitioning to and from the open state).
+ * - `closed`: When the menu is not visible.
  * - `content`: This class is applied to the wrapper around the `<ol>` element which is positioned
  *     above the arrow.
  * - `arrow`: This class is applied to the arrow rectangle.

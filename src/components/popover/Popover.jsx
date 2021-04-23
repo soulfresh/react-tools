@@ -81,6 +81,7 @@ export const PopoverContent = React.forwardRef(({
         className,
         visibleState,
         layerSide,
+        visibleState !== 'exited' ? 'open' : 'closed',
       )}
       {...layerProps}
     >
@@ -209,6 +210,8 @@ function roundStyles(s) {
  * - bottom
  * - left
  * - right
+ * - open
+ * - closed
  *
  * #### Positioning
  *
@@ -226,7 +229,7 @@ export const Popover = React.forwardRef(({
   transitionProperty = 'opacity',
   disableTransitions = false,
   disableArrow = false,
-  persistent,
+  persistent = false,
   ...rest
 }, ref) => {
   const {
