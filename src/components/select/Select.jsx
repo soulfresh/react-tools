@@ -60,16 +60,20 @@ export const SelectMenu = React.forwardRef(({
 /**
  * @typedef {object} SelectProps
  * @property {*[]} items
- * @property {function} itemToString
- * @property {function} onChange
+ * @property {function} [itemToString]
+ * @property {function} [onChange]
  * @property {function} content
  * @property {*} children
- * @property {function} onOpen
- * @property {function} onClose
- * @property {boolean} isOpen
- * @property {object} layerOptions
- * @property {object} selectOptions
- * @property {string} className
+ * @property {function} [onOpen]
+ * @property {function} [onClose]
+ * @property {boolean} [isOpen]
+ * @property {object} [layerOptions]
+ * @property {object} [selectOptions]
+ * @property {string} [className]
+ * @property {string} [transitionProperty]
+ * @property {boolean} [disableTransitions]
+ * @property {boolean} [disableArrow]
+ * @property {object} [wrapperProps]
  */
 /**
  * `<Select>` renders a list of items for the user to select
@@ -150,6 +154,10 @@ export const Select = React.forwardRef(({
   isOpen,
   layerOptions,
   selectOptions,
+  transitionProperty,
+  disableTransitions,
+  disableArrow,
+  wrapperProps,
   className,
   ...rest
 }, ref) => {
@@ -212,6 +220,7 @@ export const Select = React.forwardRef(({
           ref={mergeRefs(triggerRef, children?.ref)}
         />
       }
+      {...wrapperProps}
     />
   );
 });
@@ -331,8 +340,13 @@ Select.propTypes = {
    */
   className: PropTypes.string,
   /**
+   * Any props you would like to pass to the
+   * popover `content` element which wraps the `<ol>`.
+   */
+  wrapperProps: PropTypes.object,
+  /**
    * Any other props you pass will be applied to the
-   * popover `content` div.
+   * root `<ol>` wrapping your menu items.
    */
   // @ts-ignore
   'other props...': PropTypes.any,

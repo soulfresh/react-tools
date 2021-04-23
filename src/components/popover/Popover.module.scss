@@ -9,7 +9,7 @@
   }
 
   &:global(.closed) {
-    pointer-events: none;
+    pointer-events: none !important;
   }
 }
 
