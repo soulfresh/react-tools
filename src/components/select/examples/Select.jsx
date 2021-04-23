@@ -16,6 +16,7 @@ export function Select({
 }) {
   return (
     <SelectBase
+      disableArrow
       className={combineClasses(styles.Select, className)}
       layerOptions={{
         triggerOffset: styles.arrowSize,

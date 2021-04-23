@@ -203,6 +203,9 @@ export const Select = React.forwardRef(({
       layerOptions={layerOptions}
       className={combineClasses(styles.Select, className)}
       persistent
+      disableArrow={disableArrow}
+      disableTransitions={disableTransitions}
+      transitionProperty={transitionProperty}
       content={
         <SelectMenu
           items={items}
