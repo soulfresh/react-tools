@@ -8,6 +8,7 @@ echo 'Building Docs 🚀'
 npx jsdoc2md --files src/hooks/useId.js -g grouped > src/hooks/useId.md
 npx jsdoc2md --files src/hooks/useTimeout.js -g grouped > src/hooks/useTimeout.md
 npx jsdoc2md --files src/hooks/useEnterExit.js -g grouped > src/hooks/useEnterExit.md
+npx jsdoc2md --files src/hooks/useMaybeControlled.js -g grouped > src/hooks/useMaybeControlled.md
 # Aria Hooks
 npx jsdoc2md --files src/hooks/aria/*.js -g grouped > src/hooks/aria/ARIA.md
 # Analytics

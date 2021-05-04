@@ -107,16 +107,14 @@ export function Tooltip({
   const show = isControlled ? isOpen : (isOver || isOpenLocal);
 
   const handleOpen = e => {
-    // In a controlled situation, the external state should
-    // react to the `onOpen` callback.
-    if (!isControlled) setIsOpenLocal(true);
+    setIsOpenLocal(true);
+    // Call onOpen directly so we can pass the event through.
     if (onOpen) onOpen(e);
   };
 
   const handleClose = e => {
-    // In a controlled situation, the external state should
-    // react to the `onClose` callback.
-    if (!isControlled) setIsOpenLocal(false);
+    setIsOpenLocal(false);
+    // Call onClose directly so we can pass the event through.
     if (onClose) onClose(e);
   };
 
