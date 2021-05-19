@@ -306,10 +306,10 @@ export function formatSymbol(symbol, prefixed, locale, display) {
 
 /**
  * @private
- * Add a currency symbol to the given number either
+ * Add a currency symbol to the given `NumberDisplay` props either
  * prefixed or suffixed based on the browser locale.
- * @param {string|number} target - The number/string to prefix/suffix
- *   with the symbol.
+ * @param {object} target - The `NumberDisplay` props to which you wish to
+ *   add either a `prefix` or `suffix` prop.
  * @param {string} symbol - The symbol to add to the number.
  * @param {string} [locale]
  * @param {string} [currencyDisplay] - One of the `currencyDisplay`
@@ -333,8 +333,7 @@ export function addCurrencyPrefixOrSuffix(target, symbol, locale, currencyDispla
 /**
  * @private
  * Prefix or suffix a number with the given unit symbol.
- * @param {string|number} target - The number/string to prefix/suffix
- *   with the symbol.
+ * @param {object} target - The props object to modify
  * @param {string} unit - The unit name to add to the number.
  * @param {string} symbol - The symbol for the unit to add to the number.
  * @param {string} [locale]

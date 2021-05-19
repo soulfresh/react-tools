@@ -10,25 +10,31 @@ import {
 import { Unit } from './Unit.jsx';
 
 /**
+ * @typedef {object} UnitNameProps
+ * @property {string} unit - The unit that this number
+ *   is measured in as accepted by `Intl.NumberFormat`.
+ * @property {string} [locale] - The locale to display
+ *   the number in. Defaults to the browser locale.
+ * @property {string|number} [value]
+ * @property {string|number} [defaultValue]
+ * @property {function} [onValueChange]
+ */
+/**
  * The `<UnitName>` renders number values with a unit
  * using the long name of the unit. This component builds
  * off of the `Unit` component so accepts all
  * of the same props and can render either an input
  * element or a span.
  *
- * @param {object} props
- * @param {string} props.unit - The unit that this number
- *   is measured in as accepted by `Intl.NumberFormat`.
- * @param {string} [props.locale] - The locale to display
- *   the number in. Defaults to the browser locale.
+ * @type React.FC<UnitNameProps>
  */
-export function UnitName(props) {
+export const UnitName = React.forwardRef((props, ref) => {
   const { unit, locale, value, onValueChange } = props;
   const unitDisplay = 'long';
   const [supported] = React.useState(() => supportsLocaleUnits());
   const [symbol, setSymbol] = React.useState(() =>
     supported
-      ? localeUnitName(value || 1, unit, locale)
+      ? localeUnitName(Number(value) || 1, unit, locale)
       : null
   );
 
@@ -54,9 +60,9 @@ export function UnitName(props) {
   }
 
   return (
-    <Unit {...localeProps} />
-  )
-}
+    <Unit {...localeProps} ref={ref} />
+  );
+});
 
 UnitName.propTypes = {
   /**

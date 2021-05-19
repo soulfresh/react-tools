@@ -14,6 +14,13 @@ import { NumberDisplay } from './NumberDisplay.jsx';
 // or suffixed. With some currencies, the negative
 // sign can appear before or after the currency
 // symbol.
+
+/**
+ * @typedef {object} CurrencyProps
+ * @property {string} [currency]
+ * @property {string} [currencyDisplay]
+ * @property {string} [locale]
+ */
 /**
  * The `<Currency>` displays a currency value with
  * its currency symbol and formatted in the browser locale
@@ -22,14 +29,16 @@ import { NumberDisplay } from './NumberDisplay.jsx';
  *
  * See the `NumberDisplay` component (which this component
  * uses under the hood) for more details.
+ *
+ * @type React.FC<CurrencyProps>
  */
-export function Currency({
+export const Currency = React.forwardRef(({
   currency,
   currencyDisplay,
   locale,
   ...rest
-}) {
-  const [localeProps] = React.useState(() => {
+}, ref) => {
+  const localeProps = React.useMemo(() => {
     const p = {
       locale,
       decimalScale: 2,
@@ -51,15 +60,16 @@ export function Currency({
     }
 
     return addCurrencyPrefixOrSuffix(p, symbol, locale, currencyDisplay);
-  });
+  }, [currency, currencyDisplay, locale]);
 
   return (
     <NumberDisplay data-test="currencyNameInput"
       {...localeProps}
       {...rest}
+      ref={ref}
     />
   );
-}
+});
 
 Currency.propTypes = {
   /**

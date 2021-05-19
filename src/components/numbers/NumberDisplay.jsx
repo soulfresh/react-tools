@@ -10,6 +10,17 @@ import {
 
 
 /**
+ * @typedef {object} NumberDisplayProps
+ * @property {string|number} [value] - The current value of
+ *   the input.
+ * @property {string|number} [defaultValue] - A default value
+ *   to set as the input value if the input is left empty.
+ * @property {string} [locale]
+ * @property {boolean} [input]
+ * @property {function} [onBlur]
+ * @property {function} [onValueChange]
+ */
+/**
  * The `<NumberDisplay>` component renders numbers formatted
  * in the user's locale. It can render either a `<span>` or
  * an `<input>` which maintains the locale number formatting
@@ -23,17 +34,9 @@ import {
  * and can accept any of its props or those of standard `<span>`
  * and `<input>` elements.
  *
- * @param {object} props
- * @param {string|number} [props.value] - The current value of
- *   the input.
- * @param {string|number} [props.defaultValue] - A default value
- *   to set as the input value if the input is left empty.
- * @param {string} [props.locale]
- * @param {boolean} [props.input]
- * @param {function} [props.onBlur]
- * @param {function} [props.onValueChange]
+ * @type React.FC<NumberDisplayProps>
  */
-export function NumberDisplay({
+export const NumberDisplay = React.forwardRef(({
   locale,
   value,
   defaultValue,
@@ -41,7 +44,7 @@ export function NumberDisplay({
   onBlur,
   onValueChange,
   ...rest
-}) {
+}, ref) => {
   const hasDefaultValue = defaultValue != null && defaultValue !== '';
   const hasValue = value != null && value !== '';
   // Ensure defaultValue is a number or gets ignored by NumberDisplay
@@ -117,9 +120,10 @@ export function NumberDisplay({
       displayType={input ? 'input' : 'text'}
       {...localeProps}
       {...rest}
+      ref={ref}
     />
   );
-}
+});
 
 NumberDisplay.propTypes = {
   /**

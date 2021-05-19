@@ -9,14 +9,25 @@ import {
 import { Currency } from './Currency.jsx';
 
 /**
+ * @typedef {object} CurrencyNameProps
+ * @property {string} [className]
+ * @property {string} [currency]
+ * @property {string} [locale]
+ * @property {number|string} [value]
+ * @property {number|string} [defaultValue]
+ * @property {boolean} [input]
+ * @property {function} [onValueChange]
+ */
+/**
  * The `<CurrencyName>` displays a currency value
  * using the currency code instead of the currency symbol.
  * For example, "5,000 USD" rather than "$5,000".
  *
  * This component builds off of `<Currency>` but specifically
  * sets the `currencyDisplay` prop to "name".
+ * @type React.FC<CurrencyNameProps>
  */
-export function CurrencyName(props) {
+export const CurrencyName = React.forwardRef((props, ref) => {
   const { currency, locale, onValueChange } = props;
   const currencyDisplay = 'name';
   const [symbol, setSymbol] = React.useState(() => localeCurrencyName(1, currency, locale));
@@ -37,8 +48,8 @@ export function CurrencyName(props) {
 
   addCurrencyPrefixOrSuffix(localeProps, symbol, locale, currencyDisplay);
 
-  return <Currency {...localeProps} />
-}
+  return <Currency {...localeProps} ref={ref} />
+});
 
 CurrencyName.propTypes = {
   /**

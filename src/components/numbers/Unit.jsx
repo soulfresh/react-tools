@@ -10,26 +10,30 @@ import {
 import { NumberDisplay } from './NumberDisplay.jsx';
 
 /**
+ * @typedef {object} UnitProps
+ * @property {string} unit - The unit that this number
+ *   is measured in as accepted by `Intl.NumberFormat`.
+ * @property {string} [unitDisplay] - A `unitDisplay`
+ *   value as accepted by `Intl.NumberFormat`.
+ * @property {string} [locale] - The locale to display
+ *   the number in. Defaults to the browser locale.
+ * @property {*} [ref]
+ */
+/**
  * The `<Unit>` renders number values with a unit
  * such as "inches", "miles-per-hour", etc. It builds
  * off of the `NumberDisplay` component so accepts all
  * of the same props and can render either an input
  * element or a span.
  *
- * @param {object} props
- * @param {string} props.unit - The unit that this number
- *   is measured in as accepted by `Intl.NumberFormat`.
- * @param {string} [props.unitDisplay] - A `unitDisplay`
- *   value as accepted by `Intl.NumberFormat`.
- * @param {string} [props.locale] - The locale to display
- *   the number in. Defaults to the browser locale.
+ * @type React.FC<UnitProps>
  */
-export function Unit({
+export const Unit = React.forwardRef(({
   unit,
   unitDisplay,
   locale,
   ...rest
-}) {
+}, ref) => {
   const [localeProps] = React.useState(() => {
     const p = {
       locale,
@@ -59,9 +63,10 @@ export function Unit({
     <NumberDisplay data-test="currencyNameInput"
       {...localeProps}
       {...rest}
+      ref={ref}
     />
   );
-}
+});
 
 Unit.propTypes = {
   /**
