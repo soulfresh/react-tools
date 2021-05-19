@@ -1,0 +1,193 @@
+/* Action */
+@import 'theme';
+
+@function feel-hue($feel) {
+  @return if($feel == warn, 600, 500);
+}
+
+@function border($color) {
+  @return 2px solid $color;
+}
+
+/// Render different styles for the Action feel variations.
+/// This mixin renders the content you pass it for each of
+/// the given feel variations. It also passes the name of
+/// the current feel variation to your content "using ($feel)".
+///
+/// @param {string[]} feels [(primary, success, error, warn)] - The list of "feel" variatios to generate.
+/// @content - The content you wish to render for each feel. Use the `using ($feel)` to access the current feel variation.
+///
+/// ```css
+///     @include feel-variations() using ($feel) {
+///       color: color($feel);
+///     }
+/// ```
+@mixin feel-variations($feels: (primary, success, error, warn)) {
+  @each $feel in $feels {
+    &.#{$feel} {
+      @content($feel);
+    }
+  }
+}
+
+.Action.styled {
+  // BUTTONS
+  &.button {
+    font-size: font-size(l);
+    font-weight: font-weight(extrabold);
+    transition: border-color speed(s) linear;
+
+    // Box shadow animation needs.
+    &:not(.transparent) {
+      // padding: size(xxs) size(m);
+      position: relative;
+      box-sizing: border-box;
+
+      @include active-shadow;
+
+      &:focus {
+        // This is important to ensure it takes precendence
+        // over the pill border colors.
+        border-color: foreground(focus) !important;
+      }
+    }
+
+    // BORDER RADIUS
+    &:not(.pill):not(.boxy) {
+      border-radius: radius(s);
+
+      &::after {
+        border-radius: radius(s);
+      }
+    }
+
+    // NARROW
+    &.narrow,
+    &.transparent {
+      padding: size(xxs) size(m);
+    }
+
+    &:not(.narrow):not(.transparent) {
+      padding: size(xs) size(m);
+    }
+
+    // OUTLINED BUTTON
+    &:not(.solid) {
+      &:not(.transparent) {
+        border: border(foreground(border));
+      }
+
+      @include feel-variations() using ($feel) {
+        $hue: feel-hue($feel);
+        color: color($feel, $hue);
+
+        &:not(.transparent) {
+          border: border(color($feel, $hue));
+        }
+
+        &:focus {
+          border-color: foreground(focus);
+        }
+      }
+    }
+
+    // SOLID BUTTON
+    &.solid {
+      &:not(.transparent) {
+        color: foreground-dark();
+
+        &:not(.pill) {
+          background-color: color(grayscale);
+          border: border(color(grayscale));
+        }
+
+        @include feel-variations() using ($feel) {
+          // This is important so it will override the default pill background color.
+          background-color: color($feel, feel-hue($feel)) !important;
+          border: border(color($feel, feel-hue($feel)));
+
+          &:focus {
+            border-color: foreground(focus);
+          }
+        }
+      }
+    }
+
+    // SIZES
+    &.s {
+      font-size: font-size(m);
+    }
+
+    &.l {
+      font-size: font-size(xl);
+    }
+
+    // PILL
+    &.pill:not(.transparent) {
+      $c: color(grayscale, 900);
+
+      border: border($c);
+      border-radius: radius(l);
+      white-space: nowrap;
+
+      &::after {
+        border-radius: radius(l);
+      }
+
+      &.solid {
+        background-color: $c;
+      }
+    }
+
+    // TRANSPARENT
+    &.transparent {
+      transition: opacity speed(s) linear, color speed(s) linear;
+
+      @include feel-variations() using ($feel) {
+        $hue: feel-hue($feel);
+        color: color($feel, $hue);
+      }
+
+      @include active {
+        opacity: 0.7;
+      }
+
+      &:focus {
+        color: foreground(focus);
+      }
+    }
+  }
+
+  // LINKS
+  &.link {
+    transition: color speed(s) linear;
+    font-size: font-size(m);
+
+    // ACTIVE STATE
+    @include active {
+      text-decoration: underline;
+    }
+
+    &:focus {
+      color: foreground(focus);
+    }
+
+    // FEELS
+    @include feel-variations() using ($feel) {
+      color: color($feel, feel-hue($feel));
+
+      &:focus {
+        color: foreground(focus);
+      }
+    }
+
+    // SIZES
+    &.s {
+      font-size: font-size(s);
+    }
+
+    &.l {
+      font-size: font-size(xl);
+    }
+  }
+}
