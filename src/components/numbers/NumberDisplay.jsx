@@ -120,7 +120,7 @@ export const NumberDisplay = React.forwardRef(({
       displayType={input ? 'input' : 'text'}
       {...localeProps}
       {...rest}
-      ref={ref}
+      getInputRef={ref}
     />
   );
 });

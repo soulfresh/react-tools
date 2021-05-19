@@ -45,3 +45,33 @@ for a full list of ways you can configure the formatting.
 </Canvas>
 
 <ArgsTable of={Currency} />
+
+## Refs
+
+This example shows that it's possible to access the `ref`
+for the underlying input element.
+
+<Canvas>
+  <Story name="Input Ref">
+    <Column>
+      {() => {
+        const ref = React.useRef();
+        const [, setRefText] = React.useState('');
+        React.useEffect(() => {
+          setTimeout(() => {
+            console.log("REF:", ref);
+            setRefText(typeof(ref.current));
+            ref.current.focus();
+          });
+        }, []);
+        return (
+          <div>
+            <p>"ref.current" is of type "{ typeof(ref.current) }" and
+            references an {ref.current ? ref.current.tagName : 'null'} element</p>
+            <Currency input ref={ref} />
+          </div>
+        );
+      }}
+    </Column>
+  </Story>
+</Canvas>
