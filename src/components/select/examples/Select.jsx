@@ -6,24 +6,29 @@ import { Select as SelectBase } from '../Select.jsx';
 import styles from './Select.module.scss';
 
 /**
- * @param {object} props
- * @param {string} [props.className]
+ * @typedef {object} SelectProps
+ * @property {*} [ref]
+ * @property {string} [className]
+ * @property {object} [layerOptions]
  */
-export function Select({
+/**
+ * @type React.FC<SelectProps>
+ */
+export const Select = React.forwardRef(({
   className,
   layerOptions,
   ...rest
-}) {
+}, ref) => {
   return (
     <SelectBase
-      disableArrow
       className={combineClasses(styles.Select, className)}
       layerOptions={{
         triggerOffset: styles.arrowSize,
         ...layerOptions,
       }}
       {...rest}
+      ref={ref}
     />
   );
-}
+});
 

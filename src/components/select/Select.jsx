@@ -10,7 +10,9 @@ import styles from './Select.module.scss';
 
 /**
  * @typedef {object} SelectMenuProps
+ * @property {*} [ref]
  * @property {*[]} items
+ * @property {function} [itemToString]
  * @property {*} [selectedItem]
  * @property {number} [highlightedIndex]
  * @property {function} getItemProps
@@ -22,6 +24,7 @@ import styles from './Select.module.scss';
  */
 export const SelectMenu = React.forwardRef(({
   items,
+  itemToString,
   selectedItem,
   highlightedIndex,
   getItemProps,
@@ -44,12 +47,12 @@ export const SelectMenu = React.forwardRef(({
             i === highlightedIndex ? 'highlighted' : null,
           )}
           {...getItemProps({item, index: i})}
-          children={children(
-            item,
-            item === selectedItem,
-            i === highlightedIndex,
-            i
-          )}
+          children={typeof(children) === 'function'
+            ? children(item, item === selectedItem, i === highlightedIndex, i)
+            : !!itemToString
+              ? itemToString(item)
+              : String(item)
+          }
         />
       )}
     </ol>
@@ -188,13 +191,9 @@ export const Select = React.forwardRef(({
 
   const {ref: triggerRef, ...triggerProps} = getToggleButtonProps(children?.props);
 
-  const {ref: contentRef, ...contentProps} = getMenuProps(rest);
+  const {ref: contentRef, ...contentProps} = getMenuProps({ref, ...rest});
 
-  // TODO This doesn't seem to work with non-button elements.
-  let childrenFunc = children;
-  if (typeof(children) !== 'function') {
-    childrenFunc = props => React.cloneElement(content, props);
-  }
+  let trigger = typeof(children) === 'function' ? children(triggerProps, selectedItem) : children;
 
   return (
     <Popover
@@ -209,6 +208,7 @@ export const Select = React.forwardRef(({
       content={
         <SelectMenu
           items={items}
+          itemToString={itemToString}
           selectedItem={selectedItem}
           highlightedIndex={highlightedIndex}
           getItemProps={getItemProps}
@@ -219,8 +219,8 @@ export const Select = React.forwardRef(({
       }
       children={
         <Trigger
-          children={childrenFunc(triggerProps, selectedItem)}
-          ref={mergeRefs(triggerRef, children?.ref)}
+          children={trigger}
+          ref={mergeRefs(triggerRef, trigger?.ref)}
         />
       }
       {...wrapperProps}
@@ -260,7 +260,7 @@ Select.propTypes = {
    * in your select. You can return any JSX from this function
    * and it will be rendered.
    *
-   * The callback recieves the following parameters:
+   * The callback receives the following parameters:
    *
    * @param {*} item - An item from the `items` prop which is the
    *   item being rendered.
@@ -270,8 +270,11 @@ Select.propTypes = {
    *   currently highlighted by the user.
    * @param {number} index - The index of this item in the `items`
    *   prop array.
+   *
+   * If you don't pass the content prop, the items will be rendered
+   * as strings and you can use the `.menu-item` class to style them.
    */
-  content: PropTypes.func.isRequired,
+  content: PropTypes.func,
   /**
    * The element to render as the select trigger. This can be
    * either a JSX node or a function. The function variant is useful
