@@ -34,7 +34,12 @@ export const SelectMenu = React.forwardRef(({
 }, ref) => {
   return (
     <ol
-      className={combineClasses(styles.SelectMenu, className, 'menu')}
+      className={combineClasses(
+        styles.SelectMenu,
+        className,
+        'menu',
+        !!selectedItem ? 'hasValue' : null,
+      )}
       {...rest}
       ref={ref}
     >
@@ -138,6 +143,8 @@ export const SelectMenu = React.forwardRef(({
  * - `content`: This class is applied to the wrapper around the `<ol>` element which is positioned
  *     above the arrow.
  * - `arrow`: This class is applied to the arrow rectangle.
+ * - `hasValue`: This class is applied to the trigger element and the wrapping `<ol>` element
+ *     if a value is currently selected.
  * - className: The className prop will be pass to the outer most element around the
  *     arrow and content.
  *
@@ -189,7 +196,14 @@ export const Select = React.forwardRef(({
     ...selectOptions
   });
 
-  const {ref: triggerRef, ...triggerProps} = getToggleButtonProps(children?.props);
+  const {ref: triggerRef, ...triggerProps} = getToggleButtonProps({
+    // If non-function children are passed, ensure their props are retained.
+    ...children?.props,
+    className: combineClasses(
+      children?.props,
+      !!selectedItem ? 'hasValue' : null
+    ),
+  });
 
   const {ref: contentRef, ...contentProps} = getMenuProps({ref, ...rest});
 
