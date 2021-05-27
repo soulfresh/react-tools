@@ -263,6 +263,14 @@ Select.propTypes = {
    */
   optionToString: PropTypes.func,
   /**
+   * Passing a value prop allows you to control the component's
+   * selected item state. If you pass a value, you should also
+   * pass the `onChange` prop which should update the `value`
+   * as needed. If you don't pass a `value`, the the component
+   * will maintain its own state.
+   */
+  value: PropTypes.any,
+  /**
    * This callback will be called whenever the selected
    * item changes.
    *
