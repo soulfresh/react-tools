@@ -67,8 +67,9 @@ export const SelectMenu = React.forwardRef(({
 
 /**
  * @typedef {object} SelectProps
- * @property {*[]} items
- * @property {function} [itemToString]
+ * @property {*[]} options
+ * @property {function} [optionToString]
+ * @property {*} [value]
  * @property {function} [onChange]
  * @property {function} content
  * @property {*} children
@@ -154,8 +155,9 @@ export const SelectMenu = React.forwardRef(({
  * @type React.FC<SelectProps>
  */
 export const Select = React.forwardRef(({
-  items,
-  itemToString = item => item ? String(item) : '',
+  options,
+  optionToString = item => item ? String(item) : '',
+  value,
   onChange,
   content,
   children,
@@ -189,8 +191,9 @@ export const Select = React.forwardRef(({
     getItemProps,
   } = useSelect({
     isOpen,
-    items,
-    itemToString,
+    items: options,
+    itemToString: optionToString,
+    selectedItem: value,
     onIsOpenChange: handleOpenStateChange,
     onSelectedItemChange: handleChange,
     ...selectOptions
@@ -221,8 +224,8 @@ export const Select = React.forwardRef(({
       transitionProperty={transitionProperty}
       content={
         <SelectMenu
-          items={items}
-          itemToString={itemToString}
+          items={options}
+          itemToString={optionToString}
           selectedItem={selectedItem}
           highlightedIndex={highlightedIndex}
           getItemProps={getItemProps}
@@ -248,7 +251,7 @@ Select.propTypes = {
    * These can be of any type and will be pass back to
    * your content render function when rendering the select options.
    */
-  items: PropTypes.arrayOf(PropTypes.any).isRequired,
+  options: PropTypes.arrayOf(PropTypes.any).isRequired,
   /**
    * This is a callback that will be used to convert
    * each item into a string for user in ARIA properties.
@@ -258,7 +261,7 @@ Select.propTypes = {
    *
    * @param {*} item
    */
-  itemToString: PropTypes.func,
+  optionToString: PropTypes.func,
   /**
    * This callback will be called whenever the selected
    * item changes.

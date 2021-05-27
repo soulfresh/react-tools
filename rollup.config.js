@@ -9,11 +9,14 @@ import pkg from './package.json';
 const inputs = glob.sync('src/**/!(*.test|setupTests|index).?(js|jsx)')
   .filter(f => f.indexOf('example') === -1);
 
-console.log('---- MATCHES ----');
+console.log('---- OUTPUTS ----');
 console.log(inputs);
 
 const external = Object.keys(pkg.peerDependencies || {})
   .concat(Object.keys(pkg.optionalDependencies || {}));
+
+console.log('--- EXTERNALS ---');
+console.log(external);
 
 module.exports = {
   input: ['src/index.js'].concat(inputs),
