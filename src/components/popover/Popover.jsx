@@ -84,6 +84,7 @@ export const PopoverContent = React.forwardRef(({
         visibleState !== 'exited' ? 'open' : 'closed',
       )}
       {...layerProps}
+      {...rest}
     >
       {!disableArrow &&
         <div
@@ -100,7 +101,6 @@ export const PopoverContent = React.forwardRef(({
           styles.content,
           'content',
         )}
-        {...rest}
       >
         {children}
       </div>
@@ -339,7 +339,7 @@ Popover.propTypes = {
   disableArrow: PropTypes.bool,
   /**
    * Any other props you pass will be applied to the
-   * popover `content` div.
+   * popover menu wrapper div.
    */
   'other props...': PropTypes.any,
 };

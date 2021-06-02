@@ -220,7 +220,7 @@ Tooltip.propTypes = {
   className: PropTypes.string,
   /**
    * Any other props you pass will be applied to the
-   * tooltip `content` div.
+   * tooltip content wrapper div.
    */
   'other props...': PropTypes.any,
 };

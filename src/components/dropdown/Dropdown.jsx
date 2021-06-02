@@ -226,7 +226,7 @@ Dropdown.propTypes = {
   className: PropTypes.string,
   /**
    * Any other props you pass will be applied to the
-   * popover `content` div.
+   * popover menu wrapper div.
    */
   // @ts-ignore
   'other props...': PropTypes.any,

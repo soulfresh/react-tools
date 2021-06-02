@@ -1,6 +1,6 @@
 <a name="useEnterExit"></a>
 
-## useEnterExit(visible, property, [silent]) ⇒ <code>object</code>
+## useEnterExit(visible, property, [options]) ⇒ <code>object</code>
 Enable CSS animation of the entering and exiting of an element/component.
 This hook is intended for use in situations where you want to conditionally
 render an element and when it is present you want to animate it
@@ -61,5 +61,7 @@ if (visible) {
 | --- | --- | --- |
 | visible | <code>boolean</code> | Whether to show the entered state or the exited state. |
 | property | <code>string</code> | A property to watch for transition end events (ex. 'opacity', 'transform').   This should match the `propertyName` value of the transition end event you   want to use as the signal for your "exited" state. |
-| [silent] | <code>boolean</code> | Disable warnings if a transtion end event isn't   detected within 20 seconds of the first enter event. |
+| [options] | <code>object</code> |  |
+| [options.enterDelay] | <code>number</code> | Number of milliseconds to delay the transition from   the entered state to the entering state. Defaults to the next tick (0 milliseconds). |
+| [options.silent] | <code>boolean</code> | Disable warnings if a transition end event isn't   detected within 20 seconds of the first enter event. |
 

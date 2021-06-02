@@ -377,7 +377,7 @@ Select.propTypes = {
   wrapperProps: PropTypes.object,
   /**
    * Any other props you pass will be applied to the
-   * root `<ol>` wrapping your menu items.
+   * popover menu wrapper div.
    */
   // @ts-ignore
   'other props...': PropTypes.any,
