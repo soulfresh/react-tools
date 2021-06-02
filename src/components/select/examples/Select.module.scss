@@ -1,11 +1,15 @@
 /* Example Select */
 
+@function popover-transition($ease) {
+  $speed: 250ms;
+  @return opacity $speed linear, transform $speed $ease;
+}
+
 $arrowSize: 8;
 @value arrowSize: #{$arrowSize};
 
 .Select {
   color: white;
-  transition: opacity 250ms linear;
   min-width: 100px;
 
   :global(.arrow) {
@@ -41,3 +45,47 @@ $arrowSize: 8;
   }
 }
 
+/// The base styles for popover components like
+/// Tooltip and Dropdown.
+.Popover {
+  transition: popover-transition(ease-out);
+  opacity: 0;
+
+  &:global(.exiting) {
+    transition: popover-transition(ease-in);
+  }
+
+  $move-amount: ($arrowSize/2) * 1px;
+  $scale: 0.5;
+
+  &:global(.top) {
+    transform: translateY($move-amount) scale($scale);
+    transform-origin: bottom center;
+  }
+
+  &:global(.bottom) {
+    transform: translateY($move-amount * -1) scale($scale);
+    transform-origin: top center;
+  }
+
+  &:global(.right) {
+    transform: translateX($move-amount * -1) scale($scale);
+    transform-origin: center left;
+  }
+
+  &:global(.left) {
+    transform: translateX($move-amount) scale($scale);
+    transform-origin: center right;
+  }
+
+  &:global(.entered) {
+    opacity: 1;
+
+    &:global(.top),
+    &:global(.bottom),
+    &:global(.right),
+    &:global(.left) {
+      transform: scale(1);
+    }
+  }
+}

@@ -12,6 +12,7 @@ import styles from './Popover.module.scss';
  * @property {*} children
  * @property {function} [onClose]
  * @property {function} [onOpen]
+ * @property {object} [layerOptions]
  */
 /**
  * This is an example Popover implementation. See
@@ -25,6 +26,7 @@ export const Popover = React.forwardRef(({
   children,
   onClose,
   onOpen,
+  layerOptions,
   ...rest
 }, ref) => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -56,6 +58,7 @@ export const Popover = React.forwardRef(({
         onOutsideClick: handleClose,
         onDisappear: handleClose,
         triggerOffset: 8,
+        ...layerOptions,
       }}
       content={content}
       {...rest}

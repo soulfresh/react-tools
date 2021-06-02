@@ -250,7 +250,7 @@ export const Popover = React.forwardRef(({
   // next show event starts in the correct location.
   // TODO I think using the visible prop to decide whether to render
   // the tip is breaking the animation sometimes.
-  const {ref: animRef, state: visibleState, visible} = useEnterExit(isOpen, transitionProperty);
+  const {ref: animRef, state: visibleState, visible} = useEnterExit(isOpen, transitionProperty, {enterDelay: 60});
 
   // TODO This is removing the content too early in
   // non-persistent, transitioned scenarios.

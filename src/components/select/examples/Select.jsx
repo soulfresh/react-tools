@@ -21,7 +21,7 @@ export const Select = React.forwardRef(({
 }, ref) => {
   return (
     <SelectBase
-      className={combineClasses(styles.Select, className)}
+      className={combineClasses(styles.Select, styles.Popover, className)}
       layerOptions={{
         triggerOffset: styles.arrowSize,
         ...layerOptions,

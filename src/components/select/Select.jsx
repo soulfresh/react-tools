@@ -191,7 +191,7 @@ export const Select = React.forwardRef(({
     getItemProps,
   } = useSelect({
     isOpen,
-    items: options,
+    items: options || [],
     itemToString: optionToString,
     selectedItem: value,
     onIsOpenChange: handleOpenStateChange,

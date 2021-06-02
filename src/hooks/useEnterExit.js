@@ -58,7 +58,10 @@ import { useTimeout } from './useTimeout';
  * @param {string} property - A property to watch for transition end events (ex. 'opacity', 'transform').
  *   This should match the `propertyName` value of the transition end event you
  *   want to use as the signal for your "exited" state.
- * @param {boolean} [silent] - Disable warnings if a transtion end event isn't
+ * @param {object} [options]
+ * @param {number} [options.enterDelay] - Number of milliseconds to delay the transition from
+ *   the entered state to the entering state. Defaults to the next tick (0 milliseconds).
+ * @param {boolean} [options.silent] - Disable warnings if a transition end event isn't
  *   detected within 20 seconds of the first enter event.
  *
  * @return {object} - An object with `ref`, `state` and `visible` props.
@@ -66,7 +69,10 @@ import { useTimeout } from './useTimeout';
  *   `state` is a string equal to one of 'entering', 'entered', 'exiting', 'exited'
  *   `visible` indicates if the element is visible (ie. state != 'exited')
  */
-export function useEnterExit(visible, property, silent = false) {
+export function useEnterExit(visible, property, {
+  silent = false,
+  enterDelay = 0,
+} = {}) {
   const ref = React.useRef();
   const [entered, setEntered] = React.useState(false);
 
@@ -99,7 +105,7 @@ export function useEnterExit(visible, property, silent = false) {
     if (el && visible && !entered) {
       wait(() => {
         setEntered(true)
-      });
+      }, enterDelay);
     } else if (el && !visible && entered) {
       if (!silent && !transitionEndOccurred && process?.env?.NODE_ENV === 'development') {
         timeoutRef.current = wait(() => {
