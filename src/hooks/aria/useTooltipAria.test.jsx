@@ -40,6 +40,10 @@ describe('useTooltipAria', () => {
         xit('should call the onOpen callback.', () => {});
       });
     });
+
+    describe('when not focused', () => {
+      xit('should not open when the ENTER key is pressed.', () => {});
+    });
   });
 
   describe('with an id provided', () => {

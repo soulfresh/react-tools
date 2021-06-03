@@ -11,8 +11,10 @@ import React from 'react';
  * @param {function} cb
  * @param {boolean} active - Whether or not event listening is
  *   currently enabled.
+ * @param {Window|HTMLElement} [el] - The element on which to listen for key events.
+ *   Defaults to window.
  */
-export function useKeyWhenActive(key, cb, active = true) {
+export function useKeyWhenActive(key, cb, active = true, el = window) {
   // Track the first key event after the props change.
   const pressed = React.useRef(false);
 
@@ -32,15 +34,16 @@ export function useKeyWhenActive(key, cb, active = true) {
       };
 
       // TODO Optimize for many listeners
-      window.addEventListener('keydown', onKeyDown);
-      window.addEventListener('keyup', onKeyUp);
+      el.addEventListener('keydown', onKeyDown);
+      el.addEventListener('keyup', onKeyUp);
 
       return () => {
-        window.removeEventListener('keydown', onKeyDown);
-        window.removeEventListener('keyup', onKeyUp);
+        el.removeEventListener('keydown', onKeyDown);
+        el.removeEventListener('keyup', onKeyUp);
       };
     } else {
       pressed.current = false;
     }
-  }, [active, key, cb]);
+  }, [active, key, cb, el]);
 }
+

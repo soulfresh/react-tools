@@ -1,3 +1,4 @@
+import React from 'react';
 import { useId } from '../useId';
 
 import { useKeyWhenActive } from '../keyboard/useKeyWhenActive';
@@ -77,6 +78,7 @@ export function useTooltipAria(
   } = {},
 ) {
   const ariaId = useId(prefix);
+  const [isFocused, setIsFocused] = React.useState(false);
 
   // If an id was passed, use that. Otherwise generate one.
   id = id || ariaId;
@@ -89,11 +91,17 @@ export function useTooltipAria(
     if (onClose) onClose(e);
   };
 
-  const onFocus = e => handleOpen(e);
-  const onBlur = e => handleClose(e);
+  const onFocus = e => {
+    setIsFocused(true);
+    handleOpen(e);
+  };
+  const onBlur = e => {
+    setIsFocused(false);
+    handleClose(e);
+  };
 
-  useKeyWhenActive('Enter', handleOpen, !isOpen);
-  useKeyWhenActive('Escape', handleClose, isOpen);
+  useKeyWhenActive('Enter', handleOpen, isFocused && !isOpen);
+  useKeyWhenActive('Escape', handleClose, isFocused && isOpen);
 
   return {
     triggerProps: {
