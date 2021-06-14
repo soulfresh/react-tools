@@ -17,12 +17,14 @@ import styles from './Select.module.scss';
  * @property {number} [highlightedIndex]
  * @property {function} getItemProps
  * @property {string} [className]
+ * @property {boolean} [isOpen]
  * @property {*} children
  */
 /**
  * @type React.FC<SelectMenuProps>
  */
 export const SelectMenu = React.forwardRef(({
+  isOpen,
   items,
   itemToString,
   selectedItem,
@@ -39,6 +41,7 @@ export const SelectMenu = React.forwardRef(({
         className,
         'menu',
         !!selectedItem ? 'hasValue' : null,
+        isOpen ? 'open' : 'closed',
       )}
       {...rest}
       ref={ref}
@@ -203,14 +206,16 @@ export const Select = React.forwardRef(({
     // If non-function children are passed, ensure their props are retained.
     ...children?.props,
     className: combineClasses(
-      children?.props,
+      children?.props?.className,
       !!selectedItem ? 'hasValue' : null
     ),
   });
 
   const {ref: contentRef, ...contentProps} = getMenuProps({ref, ...rest});
 
-  let trigger = typeof(children) === 'function' ? children(triggerProps, selectedItem) : children;
+  let trigger = typeof(children) === 'function'
+    ? children(triggerProps, selectedItem)
+    : React.cloneElement(children, triggerProps);
 
   return (
     <Popover
@@ -224,6 +229,7 @@ export const Select = React.forwardRef(({
       transitionProperty={transitionProperty}
       content={
         <SelectMenu
+          isOpen={isOpenLocal}
           items={options}
           itemToString={optionToString}
           selectedItem={selectedItem}
