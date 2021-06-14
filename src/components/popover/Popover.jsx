@@ -252,8 +252,6 @@ export const Popover = React.forwardRef(({
   // the tip is breaking the animation sometimes.
   const {ref: animRef, state: visibleState, visible} = useEnterExit(isOpen, transitionProperty, {enterDelay: 60});
 
-  // TODO This is removing the content too early in
-  // non-persistent, transitioned scenarios.
   const showLayer = persistent ||
     (!disableTransitions && visible) ||
     (disableTransitions && isOpen);
