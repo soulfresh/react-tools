@@ -76,15 +76,15 @@ export function useMaybeControlled(value, setValue) {
   const [localValue, setLocalValue] = React.useState(value);
   const isControlled = value !== undefined;
 
-  const handleValueChange = value => {
+  const handleValueChange = v => {
     // If this is not a controlled component, then
     // set the local value to force a re-render.
-    if (!isControlled) setLocalValue(value);
+    if (!isControlled) setLocalValue(v);
     // Otherwise, push the update to the external
     // state and we will re-render once the external
     // value changes.
-    else if (setValue) setValue(value);
-  }
+    else if (setValue && v !== value) setValue(v);
+  };
 
   return [
     isControlled ? value : localValue,
@@ -92,3 +92,4 @@ export function useMaybeControlled(value, setValue) {
     isControlled
   ];
 }
+

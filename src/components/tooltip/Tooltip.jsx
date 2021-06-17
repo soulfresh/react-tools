@@ -96,14 +96,25 @@ export function Tooltip({
   className,
   ...rest
 }) {
-
-  // We use `useHover()` to determine whether we should show the tooltip.
-  // Notice how we're configuring a small delay on enter / leave.
-  const [isOver, {onMouseEnter, onMouseLeave, ...hoverProps}] = useHover(hoverOptions);
   // Track the last event that caused an open/close state change
   // so we can emit it. This is necessary because the hover events
   // may be delayed and react-laag doesn't give us the associated event.
   const lastEvent = React.useRef();
+
+  const [isOpenLocal, setIsOpenLocal] = useMaybeControlled(isOpen, v => {
+    if (v) {
+      if (onOpen) onOpen(lastEvent.current);
+    }
+    else {
+      if (onClose) onClose(lastEvent.current);
+    }
+  });
+
+  const [focused, setFocused] = React.useState(false);
+
+  // We use `useHover()` to determine whether we should show the tooltip.
+  // Notice how we're configuring a small delay on enter / leave.
+  const [isOver, {onMouseEnter, onMouseLeave, ...hoverProps}] = useHover(hoverOptions);
 
   const handleMouseEnter = e => {
     onMouseEnter(e);
@@ -111,30 +122,25 @@ export function Tooltip({
   }
 
   const handleMouseLeave = e => {
-    onMouseLeave(e);
-    lastEvent.current = e;
+    if (!focused) {
+      onMouseLeave(e);
+      lastEvent.current = e;
+    }
   };
 
-  const [isOpenLocal, setIsOpenLocal, isControlled] = useMaybeControlled(isOpen);
-
-  // Whether to show the tooltip.
-  const show = isControlled ? isOpen : (isOver || isOpenLocal);
-
+  // Keep the local open state in sync with the hover state.
   React.useEffect(() => {
-    // Check for the existance of the last event
-    // in order to prevent the initial state from emitting
-    // a change event.
-    if (show && onOpen && lastEvent.current) onOpen(lastEvent.current);
-    else if (!show && onClose && lastEvent.current) onClose(lastEvent.current);
-    lastEvent.current = undefined;
-  }, [show]); // eslint-disable-line react-hooks/exhaustive-deps
+    setIsOpenLocal(isOver);
+  }, [isOver]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleOpen = e => {
+    setFocused(true);
     setIsOpenLocal(true);
     lastEvent.current = e;
   };
 
   const handleClose = e => {
+    setFocused(false);
     setIsOpenLocal(false);
     lastEvent.current = e;
   };
@@ -162,7 +168,7 @@ export function Tooltip({
   return (
     <Popover
       data-testid="Tooltip"
-      isOpen={show}
+      isOpen={isOpenLocal}
       onClose={handleClose}
       layerOptions={{
         placement: "top-center",
