@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitForElementToBeRemoved } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import ResizeObserver from "resize-observer-polyfill";
 
 import { Dropdown } from './Dropdown.jsx';

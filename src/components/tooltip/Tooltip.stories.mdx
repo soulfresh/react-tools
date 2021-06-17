@@ -23,7 +23,7 @@ the example into your own project and tweak it to your needs.
 
 <Canvas>
   <Story name="Tooltip">
-    <p>This is a <ExampleTooltip content="Cool 😎"><b>Tooltip Example</b></ExampleTooltip> within
+  <p>This is a <ExampleTooltip content="Cool 😎" hoverOptions={{delayEnter: 1000}} onOpen={e => console.log('OPEN', e)} onClose={e => console.log('CLOSE', e)}><b>Tooltip Example</b></ExampleTooltip> within
     a paragraph of text.</p>
   </Story>
 </Canvas>

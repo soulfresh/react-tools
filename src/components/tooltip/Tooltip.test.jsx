@@ -13,6 +13,10 @@ describe('Tooltip', () => {
       describe('and then exit', () => {
         xit('should hide the tooltip.', () => {});
       });
+
+      describe('and then focusing the element', () => {
+        xit('should not emit the onOpen event again.', () => {});
+      });
     });
 
     describe('after focus', () => {
@@ -28,6 +32,14 @@ describe('Tooltip', () => {
         describe('and then typing "Enter"', () => {
           xit('should show the tooltip again.', () => {});
         });
+
+        describe('and then hovering', () => {
+          xit('should emit the onOpen event.', () => {});
+        });
+      });
+
+      describe('and then hovering the element', () => {
+        xit('should not emit the onOpen event again.', () => {});
       });
     });
 

@@ -99,23 +99,44 @@ export function Tooltip({
 
   // We use `useHover()` to determine whether we should show the tooltip.
   // Notice how we're configuring a small delay on enter / leave.
-  const [isOver, hoverProps] = useHover(hoverOptions);
+  const [isOver, {onMouseEnter, onMouseLeave, ...hoverProps}] = useHover(hoverOptions);
+  // Track the last event that caused an open/close state change
+  // so we can emit it. This is necessary because the hover events
+  // may be delayed and react-laag doesn't give us the associated event.
+  const lastEvent = React.useRef();
+
+  const handleMouseEnter = e => {
+    onMouseEnter(e);
+    lastEvent.current = e;
+  }
+
+  const handleMouseLeave = e => {
+    onMouseLeave(e);
+    lastEvent.current = e;
+  };
 
   const [isOpenLocal, setIsOpenLocal, isControlled] = useMaybeControlled(isOpen);
 
   // Whether to show the tooltip.
   const show = isControlled ? isOpen : (isOver || isOpenLocal);
 
+  React.useEffect(() => {
+    // Check for the existance of the last event
+    // in order to prevent the initial state from emitting
+    // a change event.
+    if (show && onOpen && lastEvent.current) onOpen(lastEvent.current);
+    else if (!show && onClose && lastEvent.current) onClose(lastEvent.current);
+    lastEvent.current = undefined;
+  }, [show]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const handleOpen = e => {
     setIsOpenLocal(true);
-    // Call onOpen directly so we can pass the event through.
-    if (onOpen) onOpen(e);
+    lastEvent.current = e;
   };
 
   const handleClose = e => {
     setIsOpenLocal(false);
-    // Call onClose directly so we can pass the event through.
-    if (onClose) onClose(e);
+    lastEvent.current = e;
   };
 
   const {
@@ -124,7 +145,6 @@ export function Tooltip({
       onBlur: onBlurAria,
       ...triggerAria
     },
-    // triggerProps: triggerAria,
     tooltipProps: tooltipAria
   } = useTooltipAria(
     isOpenLocal,
@@ -159,6 +179,8 @@ export function Tooltip({
       <Trigger
         {...hoverProps}
         {...triggerAria}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
         onFocus={onFocus}
         onBlur={onBlur}
       >
