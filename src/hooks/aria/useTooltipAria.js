@@ -113,6 +113,7 @@ export function useTooltipAria(
     tooltipProps: {
       id,
       role: 'tooltip',
+      'aria-hidden': !isOpen,
     }
   };
 }
