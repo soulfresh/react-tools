@@ -46,7 +46,7 @@ export const AnalyticsAction = React.forwardRef(({
   children,
   ...rest
 }, ref) => {
-  const analytics = useAnalyticsClient();
+  const analytics = useAnalyticsClient(true);
 
   const link = (typeof(to) === 'object')
     ? makeLinkFromObject(to)
@@ -57,6 +57,12 @@ export const AnalyticsAction = React.forwardRef(({
   const trackEvent = category && action && label;
 
   const props = { button, href, to, blank, onClick: undefined, ...rest };
+
+  // If the intent is to track this event but the analytics
+  // service is unconfigured, warn the user.
+  if (trackEvent && !analytics) {
+    console.warn('[AnalyticsAction] No analytics client configured for your project!');
+  }
 
   // If this is an external link or we want to do event tracking
   // and if the analytics service is available,

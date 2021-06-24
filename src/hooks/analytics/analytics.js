@@ -170,9 +170,15 @@ export { Analytics };
 export const AnalyticsContext = React.createContext(undefined);
 export const AnalyticsProvider = AnalyticsContext.Provider;
 
-export function useAnalyticsClient() {
+/**
+ * Get the currently configured analytics service.
+ * @param {boolean} [silent] - Silence warnings when the service has
+ *   not been configured.
+ * @return {Analytics}
+ */
+export function useAnalyticsClient(silent = false) {
   const service = React.useContext(AnalyticsContext);
-  if (!service) console.warn('[useAnalyticsClient] No analytics client configured for your project!');
+  if (!service && !silent) console.warn('[useAnalyticsClient] No analytics client configured for your project!');
   return service;
 }
 
