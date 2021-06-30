@@ -12,6 +12,8 @@ import React from 'react';
  *   wait(() => console.log('Did it'), 1000);
  * }
  * ```
+ *
+ * @return {function}
  */
 export function useTimeout() {
   const idRef = React.useRef();
