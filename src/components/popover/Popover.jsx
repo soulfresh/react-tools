@@ -123,7 +123,12 @@ PopoverContent.propTypes = {
  * @return {*}
  */
 function round(s) {
-  return typeof(s) === 'number' ? Math.round(s) : s;
+  s = Number(s);
+  if (typeof(s) === 'number') {
+    return isNaN(s) ? 0 : Math.round(s);
+  } else {
+    return s;
+  }
 }
 
 /**
