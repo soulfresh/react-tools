@@ -6,3 +6,4 @@ export * from './useEnterExit';
 export * from './useId';
 export * from './useMaybeControlled';
 export * from './useTimeout';
+export * from './useIsMounted';
