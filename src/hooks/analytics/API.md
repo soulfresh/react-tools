@@ -9,6 +9,10 @@
     * [.trackEvent(category, action, [label], [value], [userInteraction])](#Analytics+trackEvent)
     * [.trackExternalLink(url)](#Analytics+trackExternalLink)
 
+## Functions
+
+* [useAnalyticsClient([silent])](#useAnalyticsClient) ⇒ [<code>Analytics</code>](#Analytics)
+
 ## Typedefs
 
 * [AnalyticsOptions](#AnalyticsOptions) : <code>object</code>
@@ -117,6 +121,17 @@ Track a link to an external site.
 | Param | Type |
 | --- | --- |
 | url | <code>string</code> | 
+
+<a name="useAnalyticsClient"></a>
+
+## useAnalyticsClient([silent]) ⇒ [<code>Analytics</code>](#Analytics)
+Get the currently configured analytics service.
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [silent] | <code>boolean</code> | Silence warnings when the service has   not been configured. |
 
 <a name="AnalyticsOptions"></a>
 

@@ -63,3 +63,22 @@ should update the `value` accordingly.
     </Column>
   </Story>
 </Canvas>
+
+### With a Label
+
+For accessibility purposes, it is recommended that you supply a label that describes your
+select menu. You can do that by supplying the `label` prop which should be a label element.
+
+<Canvas>
+  <Story name="With a Label">
+    <ExampleSelect
+      options={['Apple', 'Orange', 'Grape', 'Dog']}
+      itemToString={i => i}
+      onChange={act('onChange')}
+      content={item => <div className="item">{item}</div>}
+      label={<label>Select a fruit </label>}
+    >{(props, item) =>
+      <button {...props}>{ item ? item : 'Nothing Selected' }</button>
+    }</ExampleSelect>
+  </Story>
+</Canvas>

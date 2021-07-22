@@ -76,6 +76,7 @@ export const SelectMenu = React.forwardRef(({
  * @property {function} [onChange]
  * @property {function} content
  * @property {*} children
+ * @property {*} [label]
  * @property {function} [onOpen]
  * @property {function} [onClose]
  * @property {boolean} [isOpen]
@@ -169,6 +170,7 @@ export const Select = React.forwardRef(({
   isOpen,
   layerOptions,
   selectOptions,
+  label,
   transitionProperty,
   disableTransitions,
   disableArrow,
@@ -189,6 +191,7 @@ export const Select = React.forwardRef(({
     isOpen: isOpenLocal,
     selectedItem,
     highlightedIndex,
+    getLabelProps,
     getToggleButtonProps,
     getMenuProps,
     getItemProps,
@@ -202,6 +205,8 @@ export const Select = React.forwardRef(({
     ...selectOptions
   });
 
+  const labelProps = getLabelProps();
+
   const {ref: triggerRef, ...triggerProps} = getToggleButtonProps({
     // If non-function children are passed, ensure their props are retained.
     ...children?.props,
@@ -210,6 +215,14 @@ export const Select = React.forwardRef(({
       !!selectedItem ? 'hasValue' : null
     ),
   });
+
+  if (!label) {
+    // If we don't include a label element, then
+    // we should associate the trigger element with
+    // the menu instead of the label element.
+    triggerProps.id = labelProps.id;
+    delete triggerProps['aria-labelledby'];
+  }
 
   const {ref: contentRef, ...contentProps} = getMenuProps({ref, ...rest});
 
@@ -241,10 +254,22 @@ export const Select = React.forwardRef(({
         />
       }
       children={
-        <Trigger
-          children={trigger}
-          ref={mergeRefs(triggerRef, trigger?.ref)}
-        />
+        label
+          ? (
+            <span>
+              { label }
+              <Trigger
+                children={trigger}
+                ref={mergeRefs(triggerRef, trigger?.ref)}
+              />
+            </span>
+          )
+          : (
+            <Trigger
+              children={trigger}
+              ref={mergeRefs(triggerRef, trigger?.ref)}
+            />
+          )
       }
       {...wrapperProps}
     />
@@ -319,6 +344,11 @@ Select.propTypes = {
    * @param {*} item - The currently selected item.
    */
   children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]).isRequired,
+  /**
+   * The `<label>` element to use as the label describing this select.
+   * ex: `<Select label={<label>Select Description</label>} />`
+   */
+  label: PropTypes.node,
   /**
    * A callback that will be called whenever the menu is opened.
    * This is required if you use this component in a controlled fashion.

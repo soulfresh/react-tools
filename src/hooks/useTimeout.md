@@ -1,6 +1,6 @@
 <a name="useTimeout"></a>
 
-## useTimeout()
+## useTimeout() ⇒ <code>function</code>
 Returns a wrapper around `setTimeout` that will
 automatically clear the timeout if the component
 is destroyed before the timeout. Use it in exactly
