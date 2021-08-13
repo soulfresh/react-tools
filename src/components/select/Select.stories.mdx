@@ -22,6 +22,7 @@ import { Select as ExampleSelect } from './examples/Select.jsx';
       itemToString={i => i}
       onChange={act('onChange')}
       content={item => <div className="item">{item}</div>}
+      disableTransitions
     >{(props, item) =>
       <button {...props}>{ item ? item : 'Select a Fruit' }</button>
     }</ExampleSelect>

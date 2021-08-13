@@ -1,0 +1,36 @@
+import { Meta, Story, Canvas, ArgsTable, Description } from '@storybook/addon-docs/blocks';
+import { action as act } from '@storybook/addon-actions';
+
+import {
+  ColumnOfItems,
+  RowOfItems,
+  Column,
+  Row,
+} from '@thesoulfresh/sass-theming';
+
+import { Unit } from './Unit.jsx';
+import { Percent } from './Percent.jsx';
+
+<Meta title="Components/Numbers/Percent" />
+
+# Percent
+
+<Description of={Percent} />
+
+This component depends on `react-number-format`. See https://www.npmjs.com/package/react-number-format
+for a full list of ways you can configure the formatting.
+
+<Canvas>
+  <Story name="Percent" decorators={[ColumnOfItems]}>
+    <label>Percentage in the current user locale</label>
+    <Percent value={0.9} />
+    <p>Try typing into the following inputs to see how numbers
+    get formatted as you type.</p>
+    <label>Percent en-US</label>
+    <Percent input locale="en-US" onValueChange={v => console.log('change', v)} />
+    <label>Percent hi-IN</label>
+    <Percent input locale="hi-IN" />
+  </Story>
+</Canvas>
+
+<ArgsTable of={Percent} />

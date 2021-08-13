@@ -45,7 +45,7 @@ export function toHundredths(dollars) {
  * @param {number} number - An integer integer to translate into
  *   the given language. Fractions will be removed.
  * @param {string} [locale] - A specific locale to use or the browser locale.
- * @return {number}
+ * @return {string}
  */
 export function translateInteger(number, locale = userLocale()) {
   const f = new Intl.NumberFormat(locale, {
@@ -54,6 +54,23 @@ export function translateInteger(number, locale = userLocale()) {
     maximumFractionDigits: 0,
   });
   return f.format(number);
+}
+
+/**
+ * Translate the percent symbol into the specified locale.
+ * @param {string} [locale]
+ * @return {string}
+ */
+export function translatePercent(locale = userLocale()) {
+  const f = new Intl.NumberFormat(locale || undefined, {
+    style: 'percent',
+    useGrouping: false,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
+
+  const num = translateInteger(0, locale);
+  return f.format(0).replace(num, '')
 }
 
 /**
@@ -277,6 +294,22 @@ export function localeUnitIsPrefixed(unit, locale = userLocale(), unitDisplay = 
 }
 
 /**
+ * Determine if percent symbols are prefixed in the given locale.
+ * @param {string} [locale]
+ * @return {boolean}
+ */
+export function localePercentIsPrefixed(locale = userLocale()) {
+  const f = new Intl.NumberFormat(locale || undefined, {
+    style: 'percent',
+    useGrouping: false,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
+  const num = translateInteger(1, locale);
+  return f.format(1).indexOf(num) > 0;
+}
+
+/**
  * @private
  * Format the given currency symbol with padding based on
  * whether it is prefixed or suffixed.
@@ -353,5 +386,16 @@ export function addUnitPrefixOrSuffix(target, unit, symbol, locale, unitDisplay)
   }
 
   return target;
+}
+
+/**
+ * Generate a react-number-format config that will prefix or suffix
+ * the percentage sign to a number.
+ * @param {string} [locale]
+ */
+export function percentPrefixOrSuffix(locale) {
+  return {
+    [localePercentIsPrefixed(locale) ? 'prefix' : 'suffix'] : translatePercent(locale),
+  };
 }
 

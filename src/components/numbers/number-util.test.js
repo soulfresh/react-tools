@@ -253,4 +253,14 @@ describe('number-util', function() {
       });
     });
   }
+
+  describe('localPercentIsPrefixed', () => {
+    xit('should be able to determine if a locale uses prefixed percent symbols.', () => {
+      // TODO I'm not sure which locales prefix the % sign.
+    });
+  });
+
+  describe('translatePercent', () => {
+    xit('should be able to translate the percent symbol fot the given locale.', () => {});
+  });
 });
