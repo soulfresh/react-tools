@@ -5,6 +5,7 @@ describe('Tooltip', () => {
     xit('should be able to wrap components.', () => {});
     xit('should be able to programatically show the tooltip.', () => {});
     xit('should be able to programatically hide the tooltip.', () => {});
+    xit('should attach the outer trigger ref correctly.', () => {});
 
     describe('after hover', () => {
       xit('should show the tooltip.', () => {});

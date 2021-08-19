@@ -22,6 +22,11 @@ export const Trigger = React.forwardRef(({
   children,
   ...props
 }, ref) => {
+  ref = children?.ref && ref
+    ? mergeRefs(ref, children.ref)
+    : children?.ref
+      ? children.ref
+      : ref;
   if (isReactText(children)) {
     return <span {...props} ref={ref}>{children}</span>;
   } else {

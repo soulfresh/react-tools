@@ -45,6 +45,8 @@ In the following example, the tooltip is toggled programatically every few secon
     <Column>
       {() => {
         const [isOpen, setIsOpen] = React.useState(false);
+        const ref = React.useRef();
+        React.useEffect(() => console.log('ref?', ref));
         return (
           <ExampleTooltip
             isOpen={isOpen}
@@ -52,10 +54,11 @@ In the following example, the tooltip is toggled programatically every few secon
             onClose={() => (console.log('CLOSE'), setIsOpen(false))}
             content="Cool 😎"
           >
-            Tooltip Example
+            <span ref={ref}>Tooltip Example</span>
           </ExampleTooltip>
         );
       }}
     </Column>
   </Story>
 </Canvas>
+

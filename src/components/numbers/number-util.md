@@ -3,6 +3,7 @@
 * [userLocale()](#userLocale) ⇒ <code>string</code>
 * [fromHundredths(pennies)](#fromHundredths) ⇒ <code>number</code>
 * [toHundredths(dollars)](#toHundredths) ⇒ <code>number</code>
+* [translatePercent([locale])](#translatePercent) ⇒ <code>string</code>
 * [localeThousandsSeparator([locale])](#localeThousandsSeparator) ⇒ <code>string</code>
 * [localeThousandsGroupStyle([locale])](#localeThousandsGroupStyle) ⇒ <code>string</code>
 * [localeDecimalSeparator([locale])](#localeDecimalSeparator) ⇒ <code>string</code>
@@ -13,6 +14,8 @@
 * [localeUnitSymbol(unit, [locale], [unitDisplay])](#localeUnitSymbol) ⇒ <code>string</code>
 * [localeUnitName(value, unit, [locale])](#localeUnitName) ⇒ <code>string</code>
 * [localeUnitIsPrefixed(unit, [locale], [unitDisplay])](#localeUnitIsPrefixed) ⇒ <code>boolean</code>
+* [localePercentIsPrefixed([locale])](#localePercentIsPrefixed) ⇒ <code>boolean</code>
+* [percentPrefixOrSuffix([locale])](#percentPrefixOrSuffix)
 
 <a name="userLocale"></a>
 
@@ -50,6 +53,17 @@ For example:
 | Param | Type |
 | --- | --- |
 | dollars | <code>number</code> | 
+
+<a name="translatePercent"></a>
+
+## translatePercent([locale]) ⇒ <code>string</code>
+Translate the percent symbol into the specified locale.
+
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| [locale] | <code>string</code> | 
 
 <a name="localeThousandsSeparator"></a>
 
@@ -190,4 +204,27 @@ if none is passed).
 | unit | <code>string</code> | One of the units accepted by `Intl.NumberFormat` |
 | [locale] | <code>string</code> |  |
 | [unitDisplay] | <code>string</code> | One of the `unitDisplay` values accepted   by `Intl.NumberFormat` |
+
+<a name="localePercentIsPrefixed"></a>
+
+## localePercentIsPrefixed([locale]) ⇒ <code>boolean</code>
+Determine if percent symbols are prefixed in the given locale.
+
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| [locale] | <code>string</code> | 
+
+<a name="percentPrefixOrSuffix"></a>
+
+## percentPrefixOrSuffix([locale])
+Generate a react-number-format config that will prefix or suffix
+the percentage sign to a number.
+
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| [locale] | <code>string</code> | 
 
