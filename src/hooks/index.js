@@ -1,5 +1,6 @@
 export * from './analytics';
 export * from './aria';
+export * from './debug';
 export * from './keyboard';
 export * from './useAnimationFrame';
 export * from './useEnterExit';
