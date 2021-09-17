@@ -5,8 +5,15 @@ import React from 'react';
  * @param {object} props
  */
 export function useLogPropChanges(props) {
+  const count = React.useRef(0);
   const prev = React.useRef(props);
   React.useEffect(() => {
+    ++count.current;
+
+    if (count.current === 1) {
+      console.log('Initial props:', props);
+    }
+
     const changedProps = Object.entries(props).reduce((ps, [k, v]) => {
       if (prev.current[k] !== v) {
         ps[k] = [prev.current[k], v];
@@ -14,8 +21,9 @@ export function useLogPropChanges(props) {
       return ps;
     }, {});
     if (Object.keys(changedProps).length > 0) {
-      console.log('Changed props:', changedProps);
+      console.log(`Changed props (${count.current}):`, changedProps);
     }
+
     prev.current = props;
   });
 }
