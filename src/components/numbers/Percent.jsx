@@ -11,17 +11,27 @@ import { NumberDisplay } from './NumberDisplay.jsx';
  * Convert a number or string representing a decimal value
  * into a percentage value.
  * @param {string|number} value
+ * @param {number} precision
  * @return {number}
  */
-function toPercent(value) {
+function toPercent(value, precision) {
   if (value == null || value === '') return undefined;
 
   const v = Number(value);
   if (isNaN(v)) return undefined;
-  else return v * 100;
+  else {
+    if (precision > 0) {
+      return (v / Math.pow(10, precision - 2));
+    }
+    else {
+      return v * 100;
+    }
+  }
 }
 
 function fromPercent(value) {
+  // This ignores the precision so we can always
+  // output a float value for the percentage.
   return value / 100;
 }
 
@@ -32,6 +42,7 @@ function fromPercent(value) {
  * @property {string} [locale]
  * @property {function} [onValueChange]
  * @property {boolean} [input]
+ * @property {number} [precision]
  * @property {*} [ref]
  */
 /**
@@ -49,13 +60,22 @@ export const Percent = React.forwardRef(({
   defaultValue,
   locale,
   onValueChange,
+  precision,
   ...rest
 }, ref) => {
+  // Ensure we got a number for precision
+  precision = parseInt(precision, 10);
+  if (isNaN(precision)) precision = undefined;
+
+  // Coerce the input values from floats to percentages.
+  value = toPercent(value, precision);
+  defaultValue = defaultValue != null ? toPercent(defaultValue, precision) : defaultValue;
+
   const localeProps = React.useMemo(() => {
     const p = {
       locale,
-      value: toPercent(value),
-      defaultValue: toPercent(defaultValue),
+      value,
+      defaultValue,
     };
 
     try {
@@ -70,11 +90,19 @@ export const Percent = React.forwardRef(({
     if (onValueChange) {
       // Coerce the value back into a decimal
       const coerced = fromPercent(v.floatValue);
-      onValueChange({
+      const values = {
         ...v,
         floatValue: coerced,
         value: String(coerced),
-      });
+      };
+
+      // If the precision prop is defined, create
+      // a version of the value at that precision.
+      if (!isNaN(precision) && precision > 0) {
+        values.integer = Math.round(coerced * Math.pow(10, precision));
+      }
+
+      onValueChange(values);
     }
   }
 
@@ -111,12 +139,26 @@ Percent.propTypes = {
    */
   defaultValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   /**
+   * This allows you to represent percentages as a fixed value integer.
+   * For example, if you pass `precision={5} value={90000}`, then the input
+   * will show "90%". If you pass `precision={5} value={90}, then the input
+   * will show "0.009%". This is useful for avoiding rounding errors when
+   * storing and working with float values. See: https://floating-point-gui.de/
+   *
+   * If the user types a value to more precision than is allowed, the value
+   * will be rounded to the desired precision. You can prevent the user from typing
+   * to a higher precision by passing the `decimalScale` prop from `react-number-format`.
+   */
+  precision: PropTypes.number,
+  /**
    * A callback called with the current value
    * whenever it changes.
    * @param {object} values
-   * @param {string} values.formattedValue
-   * @param {number} values.value
-   * @param {number} values.floatValue
+   * @param {string} values.formattedValue - The value with locale formatting
+   * @param {number} values.value - The value as a string in the range of 0 - 1
+   * @param {number} values.floatValue - Will be in the range of 0 - 1
+   * @param {number} values.integer - If using the `precision` prop, this
+   *   will be the percentage value as an integer to the given precision.
    */
   onValueChange: PropTypes.func,
   /**

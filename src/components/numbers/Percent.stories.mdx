@@ -23,14 +23,41 @@ for a full list of ways you can configure the formatting.
 <Canvas>
   <Story name="Percent" decorators={[ColumnOfItems]}>
     <label>Percentage in the current user locale</label>
-    <Percent value={0.9} />
+    <Percent value={0.9} onValueChange={act('onValueChange')} />
     <p>Try typing into the following inputs to see how numbers
     get formatted as you type.</p>
     <label>Percent en-US</label>
-    <Percent input locale="en-US" onValueChange={v => console.log('change', v)} />
+    <Percent input locale="en-US" onValueChange={act('onValueChange')} />
     <label>Percent hi-IN</label>
-    <Percent input locale="hi-IN" />
+    <Percent input locale="hi-IN" onValueChange={act('onValueChange')} />
   </Story>
 </Canvas>
 
 <ArgsTable of={Percent} />
+
+## Precision
+
+It can be useful to work with integers when dealing with percentages
+in order to avoid [floating point errors](https://floating-point-gui.de/).
+You can do this by passing the `precision` prop which should be the number
+of significant integers used to represent your percentage. This will then force
+the `value` prop to recieve an integer of `precision` places and will emit
+an `integer` property in the `onValueChange` event. For example, with a
+precision of 4, a value of 9000 represents 90% while a value of 90 represents 0.9%.
+
+If the user types a value to more precision than is allowed, the value
+will be rounded to the desired precision. You can prevent the user from typing
+to a higher precision by passing the `decimalScale` prop from `react-number-format`.
+
+<Canvas>
+  <Story name="Precision" decorators={[ColumnOfItems]}>
+    <label>precision: 4, value: 9000</label>
+    <Percent input value={9000} precision={4} onValueChange={act('onValueChange')} />
+    <label>precision: 4, value: 90</label>
+    <Percent input value={90} precision={4} onValueChange={act('onValueChange')} />
+    <label>precision: 2, value: 90</label>
+    <Percent input value={90} precision={2} onValueChange={act('onValueChange')} />
+    <label>precision: 1, value: 90</label>
+    <Percent input value={90} precision={1} onValueChange={act('onValueChange')} />
+  </Story>
+</Canvas>

@@ -8,7 +8,13 @@ describe('Percent', () => {
       xit('should emit the formatted value as a percentage value.', () => {});
     });
   });
-  describe('??', () => {
+  describe('precision', () => {
+    xit('should accept values in the given precision.', () => {});
+    describe('after changing the value', () => {
+      xit('should include the integer prop in the onValueChange callback.', () => {});
+    });
+  });
+  describe('xx-XX', () => {
     // Some locales should do this but I'm not sure which ones.
     xit('should place the percent symbol before the number.', () => {});
   });
