@@ -1,3 +1,7 @@
+const path = require('path');
+
+const package = (p) => `../src${p ? '/' + p : ''}/**/*.stories.(mdx|tsx)`;
+
 module.exports = {
   stories: [
     // Actions
@@ -6,22 +10,14 @@ module.exports = {
     '../src/components/buttons/RoutedAction.stories.mdx',
     // Inputs
     '../src/components/numbers/NumberDisplay.stories.mdx',
-    '../src/components/numbers/*.stories.mdx',
+    package('components/numbers'),
     // All others
-    '../src/**/*.stories.mdx',
+    package(),
   ],
-  // TODO Get this working with essentials
   addons: [
-    "@storybook/addon-links",
-    // "@storybook/addon-essentials",
+    '@storybook/addon-links',
+    '@storybook/addon-essentials',
     "@storybook/preset-create-react-app",
-    // '@storybook/addon-a11y',
-    {
-      name: '@storybook/addon-docs',
-      options: {
-        configureJSX: true,
-        // transcludeMarkdown: true,
-      },
-    },
   ],
 };
+
