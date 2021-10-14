@@ -9,6 +9,22 @@ import {
 
 import { NumberDisplay } from './NumberDisplay.jsx';
 
+const toPennies = v => {
+  v = Number(v);
+  if (isNaN(v)) return undefined;
+  else {
+    return v * 100;
+  }
+};
+
+const fromPennies = v => {
+  v = Number(v)
+  if (isNaN(v)) return undefined;
+  else {
+    return v / 100;
+  }
+};
+
 // TODO Handle negative number formatting.
 // The negative sign can be either prefixed
 // or suffixed. With some currencies, the negative
@@ -21,6 +37,7 @@ import { NumberDisplay } from './NumberDisplay.jsx';
  * @property {string} [currencyDisplay]
  * @property {string} [locale]
  * @property {string|number} [value]
+ * @property {boolean} [pennies]
  * @property {function} [onValueChange]
  */
 /**
@@ -37,21 +54,15 @@ import { NumberDisplay } from './NumberDisplay.jsx';
 export const Currency = React.forwardRef(({
   currency = 'USD',
   currencyDisplay = 'symbol',
+  value,
+  defaultValue,
+  pennies,
   locale,
   onValueChange,
   ...rest
 }, ref) => {
-  const handleValueChange = values => {
-    if (onValueChange) {
-      const float = Number(values.floatValue);
-      const pennies = isNaN(float) ? float : Math.round(float * 100);
-
-      onValueChange({
-        ...values,
-        pennies,
-      });
-    }
-  }
+  value = pennies ? fromPennies(value) : value;
+  defaultValue = pennies ? fromPennies(defaultValue) : defaultValue;
 
   const localeProps = React.useMemo(() => {
     const p = {
@@ -77,8 +88,23 @@ export const Currency = React.forwardRef(({
     return addCurrencyPrefixOrSuffix(p, symbol, locale, currencyDisplay);
   }, [currency, currencyDisplay, locale]);
 
+  const handleValueChange = values => {
+    if (onValueChange) {
+      const float = Number(values.floatValue);
+      values = {
+        ...values,
+        floatValue: float,
+        pennies: !isNaN(float) ? toPennies(float) : undefined,
+      }
+
+      onValueChange(values);
+    }
+  }
+
   return (
     <NumberDisplay data-test="currencyNameInput"
+      value={value}
+      defaultValue={defaultValue}
       onValueChange={handleValueChange}
       {...localeProps}
       {...rest}
@@ -111,6 +137,20 @@ Currency.propTypes = {
    * The current value of the input.
    */
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  /**
+   * Allows you to specify the value in pennies. This is useful
+   * for avoiding [floating point errors](https://floating-point-gui.de/).
+   * When `pennies` is true, the value `prop` is expected to be in
+   * pennies and will be coerced into a dollar value. Additionally,
+   * you can use the `pennies` property from the `onValueChange` to
+   * store the currency as pennies as the user types.
+   *
+   * If the user types in fractional pennies, then you will recieve
+   * fractional pennies in the `onValueChange` event. You can prevent
+   * users from entering fractional pennies by setting `decimalScale={2}`
+   * (see `react-number-format` for more information).
+   */
+  pennies: PropTypes.bool,
   /**
    * A default value to use if the value is empty.
    * This value will be set when the input is initialized

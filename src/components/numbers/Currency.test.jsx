@@ -31,22 +31,22 @@ describe('Currency', function() {
     });
 
     describe('after changing the value', function() {
-      beforeEach(function() {
+      beforeEach(async function() {
         const input = screen.getByTestId('decimal');
         userEvent.clear(input);
-        userEvent.type(input, '333444000.6666');
+        await userEvent.type(input, '3344.66');
       });
 
       it('should format the value.', () => {
-        expect(screen.getByTestId('decimal')).toHaveValue('$333,444,000.66');
+        expect(screen.getByTestId('decimal')).toHaveValue('$3,344.66');
       });
 
       it('should notify of the new values.', () => {
         expect(onValueChange).toHaveBeenCalledWith({
-          value: '333444000.66',
-          formattedValue: '$333,444,000.66',
-          floatValue: 333444000.66,
-          pennies: 33344400066,
+          value: '3344.66',
+          formattedValue: '$3,344.66',
+          floatValue: 3344.66,
+          pennies: 334466,
         });
       });
     });
@@ -89,6 +89,26 @@ describe('Currency', function() {
       expect(screen.getByTestId('decimal')  ).toHaveValue(   '$50,00,000.67');
       expect(screen.getByTestId('truncated')).toHaveValue('USD 50,00,000.44');
       expect(screen.getByTestId('rounded')  ).toHaveValue(   '€50,00,000.78');
+    });
+  });
+
+  describe('pennies', () => {
+    beforeEach(() => {
+      render(
+        <Currency
+          input
+          pennies
+          value={500}
+          decimalScale={2}
+          data-testid="pennies"
+          locale="en-US"
+          currency="USD"
+        />
+      );
+    });
+
+    it('should accept the value in pennies.', () => {
+      expect(screen.getByTestId('pennies')).toHaveValue('$5');
     });
   });
 });

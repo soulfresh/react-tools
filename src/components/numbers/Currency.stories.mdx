@@ -46,6 +46,29 @@ for a full list of ways you can configure the formatting.
 
 <ArgsTable of={Currency} />
 
+## Pennies
+
+`Currency` can be configured to accept values in pennies. This is a good
+way to avoid [floating point errors](https://floating-point-gui.de/) when
+dealing with monetary values. Simply pass the `value` prop as pennies and
+add the `pennies` prop.
+
+If the user types in fractional pennies, then you will recieve
+fractional pennies in the `onValueChange` event. You can prevent
+users from entering fractional pennies by setting `decimalScale={2}`
+(see `react-number-format` for more information).
+
+<Canvas>
+  <Story name="Pennies" decorators={[ColumnOfItems]}>
+    <label>900 pennies</label>
+    <Currency input value={900} pennies onValueChange={act('onValueChange')} />
+    <label>10 pennies</label>
+    <Currency input value={10} pennies onValueChange={act('onValueChange')} />
+    <label>20,000 pennies</label>
+    <Currency input value={20000} pennies onValueChange={act('onValueChange')} />
+  </Story>
+</Canvas>
+
 ## Refs
 
 This example shows that it's possible to access the `ref`
