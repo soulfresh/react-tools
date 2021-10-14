@@ -20,6 +20,8 @@ import { NumberDisplay } from './NumberDisplay.jsx';
  * @property {string} [currency]
  * @property {string} [currencyDisplay]
  * @property {string} [locale]
+ * @property {string|number} [value]
+ * @property {function} [onValueChange]
  */
 /**
  * The `<Currency>` displays a currency value with
@@ -33,11 +35,24 @@ import { NumberDisplay } from './NumberDisplay.jsx';
  * @type React.FC<CurrencyProps>
  */
 export const Currency = React.forwardRef(({
-  currency,
-  currencyDisplay,
+  currency = 'USD',
+  currencyDisplay = 'symbol',
   locale,
+  onValueChange,
   ...rest
 }, ref) => {
+  const handleValueChange = values => {
+    if (onValueChange) {
+      const float = Number(values.floatValue);
+      const pennies = isNaN(float) ? float : Math.round(float * 100);
+
+      onValueChange({
+        ...values,
+        pennies,
+      });
+    }
+  }
+
   const localeProps = React.useMemo(() => {
     const p = {
       locale,
@@ -64,6 +79,7 @@ export const Currency = React.forwardRef(({
 
   return (
     <NumberDisplay data-test="currencyNameInput"
+      onValueChange={handleValueChange}
       {...localeProps}
       {...rest}
       ref={ref}
@@ -126,9 +142,4 @@ Currency.propTypes = {
    */
   'other props...': PropTypes.any,
 };
-
-Currency.defaultProps = {
-  currency: 'USD',
-  currencyDisplay: 'symbol',
-}
 

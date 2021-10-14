@@ -46,6 +46,7 @@ describe('Currency', function() {
           value: '333444000.66',
           formattedValue: '$333,444,000.66',
           floatValue: 333444000.66,
+          pennies: 33344400066,
         });
       });
     });

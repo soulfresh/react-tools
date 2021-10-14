@@ -1,4 +1,4 @@
-import { Meta, Story, Canvas, ArgsTable, Description } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Canvas, ArgsTable, Description } from '@storybook/addon-docs';
 import { action as act } from '@storybook/addon-actions';
 
 import {
@@ -22,25 +22,25 @@ for a full list of ways you can configure the formatting.
 <Canvas>
   <Story name="Currency" decorators={[ColumnOfItems]}>
     <label>With the current user locale and default currency</label>
-    <Currency value={202838} />
+    <Currency value={202838} onValueChange={act('onValueChange')} />
     <p>Try typing into the following inputs to see how numbers
     get formatted as you type.</p>
     <label>USD de-DE</label>
-    <Currency input locale='de-DE' />
+    <Currency input locale='de-DE' onValueChange={act('onValueChange')} />
     <label>EUR en-US</label>
-    <Currency input locale='en-US' currency="EUR" />
+    <Currency input locale='en-US' currency="EUR" onValueChange={act('onValueChange')} />
     <label>EUR en-US with currency code</label>
-    <Currency input locale='en-US' currency="EUR" currencyDisplay="code" />
+    <Currency input locale='en-US' currency="EUR" currencyDisplay="code" onValueChange={act('onValueChange')} />
     <label>EUR de-DE</label>
-    <Currency input locale='de-DE' currency="EUR" />
+    <Currency input locale='de-DE' currency="EUR" onValueChange={act('onValueChange')} />
     <label>EUR de-DE with currency code</label>
-    <Currency input locale='de-DE' currency="EUR" currencyDisplay="code" />
+    <Currency input locale='de-DE' currency="EUR" currencyDisplay="code" onValueChange={act('onValueChange')} />
     <label>INR hi-IN</label>
-    <Currency input locale='hi-IN' currency="INR" />
+    <Currency input locale='hi-IN' currency="INR" onValueChange={act('onValueChange')} />
     <label>THB Thailand</label>
-    <Currency input locale='th' currency="THB" />
+    <Currency input locale='th' currency="THB" onValueChange={act('onValueChange')} />
     <label>Yaun China</label>
-    <Currency input locale="zh-Hans-CN-u-nu-hanidec" currency='CNY' />
+    <Currency input locale="zh-Hans-CN-u-nu-hanidec" currency='CNY' onValueChange={act('onValueChange')} />
   </Story>
 </Canvas>
 
