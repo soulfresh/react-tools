@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { useTimeout } from './useTimeout';
+import { useProcessEvent } from './useProcessEvent';
 
 
 /**
@@ -83,11 +84,12 @@ export function useEnterExit(visible, property, {
   const timeoutRef = React.useRef();
 
   const wait = useTimeout();
+  const processEvent = useProcessEvent();
 
   React.useEffect(() => {
     const el = ref.current;
 
-    const onEnd = e => {
+    const onEnd = processEvent(e => {
       if (e.propertyName === property) {
         setEntered(false);
         el.removeEventListener('transitionend', onEnd);
@@ -100,7 +102,7 @@ export function useEnterExit(visible, property, {
           timeoutRef.current = null;
         }
       }
-    };
+    });
 
     if (el && visible && !entered) {
       wait(() => {
