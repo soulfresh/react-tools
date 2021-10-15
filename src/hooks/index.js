@@ -8,4 +8,3 @@ export * from './useId';
 export * from './useMaybeControlled';
 export * from './useTimeout';
 export * from './useIsMounted';
-export * from './useLogPropChanges';
