@@ -4,6 +4,7 @@ import { useHover } from "react-laag";
 
 import { useTooltipAria } from '../../hooks/aria/useTooltipAria';
 import { useMaybeControlled } from '../../hooks/useMaybeControlled';
+import { useIsMounted } from '../../hooks/useIsMounted';
 import { Popover, Trigger } from '../popover/Popover.jsx';
 import { mergeCallbacks } from '../../utils/react';
 
@@ -100,13 +101,14 @@ export function Tooltip({
   // so we can emit it. This is necessary because the hover events
   // may be delayed and react-laag doesn't give us the associated event.
   const lastEvent = React.useRef();
+  const isMounted = useIsMounted();
 
   const [isOpenLocal, setIsOpenLocal] = useMaybeControlled(isOpen, v => {
     if (v) {
-      if (onOpen) onOpen(lastEvent.current);
+      if (onOpen && isMounted()) onOpen(lastEvent.current);
     }
     else {
-      if (onClose) onClose(lastEvent.current);
+      if (onClose && isMounted()) onClose(lastEvent.current);
     }
   });
 
@@ -117,12 +119,14 @@ export function Tooltip({
   const [isOver, {onMouseEnter, onMouseLeave, ...hoverProps}] = useHover(hoverOptions);
 
   const handleMouseEnter = e => {
-    onMouseEnter(e);
-    lastEvent.current = e;
+    if (isMounted()) {
+      onMouseEnter(e);
+      lastEvent.current = e;
+    }
   }
 
   const handleMouseLeave = e => {
-    if (!focused) {
+    if (!focused && isMounted()) {
       onMouseLeave(e);
       lastEvent.current = e;
     }
@@ -130,19 +134,25 @@ export function Tooltip({
 
   // Keep the local open state in sync with the hover state.
   React.useEffect(() => {
-    setIsOpenLocal(isOver);
+    if (isMounted()) {
+      setIsOpenLocal(isOver);
+    }
   }, [isOver]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleOpen = e => {
-    setFocused(true);
-    setIsOpenLocal(true);
-    lastEvent.current = e;
+    if (isMounted()) {
+      setFocused(true);
+      setIsOpenLocal(true);
+      lastEvent.current = e;
+    }
   };
 
   const handleClose = e => {
-    setFocused(false);
-    setIsOpenLocal(false);
-    lastEvent.current = e;
+    if (isMounted()) {
+      setFocused(false);
+      setIsOpenLocal(false);
+      lastEvent.current = e;
+    }
   };
 
   const {
