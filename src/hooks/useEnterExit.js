@@ -90,7 +90,7 @@ export function useEnterExit(visible, property, {
     const el = ref.current;
 
     const onEnd = processEvent(e => {
-      if (e.propertyName === property) {
+      if (e.propertyName === property && e.target === el) {
         setEntered(false);
         el.removeEventListener('transitionend', onEnd);
 
