@@ -129,6 +129,7 @@ export function useDialogAria(
     },
     menuProps: {
       id: menuId,
+      role: 'dialog',
       'aria-labelledby': triggerId,
     }
   };
