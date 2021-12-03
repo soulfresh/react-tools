@@ -1,6 +1,7 @@
 import { Meta, Story, Canvas, ArgsTable, Description } from '@storybook/addon-docs/blocks';
 
 import API from './ARIA.md';
+import { fixMarkdown } from '../../storybook-utils';
 
 <Meta title="Hooks/ARIA" />
 
@@ -10,5 +11,5 @@ To help support ARIA requirements for the components in
 this package, I've created the following hooks that you
 may find useful in your own projects.
 
-<Description>{ API }</Description>
+<Description>{ fixMarkdown(API) }</Description>
 

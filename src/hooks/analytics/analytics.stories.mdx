@@ -1,6 +1,7 @@
 import { Meta, Story, Canvas, ArgsTable, Description } from '@storybook/addon-docs/blocks';
 
 import API from './API.md';
+import { fixMarkdown } from '../../storybook-utils';
 
 <Meta title="Hooks/Analytics" />
 
@@ -87,5 +88,5 @@ function MyComponent() {
 }
 ```
 
-<Description>{ API }</Description>
+<Description>{ fixMarkdown(API) }</Description>
 

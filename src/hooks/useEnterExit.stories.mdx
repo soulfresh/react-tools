@@ -1,8 +1,9 @@
 import { Meta, Story, Canvas, ArgsTable, Description } from '@storybook/addon-docs/blocks';
 
 import API from './useEnterExit.md';
+import { fixMarkdown } from '../storybook-utils';
 
 <Meta title="Hooks/useEnterExit" />
 
-<Description>{ API }</Description>
+<Description>{ fixMarkdown(API) }</Description>
 
