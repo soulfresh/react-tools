@@ -105,7 +105,7 @@ export function useDialogAria(
     if (isOpen) {
       const el = firstFocusRef.current;
       if (el) el.focus({preventScroll: true});
-    } else if (initialized) {
+    } else if (initialized.current) {
       const el = triggerRef.current;
       if (el) el.focus({preventScroll: true});
     }
