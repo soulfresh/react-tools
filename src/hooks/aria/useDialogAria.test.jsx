@@ -9,6 +9,7 @@ describe('useDialogAria', () => {
     xit('should return the triggerRef.', () => {});
     xit('should return the firstFocusRef.', () => {});
     xit('should return the lastFocusRef.', () => {});
+    xit('should not focus the trigger element when first created.', () => {});
 
     describe('when open', () => {
       xit('should set the aria-expanded state to true.', () => {});

@@ -88,6 +88,7 @@ export function useDialogAria(
   menuId = menuId || `${id}-menu`;
 
   const triggerRef = React.useRef();
+  const initialized = React.useRef(false);
 
   // Keep focus trapped between the first and last
   // focusable elements in the dialog.
@@ -104,11 +105,17 @@ export function useDialogAria(
     if (isOpen) {
       const el = firstFocusRef.current;
       if (el) el.focus({preventScroll: true});
-    } else {
+    } else if (initialized) {
       const el = triggerRef.current;
       if (el) el.focus({preventScroll: true});
     }
   }, [isOpen]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  React.useEffect(() => {
+    // Ensure that we don't steal focus as soon as the
+    // current component is created.
+    initialized.current = true;
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return {
     triggerRef,
