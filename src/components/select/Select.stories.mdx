@@ -19,7 +19,6 @@ import { Select as ExampleSelect } from './examples/Select.jsx';
   <Story name="Select">
     <ExampleSelect
       options={['Apple', 'Orange', 'Grape', 'Dog']}
-      itemToString={i => i}
       onChange={act('onChange')}
       content={item => <div className="item">{item}</div>}
       disableTransitions
@@ -58,6 +57,36 @@ should update the `value` accordingly.
           content={(item, selected) => <div className="item">{item}</div>}
         >{(props, item) =>
           <button {...props} type="button">{ item ? item : 'Select a Fruit' }</button>
+        }</ExampleSelect>
+      );
+      }}
+    </Column>
+  </Story>
+</Canvas>
+
+### With Object Values
+
+Use the `itemToString` prop to easily get a string representation of the items in
+the select if you pass an array of objects for the `options` prop.
+
+<Canvas>
+  <Story name="With Object Values">
+    <Column>
+    {() => {
+      const [isOpen, setIsOpen] = React.useState(false);
+      const [value, setValue] = React.useState();
+      return (
+        <ExampleSelect
+          options={[
+            {name: 'Cats'},
+            {name: 'Dogs'},
+            {name: 'Birds'},
+            {name: 'Fish'}
+          ]}
+          optionToString={i => i.name}
+          onChange={act('onChange')}
+        >{(props, item) =>
+          <button {...props} type="button">{ item ? item.name : 'Select Your Favorite Animal' }</button>
         }</ExampleSelect>
       );
       }}
