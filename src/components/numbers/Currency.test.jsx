@@ -47,6 +47,10 @@ describe('Currency', function() {
           formattedValue: '$3,344.66',
           floatValue: 3344.66,
           pennies: 334466,
+          info: {
+            event: expect.any(Object),
+            source: 'event'
+          }
         });
       });
     });

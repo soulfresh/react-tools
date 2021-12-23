@@ -62,6 +62,10 @@ describe('Unit', function() {
           value: '333444000.6666',
           formattedValue: supported ? '333,444,000.6666 L' : '333,444,000.6666' ,
           floatValue: 333444000.6666,
+          info: {
+            source: 'event',
+            event: expect.any(Object),
+          }
         });
       });
     });

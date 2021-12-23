@@ -23,6 +23,13 @@ import { Currency } from './Currency.jsx';
  * using the currency code instead of the currency symbol.
  * For example, "5,000 USD" rather than "$5,000".
  *
+ * To get the number value from the input, you can use the
+ * `onValueChange` callback. It will give you an object with
+ * the number value, input string without formatting, and
+ * the formatted/localized string the user sees. It will also
+ * include an `info` property with the event that caused the
+ * change and a reason for the change.
+ *
  * This component builds off of `<Currency>` but specifically
  * sets the `currencyDisplay` prop to "name".
  * @type React.FC<CurrencyNameProps>
@@ -85,6 +92,9 @@ CurrencyName.propTypes = {
    * @param {string} values.formattedValue
    * @param {number} values.value
    * @param {number} values.floatValue
+   * @param {object} values.info
+   * @param {string} values.info.source
+   * @param {object} values.info.event
    */
   onValueChange: PropTypes.func,
   /**

@@ -46,6 +46,13 @@ const fromPennies = v => {
  * as the user types. If no currency is specified it
  * assumes you intend to use 'USD'.
  *
+ * To get the number value from the input, you can use the
+ * `onValueChange` callback. It will give you an object with
+ * the number value, input string without formatting, and
+ * the formatted/localized string the user sees. It will also
+ * include an `info` property with the event that caused the
+ * change and a reason for the change.
+ *
  * See the `NumberDisplay` component (which this component
  * uses under the hood) for more details.
  *
@@ -167,6 +174,9 @@ Currency.propTypes = {
    * @param {string} values.formattedValue
    * @param {number} values.value
    * @param {number} values.floatValue
+   * @param {object} values.info
+   * @param {string} values.info.source
+   * @param {object} values.info.event
    */
   onValueChange: PropTypes.func,
   /**

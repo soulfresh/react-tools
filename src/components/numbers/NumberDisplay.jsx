@@ -31,6 +31,13 @@ import {
  * specify a locale if you need to format the numbers in a
  * specific locale.
  *
+ * To get the number value from the input, you can use the
+ * `onValueChange` callback. It will give you an object with
+ * the number value, input string without formatting, and
+ * the formatted/localized string the user sees. It will also
+ * include an `info` property with the event that caused the
+ * change and a reason for the change.
+ *
  * Under the hood, this component uses `react-number-format`
  * and can accept any of its props or those of standard `<span>`
  * and `<input>` elements.
@@ -59,6 +66,10 @@ export const NumberDisplay = React.forwardRef(({
     formattedValue: value,
     value: v,
     floatValue: v,
+    info: {
+      event: undefined,
+      source: 'mount'
+    }
   });
 
   // Store these in the state so they only get generated once.
@@ -75,21 +86,26 @@ export const NumberDisplay = React.forwardRef(({
       lastValue.current = {
         formattedValue: defaultValue,
         value: dv,
-        floatValue: dv
+        floatValue: dv,
+        info: {
+          event: undefined,
+          source: 'mount'
+        }
       };
 
       if (onValueChange) onValueChange(lastValue.current);
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleChange = (values) => {
+  const handleChange = (values, info) => {
     // Store the last value so we can
     // verify it against the defaultValue
     // onBlur.
     lastValue.current = {
       ...values,
       // Use null instead of undefined in order to treat the value as set.
-      floatValue: values.floatValue === undefined ? null : values.floatValue
+      floatValue: values.floatValue === undefined ? null : values.floatValue,
+      info,
     };
 
     if (onValueChange) onValueChange(lastValue.current);
@@ -104,6 +120,10 @@ export const NumberDisplay = React.forwardRef(({
           formattedValue: defaultValue,
           value: dv,
           floatValue: dv,
+          info: {
+            event: e,
+            source: 'blur',
+          }
         });
       }
     } else if (onBlur) {
@@ -155,6 +175,9 @@ NumberDisplay.propTypes = {
    * @param {string} values.formattedValue
    * @param {number} values.value
    * @param {number} values.floatValue
+   * @param {object} values.info
+   * @param {string} values.info.source
+   * @param {object} values.info.event
    */
   onValueChange: PropTypes.func,
   /**

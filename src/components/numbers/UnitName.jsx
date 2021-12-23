@@ -26,6 +26,13 @@ import { Unit } from './Unit.jsx';
  * of the same props and can render either an input
  * element or a span.
  *
+ * To get the number value from the input, you can use the
+ * `onValueChange` callback. It will give you an object with
+ * the number value, input string without formatting, and
+ * the formatted/localized string the user sees. It will also
+ * include an `info` property with the event that caused the
+ * change and a reason for the change.
+ *
  * @type React.FC<UnitNameProps>
  */
 export const UnitName = React.forwardRef((props, ref) => {
@@ -99,6 +106,9 @@ UnitName.propTypes = {
    * @param {string} values.formattedValue
    * @param {number} values.value
    * @param {number} values.floatValue
+   * @param {object} values.info
+   * @param {string} values.info.source
+   * @param {object} values.info.event
    */
   onValueChange: PropTypes.func,
   /**

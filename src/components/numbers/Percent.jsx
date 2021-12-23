@@ -53,6 +53,13 @@ function fromPercent(value) {
  * of the same props and can render either an input
  * element or a span.
  *
+ * To get the number value from the input, you can use the
+ * `onValueChange` callback. It will give you an object with
+ * the number value, input string without formatting, and
+ * the formatted/localized string the user sees. It will also
+ * include an `info` property with the event that caused the
+ * change and a reason for the change.
+ *
  * @type React.FC<PercentProps>
  */
 export const Percent = React.forwardRef(({
@@ -159,6 +166,9 @@ Percent.propTypes = {
    * @param {number} values.floatValue - Will be in the range of 0 - 1
    * @param {number} values.integer - If using the `precision` prop, this
    *   will be the percentage value as an integer to the given precision.
+   * @param {object} values.info
+   * @param {string} values.info.source
+   * @param {object} values.info.event
    */
   onValueChange: PropTypes.func,
   /**

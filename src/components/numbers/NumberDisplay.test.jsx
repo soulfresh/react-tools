@@ -46,6 +46,10 @@ describe('NumberDisplay', function() {
           value: '3456.78',
           formattedValue: '3,456.78',
           floatValue: 3456.78,
+          info: {
+            source: 'event',
+            event: expect.any(Object),
+          }
         });
       });
     });
@@ -86,6 +90,10 @@ describe('NumberDisplay', function() {
           value: '1234567.89',
           formattedValue: '1.234.567,89',
           floatValue: 1234567.89,
+          info: {
+            source: 'event',
+            event: expect.any(Object),
+          }
         });
       });
     });
@@ -126,6 +134,10 @@ describe('NumberDisplay', function() {
           value: '1234567.89',
           formattedValue: '12,34,567.89',
           floatValue: 1234567.89,
+          info: {
+            source: 'event',
+            event: expect.any(Object),
+          }
         });
       });
     });
