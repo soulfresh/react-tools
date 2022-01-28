@@ -19,6 +19,7 @@ import {
  * @property {boolean} [input]
  * @property {function} [onBlur]
  * @property {function} [onValueChange]
+ * @property {string} [className]
  * @property {*} [ref]
  */
 /**

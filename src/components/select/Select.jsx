@@ -47,6 +47,7 @@ export const SelectMenu = React.forwardRef(({
       ref={ref}
     >
       {items && items.map((item, i) =>
+        // eslint-disable-next-line jsx-a11y/role-supports-aria-props
         <li
           key={i}
           className={combineClasses(
@@ -55,6 +56,7 @@ export const SelectMenu = React.forwardRef(({
             i === highlightedIndex ? 'highlighted' : null,
           )}
           {...getItemProps({item, index: i})}
+          aria-selected={item === selectedItem}
           children={typeof(children) === 'function'
             ? children(item, item === selectedItem, i === highlightedIndex, i)
             : !!itemToString

@@ -43,6 +43,8 @@ function fromPercent(value) {
  * @property {function} [onValueChange]
  * @property {boolean} [input]
  * @property {number} [precision]
+ * @property {boolean} [fixedDecimalScale]
+ * @property {boolean} [allowNegative]
  * @property {*} [ref]
  */
 /**
@@ -71,6 +73,7 @@ export const Percent = React.forwardRef(({
   ...rest
 }, ref) => {
   // Ensure we got a number for precision
+  // @ts-ignore: This seems to work fine.
   precision = parseInt(precision, 10);
   if (isNaN(precision)) precision = undefined;
 

@@ -37,8 +37,11 @@ const fromPennies = v => {
  * @property {string} [currencyDisplay]
  * @property {string} [locale]
  * @property {string|number} [value]
+ * @property {string|number} [defaultValue]
  * @property {boolean} [pennies]
  * @property {function} [onValueChange]
+ * @property {boolean} [allowNegative]
+ * @property {*} [ref]
  */
 /**
  * The `<Currency>` displays a currency value with
