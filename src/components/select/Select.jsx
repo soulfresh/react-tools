@@ -34,7 +34,6 @@ export const SelectMenu = React.forwardRef(({
   children,
   ...rest
 }, ref) => {
-  console.log('highlightedIndex', highlightedIndex);
   return (
     <ol
       className={combineClasses(
