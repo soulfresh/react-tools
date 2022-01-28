@@ -34,6 +34,7 @@ export const SelectMenu = React.forwardRef(({
   children,
   ...rest
 }, ref) => {
+  console.log('highlightedIndex', highlightedIndex);
   return (
     <ol
       className={combineClasses(
@@ -56,7 +57,7 @@ export const SelectMenu = React.forwardRef(({
             i === highlightedIndex ? 'highlighted' : null,
           )}
           {...getItemProps({item, index: i})}
-          aria-selected={item === selectedItem}
+          aria-selected={(highlightedIndex === -1 && item === selectedItem) || i === highlightedIndex}
           children={typeof(children) === 'function'
             ? children(item, item === selectedItem, i === highlightedIndex, i)
             : !!itemToString
