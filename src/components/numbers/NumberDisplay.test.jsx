@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { NumberDisplay } from './NumberDisplay.jsx';
@@ -50,6 +50,73 @@ describe('NumberDisplay', function() {
             source: 'event',
             event: expect.any(Object),
           }
+        });
+      });
+    });
+  });
+
+  describe('with a default value', () => {
+    beforeEach(function() {
+      render(
+        <NumberDisplay
+          input
+          locale="en-US"
+          data-testid="input"
+          defaultValue={2000}
+          onValueChange={onValueChange}
+        />
+      );
+    });
+
+    it('should show the default value.', () => {
+      expect(screen.getByTestId('input')).toHaveValue('2,000')
+    });
+
+    it('should not emit a value change event.', () => {
+      expect(onValueChange).not.toHaveBeenCalled();
+    });
+
+    describe('after changing the value', () => {
+      beforeEach(() => {
+        fireEvent.change(screen.getByTestId('input'), {target: {value: '1,000'}});
+      });
+
+      it('should emit the new value.', () => {
+        expect(onValueChange).toHaveBeenCalledTimes(1);
+        expect(onValueChange).toHaveBeenCalledWith({
+          formattedValue: '1,000',
+          value: '1000',
+          floatValue: 1000,
+          info: expect.any(Object),
+        });
+      });
+
+      describe('and then clearing the input', () => {
+        beforeEach(() => {
+          onValueChange.mockClear();
+
+          fireEvent.change(screen.getByTestId('input'), {target: {value: '3,000'}});
+        });
+
+        it('should emit the new value.', () => {
+          expect(onValueChange).toHaveBeenCalledTimes(1);
+          expect(onValueChange).toHaveBeenCalledWith({
+            formattedValue: '3,000',
+            value: '3000',
+            floatValue: 3000,
+            info: expect.any(Object),
+          });
+        });
+
+        describe('and the blurring the input', () => {
+          beforeEach(() => {
+            onValueChange.mockClear();
+            fireEvent.blur(screen.getByTestId('input'));
+          });
+
+          it('should not emit any more updates.', () => {
+            expect(onValueChange).not.toHaveBeenCalled();
+          });
         });
       });
     });

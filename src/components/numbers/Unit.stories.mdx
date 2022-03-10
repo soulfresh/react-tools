@@ -26,7 +26,7 @@ for a full list of ways you can configure the formatting.
     <p>Try typing into the following inputs to see how numbers
     get formatted as you type.</p>
     <label>Inches en-US</label>
-    <Unit input unit="inch" locale="en-US" />
+    <Unit input unit="inch" locale="en-US" defaultValue={87} onValueChange={act('onValueChange')}/>
     <label>Liters en-US</label>
     <Unit input unit="liter" locale="en-US" />
     <label>Miles per hour hi-IN</label>

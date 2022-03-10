@@ -7,8 +7,17 @@ echo 'Building Docs 🚀'
 # General Hooks
 npx jsdoc2md --files src/hooks/useId.js -g grouped > src/hooks/useId.md
 npx jsdoc2md --files src/hooks/useTimeout.js -g grouped > src/hooks/useTimeout.md
+npx jsdoc2md --files src/hooks/useAnimationFrame.js -g grouped > src/hooks/useAnimationFrame.md
+npx jsdoc2md --files src/hooks/useIsMounted.js -g grouped > src/hooks/useIsMounted.md
 npx jsdoc2md --files src/hooks/useEnterExit.js -g grouped > src/hooks/useEnterExit.md
 npx jsdoc2md --files src/hooks/useMaybeControlled.js -g grouped > src/hooks/useMaybeControlled.md
+npx jsdoc2md --files src/hooks/useProcessEvent.js -g grouped > src/hooks/useProcessEvent.md
+# Debug Hooks
+npx jsdoc2md --files src/hooks/debug/useLogPropChanges.js -g grouped > src/hooks/debug/useLogPropChanges.md
+# Keyboard Hooks
+npx jsdoc2md --files src/hooks/keyboard/useFocus.js -g grouped > src/hooks/keyboard/useFocus.md
+npx jsdoc2md --files src/hooks/keyboard/useFocusTrap.js -g grouped > src/hooks/keyboard/useFocusTrap.md
+npx jsdoc2md --files src/hooks/keyboard/useKeyWhenActive.js -g grouped > src/hooks/keyboard/useKeyWhenActive.md
 # Aria Hooks
 npx jsdoc2md --files src/hooks/aria/*.js -g grouped > src/hooks/aria/ARIA.md
 # Analytics

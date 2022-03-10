@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 
 import { UnitName } from './UnitName.jsx';
 import {
@@ -42,6 +42,83 @@ describe('UnitName', function() {
         expect(screen.getByTestId('rounded')  ).toHaveValue('50,000.78');
         expect(screen.getByTestId('single')   ).toHaveValue('1');
       }
+    });
+  });
+
+  describe('with a default value', () => {
+    beforeEach(function() {
+      render(
+        <UnitName
+          input
+          locale="en-US"
+          data-testid="input"
+          unit="inch"
+          defaultValue={2}
+          onValueChange={onValueChange}
+        />
+      );
+    });
+
+    it('should show the default value.', () => {
+      if (supported) {
+        expect(screen.getByTestId('input')).toHaveValue('2 inches');
+      } else {
+        expect(screen.getByTestId('input')).toHaveValue('2');
+      }
+    });
+
+    it('should not emit a value change event.', () => {
+      expect(onValueChange).not.toHaveBeenCalled();
+    });
+
+    describe('after changing the value to singular', () => {
+      beforeEach(() => {
+        fireEvent.change(screen.getByTestId('input'), {target: {value: '1'}});
+      });
+
+      it('should emit the updated value once.', () => {
+        if (supported) {
+          expect(screen.getByTestId('input')).toHaveValue('1 inch');
+        } else {
+          expect(screen.getByTestId('input')).toHaveValue('1');
+        }
+      });
+
+      it('should emit a value change event.', () => {
+        expect(onValueChange).toHaveBeenCalledTimes(1);
+        expect(onValueChange).toHaveBeenCalledWith({
+          formattedValue: supported ? '1 inch' : '1',
+          value: '1',
+          floatValue: 1,
+          info: expect.any(Object),
+        })
+      });
+
+      describe('and then chaning the value to plural', () => {
+        beforeEach(() => {
+          onValueChange.mockClear();
+
+          fireEvent.change(screen.getByTestId('input'), {target: {value: '2'}});
+        });
+
+        it('should show the updated value.', () => {
+          if (supported) {
+            expect(screen.getByTestId('input')).toHaveValue('2 inches');
+          } else {
+            expect(screen.getByTestId('input')).toHaveValue('2');
+          }
+        });
+
+        it('should emit a value change event.', () => {
+          expect(onValueChange).toHaveBeenCalledTimes(1);
+          expect(onValueChange).toHaveBeenCalledWith({
+            formattedValue: supported ? '2 inches' : '2',
+            value: '2',
+            floatValue: 2,
+            info: expect.any(Object),
+          })
+        });
+      });
     });
   });
 

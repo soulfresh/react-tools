@@ -93,8 +93,6 @@ export const NumberDisplay = React.forwardRef(({
           source: 'mount'
         }
       };
-
-      if (onValueChange) onValueChange(lastValue.current);
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -112,33 +110,12 @@ export const NumberDisplay = React.forwardRef(({
     if (onValueChange) onValueChange(lastValue.current);
   };
 
-  const handleBlur = e => {
-    const empty = lastValue.current.floatValue == null || lastValue.current.floatValue === '';
-    if (hasDefaultValue && empty) {
-      // Set the value to the defaultValue.
-      if (onValueChange) {
-        onValueChange({
-          formattedValue: defaultValue,
-          value: dv,
-          floatValue: dv,
-          info: {
-            event: e,
-            source: 'blur',
-          }
-        });
-      }
-    } else if (onBlur) {
-      // Or run the normal blur operation.
-      onBlur(e);
-    }
-  };
-
   return (
-    <NumberFormat data-test="numberInput"
+    <NumberFormat
+      data-test="numberInput"
       value={v}
       defaultValue={dv}
       onValueChange={handleChange}
-      onBlur={handleBlur}
       displayType={input ? 'input' : 'text'}
       {...localeProps}
       {...rest}

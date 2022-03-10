@@ -1,3 +1,4 @@
+import React from 'react';
 import { useIsMounted } from './useIsMounted';
 
 /**
@@ -35,12 +36,12 @@ import { useIsMounted } from './useIsMounted';
  */
 export function useProcessEvent() {
   const isMounted = useIsMounted();
-  return cb => {
+  return React.useCallback(cb => {
     return (...args) => {
       if (isMounted()) {
         cb(...args);
       }
     }
-  }
+  }, [isMounted]);
 }
 

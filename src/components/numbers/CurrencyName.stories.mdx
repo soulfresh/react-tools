@@ -26,7 +26,7 @@ for a full list of ways you can configure the formatting.
     <p>Try typing into the following inputs to see how numbers
     get formatted as you type.</p>
     <label>USD de-DE</label>
-    <CurrencyName input locale='de-DE' />
+    <CurrencyName input locale='de-DE' defaultValue={28271} onValueChange={act('onValueChange')} />
     <label>EUR en-US</label>
     <CurrencyName input locale='en-US' currency="EUR" />
     <label>EUR en-US with currency code</label>

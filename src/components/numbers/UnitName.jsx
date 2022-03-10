@@ -17,6 +17,7 @@ import { Unit } from './Unit.jsx';
  *   the number in. Defaults to the browser locale.
  * @property {string|number} [value]
  * @property {string|number} [defaultValue]
+ * @property {boolean} [input]
  * @property {function} [onValueChange]
  */
 /**
@@ -36,22 +37,38 @@ import { Unit } from './Unit.jsx';
  * @type React.FC<UnitNameProps>
  */
 export const UnitName = React.forwardRef((props, ref) => {
-  const { unit, locale, value, onValueChange } = props;
+  const { unit, locale, value, defaultValue, onValueChange } = props;
   const unitDisplay = 'long';
   const [supported] = React.useState(() => supportsLocaleUnits());
   const [symbol, setSymbol] = React.useState(() =>
     supported
-      ? localeUnitName(Number(value) || 1, unit, locale)
+      ? localeUnitName(
+          value !== undefined
+            ? Number(value)
+            : defaultValue !== undefined
+            ? Number(defaultValue)
+            : 0,
+          unit,
+          locale
+        )
       : null
   );
 
   const handleValueChange = (values) => {
+    let symbolChanged = false;
     if (supported) {
-      setSymbol(
-        localeUnitName(values.floatValue, unit, locale)
-      );
+      const newSymbol = localeUnitName(values.floatValue, unit, locale);
+      if (symbol !== newSymbol) {
+        symbolChanged = true;
+        setSymbol(newSymbol);
+      }
     }
-    if (onValueChange) onValueChange(values);
+    // If the symbol changed we will render again with the updated symbol
+    // which will cause a second 'onValueChange' event, which in turn
+    // will pass this conditional and emit the 'onValueChange'
+    if (onValueChange && !symbolChanged) {
+      onValueChange(values);
+    }
   };
 
   const localeProps = {
@@ -62,7 +79,7 @@ export const UnitName = React.forwardRef((props, ref) => {
   if (supported) {
     localeProps.onValueChange = handleValueChange;
 
-    // TODO Find a way to reduce how often locale props are determined.
+    // TODO Reduce how often locale props are determined.
     addUnitPrefixOrSuffix(localeProps, unit, symbol, locale, unitDisplay);
   }
 
