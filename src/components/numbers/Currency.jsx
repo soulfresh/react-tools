@@ -41,6 +41,8 @@ const fromPennies = v => {
  * @property {boolean} [pennies]
  * @property {function} [onValueChange]
  * @property {boolean} [allowNegative]
+ * @property {boolean} [input]
+ * @property {number} [decimalScale]
  * @property {*} [ref]
  */
 /**
@@ -71,8 +73,8 @@ export const Currency = React.forwardRef(({
   onValueChange,
   ...rest
 }, ref) => {
-  value = pennies ? fromPennies(value) : value;
-  defaultValue = pennies ? fromPennies(defaultValue) : defaultValue;
+  value = pennies && value != null ? fromPennies(value) : value;
+  defaultValue = pennies && defaultValue != null ? fromPennies(defaultValue) : defaultValue;
 
   const localeProps = React.useMemo(() => {
     const p = {
@@ -100,12 +102,16 @@ export const Currency = React.forwardRef(({
 
   const handleValueChange = values => {
     if (onValueChange) {
-      const float = Number(values.floatValue);
+      const float = values.floatValue != null ? Number(values.floatValue) : values.floatValue;
       values = {
         ...values,
         floatValue: float,
-        pennies: !isNaN(float) ? toPennies(float) : undefined,
-      }
+        pennies: isNaN(float)
+          ? undefined
+          : float == null
+          ? float
+          : toPennies(float)
+      };
 
       onValueChange(values);
     }

@@ -15,7 +15,7 @@ import { NumberDisplay } from './NumberDisplay.jsx';
  * @return {number}
  */
 function toPercent(value, precision) {
-  if (value == null || value === '') return undefined;
+  if (value == null || value === '') return 0;
 
   const v = Number(value);
   if (isNaN(v)) return undefined;
@@ -30,9 +30,11 @@ function toPercent(value, precision) {
 }
 
 function fromPercent(value) {
-  // This ignores the precision so we can always
-  // output a float value for the percentage.
-  return value / 100;
+  return value == null || value === ''
+    ? value
+    // This ignores the precision so we can always
+    // output a float value for the percentage.
+    : value / 100;
 }
 
 /**
@@ -78,7 +80,7 @@ export const Percent = React.forwardRef(({
   if (isNaN(precision)) precision = undefined;
 
   // Coerce the input values from floats to percentages.
-  value = toPercent(value, precision);
+  value = value != null ? toPercent(value, precision) : value;
   defaultValue = defaultValue != null ? toPercent(defaultValue, precision) : defaultValue;
 
   const localeProps = React.useMemo(() => {
@@ -94,7 +96,7 @@ export const Percent = React.forwardRef(({
       // Does not support percent localization.
       return {...p, suffix: '%'};
     }
-  }, [locale]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [locale, value, defaultValue]);
 
   const handleValueChange = (v) => {
     if (onValueChange) {
@@ -103,13 +105,15 @@ export const Percent = React.forwardRef(({
       const values = {
         ...v,
         floatValue: coerced,
-        value: String(coerced),
+        value: coerced != null ? String(coerced) : '',
       };
 
       // If the precision prop is defined, create
       // a version of the value at that precision.
       if (!isNaN(precision) && precision > 0) {
-        values.integer = Math.round(coerced * Math.pow(10, precision));
+        values.integer = coerced != null
+          ? Math.round(coerced * Math.pow(10, precision))
+          : coerced;
       }
 
       onValueChange(values);

@@ -56,6 +56,64 @@ describe('Currency', function() {
     });
   });
 
+  describe('with a value and a default value', () => {
+    let rerender;
+    beforeEach(function() {
+      ({rerender} = render(
+        <Currency
+          data-testid="input"
+          input
+          locale="en-US"
+          currency="USD"
+          value={2000}
+          decimalScale={2}
+        />
+      ));
+    });
+
+    it('should show the value.', () => {
+      expect(screen.getByTestId('input')).toHaveValue('$2,000');
+    });
+
+    describe('after rerendering with a null value', () => {
+      beforeEach(function() {
+        rerender(
+          <Currency
+            data-testid="input"
+            input
+            locale="en-US"
+            currency="USD"
+            value={null}
+            decimalScale={2}
+          />
+        );
+      });
+
+      it('should render an empty input.', () => {
+        expect(screen.getByTestId('input')).toHaveValue('');
+      });
+    });
+  });
+
+  describe('with a null value', () => {
+    beforeEach(function() {
+      render(
+        <Currency
+          data-testid="input"
+          input
+          locale="en-US"
+          currency="USD"
+          value={null}
+          decimalScale={2}
+        />
+      );
+    });
+
+    it('should render an empty input.', () => {
+      expect(screen.getByTestId('input')).toHaveValue('');
+    });
+  });
+
   describe('de-DE', function() {
     beforeEach(function() {
       render(
