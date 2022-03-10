@@ -19,6 +19,7 @@ import {
  * @property {boolean} [input]
  * @property {function} [onBlur]
  * @property {function} [onValueChange]
+ * @property {number} [decimalScale]
  * @property {string} [className]
  * @property {*} [ref]
  */
@@ -61,7 +62,13 @@ export const NumberDisplay = React.forwardRef(({
   const dv = hasDefaultValue ? Number(defaultValue) : undefined;
   // Convert '' to undefined so that NumberDisplay will use
   // the defaultValue if it was passed.
-  const v = value === '' ? undefined : value;
+  const v = value === ''
+    ? undefined
+    // However, if value is null, use an empty string
+    // so that NumberFormat does use value and clears the field.
+    : value === null
+    ? ''
+    : value;
 
   const lastValue = React.useRef({
     formattedValue: value,

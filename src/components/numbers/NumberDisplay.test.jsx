@@ -122,6 +122,78 @@ describe('NumberDisplay', function() {
     });
   });
 
+  describe('with a default value and a value', () => {
+    let rerender;
+
+    beforeEach(function() {
+      ({rerender} = render(
+        <NumberDisplay
+          input
+          locale="en-US"
+          data-testid="input"
+          value={200}
+          defaultValue={2000}
+          onValueChange={onValueChange}
+        />
+      ));
+    });
+
+    it('should show the value.', () => {
+      expect(screen.getByTestId('input')).toHaveValue('200');
+    });
+
+    describe('after clearing the value', () => {
+      beforeEach(() => {
+        fireEvent.change(screen.getByTestId('input'), {target: {value: ''}});
+      });
+
+      it('should render an empty input.', () => {
+        expect(screen.getByTestId('input')).toHaveValue('');
+      });
+
+      it('should emit the updated value.', () => {
+        expect(onValueChange).toHaveBeenCalledTimes(1);
+        expect(onValueChange).toHaveBeenCalledWith({
+          formattedValue: '',
+          value: '',
+          floatValue: null,
+          info: expect.any(Object),
+        });
+      });
+    });
+
+    describe('after rerendering with a null value', () => {
+      beforeEach(() => {
+        onValueChange.mockClear();
+
+        rerender(
+          <NumberDisplay
+            input
+            locale="en-US"
+            data-testid="input"
+            value={null}
+            defaultValue={2000}
+            onValueChange={onValueChange}
+          />
+        )
+      });
+
+      it('should render an empty input..', () => {
+        expect(screen.getByTestId('input')).toHaveValue('');
+      });
+
+      it('should emit the updated value.', () => {
+        expect(onValueChange).toHaveBeenCalledTimes(1);
+        expect(onValueChange).toHaveBeenCalledWith({
+          formattedValue: '',
+          value: '',
+          floatValue: null,
+          info: expect.any(Object),
+        });
+      });
+    });
+  });
+
   describe('de-DE', function() {
     beforeEach(function() {
       render(
