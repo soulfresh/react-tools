@@ -7,7 +7,6 @@ import { makeLinkFromObject } from './RoutedAction.jsx';
 
 /**
  * @typedef {object} AnalyticsActionProps
- * @property {boolean} [button]
  * @property {string} [href]
  * @property {object} [to]
  * @property {boolean} [blank]
@@ -34,7 +33,7 @@ import { makeLinkFromObject } from './RoutedAction.jsx';
  * @type React.FC<AnalyticsActionProps>
  */
 export const AnalyticsAction = React.forwardRef(({
-  button,
+  button, // Trap this for backwards compatibility
   href,
   to = href,
   blank,
@@ -52,11 +51,11 @@ export const AnalyticsAction = React.forwardRef(({
     ? makeLinkFromObject(to)
     : to;
 
-  // Don't consider buttons, mailto, tel or sms links "external" links.
-  const external = !button && link && link.indexOf('http') > -1;
+  // Don't consider mailto, tel or sms links "external" links.
+  const external = link && link.indexOf('http') > -1;
   const trackEvent = category && action && label;
 
-  const props = { button, href, to, blank, onClick: undefined, ...rest };
+  const props = { href, to, onClick: undefined, ...rest };
 
   // If the intent is to track this event but the analytics
   // service is unconfigured, warn the user.
@@ -94,11 +93,6 @@ export const AnalyticsAction = React.forwardRef(({
 });
 
 AnalyticsAction.propTypes = {
-  /**
-   * If true, render a `<button>` element. Otherwise,
-   * render an `<a>` element.
-   */
-  button: PropTypes.bool,
   /**
    * Either an object as accepted by React Router or a string to
    * use as an href. Only useful if you are rendering a link.
