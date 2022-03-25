@@ -33,10 +33,10 @@ import { makeLinkFromObject } from './RoutedAction.jsx';
  * @type React.FC<AnalyticsActionProps>
  */
 export const AnalyticsAction = React.forwardRef(({
+  // @ts-ignore: backwards compat
   button, // Trap this for backwards compatibility
   href,
   to = href,
-  blank,
   category,
   action,
   label,
