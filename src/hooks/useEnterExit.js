@@ -3,6 +3,13 @@ import React from 'react';
 import { useTimeout } from './useTimeout';
 import { useProcessEvent } from './useProcessEvent';
 
+// Ensure that we can handle situations where `process.env` is not available.
+var env;
+try {
+  env = process.env;
+} catch(e) {
+  env = 'production';
+}
 
 /**
  * Enable CSS animation of the entering and exiting of an element/component.
@@ -30,10 +37,11 @@ import { useProcessEvent } from './useProcessEvent';
  * duration).
  *
  * State values are returned under the following circumstances:
- * - entering - As soon as the visible parameter changes to true
- * - entered - One tick after the visible parameter becomes true
- * - exiting - As soon as the visible parameter changes to false
- * - exited - After the first transitionend event that matches the property
+ *
+ * - *entering* As soon as the visible parameter changes to true
+ * - *entered* One tick after the visible parameter becomes true
+ * - *exiting* As soon as the visible parameter changes to false
+ * - *exited* After the first transitionend event that matches the property
  *   parameter passed.
  *
  * ```js
@@ -109,7 +117,7 @@ export function useEnterExit(visible, property, {
         setEntered(true)
       }, enterDelay);
     } else if (el && !visible && entered) {
-      if (!silent && !transitionEndOccurred && process?.env?.NODE_ENV === 'development') {
+      if (!silent && !transitionEndOccurred && env.NODE_ENV === 'development') {
         timeoutRef.current = wait(() => {
           console.warn(
             '[useEnterExit] Unable to detect element leave event after 20 seconds. ' +
