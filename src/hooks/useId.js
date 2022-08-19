@@ -13,7 +13,7 @@ let counter = 0;
  * @return {string} A unique string that can be
  * use in the application.
  */
-export function useId(prefix) {
+export function useId(prefix = '') {
   const [id] = React.useState(() => ++counter);
   return String(prefix) + String(id);
 }
