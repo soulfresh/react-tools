@@ -110,7 +110,10 @@ export function useMaybeControlled(value, emitValue, defaultValue) {
   const isControlled = value !== undefined;
   const [localValue, setLocalValue] = React.useState(isControlled ? value : defaultValue);
 
-  const handleValueChange = v => {
+  // TODO This state handler is going to change every time the outer value
+  // changes. Is there any way to make it behave like React.useState such that
+  // it never changes?
+  const handleValueChange = React.useCallback(v => {
     // If this is not a controlled component, then
     // set the local value to force a re-render.
     if (!isControlled) setLocalValue(v);
@@ -118,7 +121,7 @@ export function useMaybeControlled(value, emitValue, defaultValue) {
     // through to that setter. This allows users to
     // use the setter as an event emitter.
     if (emitValue && v !== value) emitValue(v);
-  };
+  }, [emitValue, isControlled, value]);
 
   return [
     isControlled ? value : localValue,
