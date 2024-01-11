@@ -12,7 +12,12 @@ export function useIsMounted() {
   const state = React.useRef(true);
 
   React.useEffect(() => {
-    return () => state.current = false;
+    // React 18 will double render this effect during development so we need to
+    // ensure the state is reset to true.
+    state.current = true;
+    return () => {
+      state.current = false;
+    }
   }, []);
 
   return React.useCallback(() => state.current, []);

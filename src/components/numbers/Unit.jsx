@@ -17,6 +17,8 @@ import { NumberDisplay } from './NumberDisplay.jsx';
  *   value as accepted by `Intl.NumberFormat`.
  * @property {string} [locale] - The locale to display
  *   the number in. Defaults to the browser locale.
+ * @property {boolean} [input] - Whether to render as
+ *   an input field.
  * @property {*} [ref]
  */
 /**
