@@ -114,7 +114,7 @@ describe('Unit', function() {
       if (supported) {
         expect(screen.getByTestId('thousands')).toHaveValue('50,00,000 इंच');
         expect(screen.getByTestId('decimal')  ).toHaveValue('50,00,000.6666 ली॰');
-        expect(screen.getByTestId('truncated')).toHaveValue('50,00,000.44ली');
+        expect(screen.getByTestId('truncated')).toHaveValue('50,00,000.44ली॰');
         expect(screen.getByTestId('rounded')  ).toHaveValue('50,00,000.78 मी॰प्र॰घं॰');
       } else {
         expect(screen.getByTestId('thousands')).toHaveValue('50,00,000');
