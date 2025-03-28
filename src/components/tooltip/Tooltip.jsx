@@ -1,13 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 import { useHover } from "react-laag";
 
-import { useTooltipAria } from '../../hooks/aria/useTooltipAria';
-import { useMaybeControlled } from '../../hooks/useMaybeControlled';
-import { useIsMounted } from '../../hooks/useIsMounted';
-import { Popover, Trigger } from '../popover/Popover.jsx';
-import { mergeCallbacks } from '../../utils/react';
-
+import { useTooltipAria } from "../../hooks/aria/useTooltipAria";
+import { useMaybeControlled } from "../../hooks/useMaybeControlled";
+import { useIsMounted } from "../../hooks/useIsMounted";
+import { Popover, Trigger } from "../popover/Popover.jsx";
+import { mergeCallbacks } from "../../utils/react";
 
 /**
  * `<Tooltip>` is a standard tooltip component that provides
@@ -83,6 +82,7 @@ import { mergeCallbacks } from '../../utils/react';
  * @param {function} [props.onClose]
  * @param {object} [props.hoverOptions]
  * @param {object} [props.layerOptions]
+ * @param {object} [props.triggerProps]
  * @param {string} [props.className]
  */
 export function Tooltip({
@@ -91,6 +91,7 @@ export function Tooltip({
   children,
   hoverOptions = {},
   layerOptions = {},
+  triggerProps = {},
   onClose,
   onOpen,
   isOpen,
@@ -103,11 +104,10 @@ export function Tooltip({
   const lastEvent = React.useRef();
   const isMounted = useIsMounted();
 
-  const [isOpenLocal, setIsOpenLocal] = useMaybeControlled(isOpen, v => {
+  const [isOpenLocal, setIsOpenLocal] = useMaybeControlled(isOpen, (v) => {
     if (v) {
       if (onOpen && isMounted()) onOpen(lastEvent.current);
-    }
-    else {
+    } else {
       if (onClose && isMounted()) onClose(lastEvent.current);
     }
   });
@@ -116,16 +116,18 @@ export function Tooltip({
 
   // We use `useHover()` to determine whether we should show the tooltip.
   // Notice how we're configuring a small delay on enter / leave.
-  const [isOver, {onMouseEnter, onMouseLeave, ...hoverProps}] = useHover(hoverOptions);
+  const [isOver, { onMouseEnter, onMouseLeave, ...hoverProps }] = useHover(
+    hoverOptions
+  );
 
-  const handleMouseEnter = e => {
+  const handleMouseEnter = (e) => {
     if (isMounted()) {
       onMouseEnter(e);
       lastEvent.current = e;
     }
-  }
+  };
 
-  const handleMouseLeave = e => {
+  const handleMouseLeave = (e) => {
     if (!focused && isMounted()) {
       onMouseLeave(e);
       lastEvent.current = e;
@@ -139,7 +141,7 @@ export function Tooltip({
     }
   }, [isOver]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleOpen = e => {
+  const handleOpen = (e) => {
     if (isMounted()) {
       setFocused(true);
       setIsOpenLocal(true);
@@ -147,7 +149,7 @@ export function Tooltip({
     }
   };
 
-  const handleClose = e => {
+  const handleClose = (e) => {
     if (isMounted()) {
       setFocused(false);
       setIsOpenLocal(false);
@@ -156,18 +158,9 @@ export function Tooltip({
   };
 
   const {
-    triggerProps: {
-      onFocus: onFocusAria,
-      onBlur: onBlurAria,
-      ...triggerAria
-    },
-    tooltipProps: tooltipAria
-  } = useTooltipAria(
-    isOpenLocal,
-    handleOpen,
-    handleClose,
-    {id}
-  );
+    triggerProps: { onFocus: onFocusAria, onBlur: onBlurAria, ...triggerAria },
+    tooltipProps: tooltipAria,
+  } = useTooltipAria(isOpenLocal, handleOpen, handleClose, { id });
 
   const onTriggerFocus = children?.props?.onFocus;
   const onFocus = mergeCallbacks(onFocusAria, onTriggerFocus);
@@ -182,7 +175,12 @@ export function Tooltip({
       onClose={handleClose}
       layerOptions={{
         placement: "top-center",
-        possiblePlacements: ['top-center', 'bottom-center', 'left-center', 'right-center'],
+        possiblePlacements: [
+          "top-center",
+          "bottom-center",
+          "left-center",
+          "right-center",
+        ],
         snap: true,
         ...layerOptions,
       }}
@@ -199,8 +197,9 @@ export function Tooltip({
         onMouseLeave={handleMouseLeave}
         onFocus={onFocus}
         onBlur={onBlur}
+        {...triggerProps}
       >
-        { children }
+        {children}
       </Trigger>
     </Popover>
   );
@@ -260,6 +259,5 @@ Tooltip.propTypes = {
    * Any other props you pass will be applied to the
    * tooltip content wrapper div.
    */
-  'other props...': PropTypes.any,
+  "other props...": PropTypes.any,
 };
-
